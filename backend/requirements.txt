@@ -1,0 +1,37 @@
+# FastAPI & Server
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+python-multipart==0.0.9
+
+# Database
+motor==3.4.0
+pymongo==4.7.2
+
+# Authentication
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+
+# ML & Data
+scikit-learn==1.7.2
+pandas==2.3.3
+numpy==1.26.4
+joblib==1.4.2
+
+# Explainability
+lime==0.2.0.1
+
+# URL Analysis
+requests==2.32.2
+tldextract==5.1.2
+python-whois==0.9.4
+
+# Email Parsing
+mail-parser==3.15.0
+
+# Validation & Env
+pydantic==2.7.1
+pydantic-settings==2.3.0
+python-dotenv==1.0.1
+
+# Reports
+reportlab==4.2.0

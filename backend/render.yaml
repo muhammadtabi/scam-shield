@@ -1,0 +1,16 @@
+# render.yaml — Render.com free deployment config for backend
+services:
+  - type: web
+    name: scam-shield-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: MONGODB_URL
+        sync: false        # Set manually in Render dashboard
+      - key: SECRET_KEY
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false        # Set to your Vercel URL
