@@ -10,6 +10,7 @@ pymongo==4.7.2
 # Authentication
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
 
 # ML & Data
 scikit-learn==1.7.2

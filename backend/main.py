@@ -74,3 +74,9 @@ async def root():
 @app.get("/health")
 async def health():
     return {"status": "healthy", "timestamp": __import__("datetime").datetime.utcnow()}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

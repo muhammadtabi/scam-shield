@@ -17,7 +17,7 @@ const ResultCard = ({ result }) => {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <span style={{ fontSize: 32 }}>⚠️</span>
           <div>
-            <div style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 22, color: '#ef4444' }}>
+            <div style={{ fontFamily: 'Sora', fontWeight: 800, fontSize: 22, color: '#ef4444' }}>
               Detection Error
             </div>
             <div style={{ color: '#94a3b8', fontSize: 13 }}>
@@ -48,7 +48,7 @@ const ResultCard = ({ result }) => {
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
         <span style={{ fontSize: 32 }}>{c.icon}</span>
         <div>
-          <div style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 22, color: c.color }}>
+          <div style={{ fontFamily: 'Sora', fontWeight: 800, fontSize: 22, color: c.color }}>
             {scamLevel.toUpperCase()}
           </div>
           <div style={{ color: '#94a3b8', fontSize: 13 }}>
@@ -65,7 +65,7 @@ const ResultCard = ({ result }) => {
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between',
                         fontSize: 11, color: '#475569', marginTop: 4,
-                        fontFamily: 'Space Mono' }}>
+                        fontFamily: 'JetBrains Mono' }}>
             <span>0%</span><span>50%</span><span>100%</span>
           </div>
         </div>
@@ -92,7 +92,7 @@ const ResultCard = ({ result }) => {
           borderRadius: 8, padding: 12
         }}>
           <div style={{ fontSize: 12, color: '#00d4ff', fontWeight: 600,
-                        marginBottom: 4, fontFamily: 'Space Mono' }}>
+                        marginBottom: 4, fontFamily: 'JetBrains Mono' }}>
             🤖 AI EXPLANATION
           </div>
           <div style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.6 }}>
@@ -314,34 +314,23 @@ export default function Detection() {
 
   return (
     <div className="fade-in">
-      <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 28,
-                     color: '#e2e8f0', marginBottom: 6 }}>Scan Now</h1>
-        <p style={{ color: '#94a3b8', fontSize: 14 }}>
+      <div className="page-header stagger stagger-1">
+        <h1 className="page-title">Scan Now</h1>
+        <p className="page-subtitle">
           Analyze emails, SMS messages, or URLs for scams
         </p>
       </div>
 
-      {/* Tabs */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
+      <div className="tab-switcher stagger stagger-2">
         {TABS.map(t => (
           <button key={t.id} onClick={() => handleTabSwitch(t.id)}
-            style={{
-              padding: '10px 20px', borderRadius: 10, border: 'none', cursor: 'pointer',
-              fontFamily: 'Syne', fontWeight: 600, fontSize: 14, transition: 'all 0.2s',
-              background: tab === t.id
-                ? 'linear-gradient(135deg, #00d4ff, #0ea5e9)'
-                : 'rgba(13,31,60,0.8)',
-              color: tab === t.id ? '#020817' : '#94a3b8',
-              boxShadow: tab === t.id ? '0 4px 15px rgba(0,212,255,0.3)' : 'none'
-            }}>
+            className={`tab-btn ${tab === t.id ? 'active' : ''}`}>
             {t.label}
           </button>
         ))}
       </div>
 
-      {/* Form */}
-      <form className="glass" style={{ padding: 28 }} onSubmit={handleFormSubmit}>
+      <form className="glass stagger stagger-3" style={{ padding: 28 }} onSubmit={handleFormSubmit}>
         <p style={{ color: '#94a3b8', fontSize: 13, marginBottom: 20 }}>
           {TABS.find(t => t.id === tab)?.desc}
         </p>
@@ -366,7 +355,7 @@ export default function Detection() {
               className="cyber-input"
               placeholder={`From: sender@example.com\nSubject: Your email subject here\n\nPaste the full email content here...\n\n(Or just paste any suspicious text and we'll analyze it!)`}
               rows={10}
-              style={{ resize: 'vertical', fontFamily: 'DM Sans', lineHeight: 1.6 }}
+              style={{ resize: 'vertical', fontFamily: 'Manrope', lineHeight: 1.6 }}
               value={rawEmail}
               onChange={e => handleEmailChange(e.target.value)}
               onKeyDown={handleEnterSubmit}
@@ -380,7 +369,7 @@ export default function Detection() {
                 border: '1px solid rgba(34,197,94,0.15)'
               }}>
                 <div style={{ fontSize: 12, color: '#22c55e', fontWeight: 600,
-                              marginBottom: 8, fontFamily: 'Space Mono' }}>
+                              marginBottom: 8, fontFamily: 'JetBrains Mono' }}>
                   ✅ EMAIL PARSED SUCCESSFULLY
                 </div>
                 <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 3 }}>
@@ -423,7 +412,7 @@ export default function Detection() {
                               marginBottom: 6, fontWeight: 500 }}>Message Content</label>
               <textarea className="cyber-input"
                 placeholder="Paste the SMS or call description here..."
-                rows={5} style={{ resize: 'vertical', fontFamily: 'DM Sans' }}
+                rows={5} style={{ resize: 'vertical', fontFamily: 'Manrope' }}
                 value={smsForm.message}
                 onChange={e => setSmsForm({ ...smsForm, message: e.target.value })}
                 onKeyDown={handleEnterSubmit} />

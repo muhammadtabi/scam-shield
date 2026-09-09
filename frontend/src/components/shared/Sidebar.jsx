@@ -7,65 +7,43 @@ const navItems = [
   { id: 'reports',   icon: '📊', label: 'Reports' },
 ]
 
-export default function Sidebar({ page, setPage }) {
+export default function Sidebar({ page, setPage, theme, onToggleTheme }) {
   const { user, logout } = useAuth()
 
   return (
-    <aside style={{
-      width: 240, minHeight: '100vh', background: 'rgba(10, 22, 40, 0.95)',
-      borderRight: '1px solid rgba(0,212,255,0.1)',
-      display: 'flex', flexDirection: 'column',
-      padding: '24px 16px', position: 'fixed', left: 0, top: 0, bottom: 0,
-      zIndex: 100
-    }}>
-      {/* Logo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10,
-                    padding: '8px 12px', marginBottom: 32 }}>
+    <aside className="side-nav">
+      <div className="side-logo">
         <span style={{ fontSize: 24 }}>🛡️</span>
         <div>
-          <div style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 16,
-                        background: 'linear-gradient(135deg, #00d4ff, #0ea5e9)',
-                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          <div className="side-brand">
             Scam Shield
           </div>
-          <div style={{ fontSize: 10, color: '#475569', fontFamily: 'Space Mono',
-                        letterSpacing: '0.1em' }}>AI PROTECTION</div>
+          <div className="side-sub">AI PROTECTION</div>
         </div>
       </div>
 
-      {/* Nav */}
       <nav style={{ flex: 1 }}>
         {navItems.map(item => (
           <button key={item.id}
             onClick={() => setPage(item.id)}
-            style={{
-              width: '100%', display: 'flex', alignItems: 'center', gap: 12,
-              padding: '11px 14px', borderRadius: 10, border: 'none',
-              marginBottom: 4, cursor: 'pointer', textAlign: 'left',
-              fontFamily: 'DM Sans', fontWeight: 500, fontSize: 14,
-              transition: 'all 0.2s',
-              background: page === item.id
-                ? 'linear-gradient(135deg, rgba(0,212,255,0.15), rgba(14,165,233,0.1))'
-                : 'transparent',
-              color: page === item.id ? '#00d4ff' : '#94a3b8',
-              borderLeft: page === item.id
-                ? '2px solid #00d4ff' : '2px solid transparent',
-            }}>
+            className={`nav-button ${page === item.id ? 'active' : ''}`}>
             <span style={{ fontSize: 16 }}>{item.icon}</span>
             {item.label}
           </button>
         ))}
       </nav>
 
-      {/* User */}
-      <div style={{ borderTop: '1px solid rgba(0,212,255,0.1)', paddingTop: 16 }}>
+      <div className="side-user">
+        <button onClick={onToggleTheme} className="theme-btn" type="button">
+          {theme === 'dark' ? '☀ Light Theme' : '🌙 Dark Theme'}
+        </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10,
                       padding: '8px 12px', marginBottom: 8 }}>
           <div style={{
             width: 34, height: 34, borderRadius: '50%',
             background: 'linear-gradient(135deg, #00d4ff, #0ea5e9)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 14, fontWeight: 700, color: '#020817', fontFamily: 'Syne'
+            fontSize: 14, fontWeight: 700, color: '#020817', fontFamily: 'Sora'
           }}>
             {user?.full_name?.[0]?.toUpperCase() || 'U'}
           </div>
@@ -76,13 +54,7 @@ export default function Sidebar({ page, setPage }) {
             <div style={{ fontSize: 11, color: '#475569' }}>{user?.email}</div>
           </div>
         </div>
-        <button onClick={logout}
-          style={{
-            width: '100%', padding: '9px 14px', borderRadius: 8, cursor: 'pointer',
-            background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)',
-            color: '#ef4444', fontSize: 13, fontFamily: 'DM Sans', fontWeight: 500,
-            transition: 'all 0.2s'
-          }}>
+        <button onClick={logout} className="logout-btn">
           ← Logout
         </button>
       </div>

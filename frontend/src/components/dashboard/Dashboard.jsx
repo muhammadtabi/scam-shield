@@ -2,16 +2,16 @@ import { useState, useEffect } from 'react'
 import { api } from '../../api/client'
 
 const StatCard = ({ icon, label, value, color, sub }) => (
-  <div className="glass" style={{ padding: 24, position: 'relative', overflow: 'hidden' }}>
+  <div className="glass stagger" style={{ padding: 24, position: 'relative', overflow: 'hidden' }}>
     <div style={{ position: 'absolute', top: -10, right: -10, fontSize: 60,
                   opacity: 0.06 }}>{icon}</div>
     <div style={{ fontSize: 28, marginBottom: 4 }}>{icon}</div>
-    <div style={{ fontSize: 32, fontWeight: 800, fontFamily: 'Syne', color }}>
+    <div style={{ fontSize: 32, fontWeight: 800, fontFamily: 'Sora', color }}>
       {value}
     </div>
     <div style={{ fontSize: 13, color: '#94a3b8', marginTop: 2 }}>{label}</div>
     {sub && <div style={{ fontSize: 11, color: '#475569', marginTop: 4,
-                          fontFamily: 'Space Mono' }}>{sub}</div>}
+                          fontFamily: 'JetBrains Mono' }}>{sub}</div>}
   </div>
 )
 
@@ -47,19 +47,14 @@ export default function Dashboard({ setPage }) {
 
   return (
     <div className="fade-in">
-      {/* Header */}
-      <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 28,
-                     color: '#e2e8f0', marginBottom: 6 }}>
-          Dashboard
-        </h1>
-        <p style={{ color: '#94a3b8', fontSize: 14 }}>
+      <div className="page-header stagger stagger-1">
+        <h1 className="page-title">Dashboard</h1>
+        <p className="page-subtitle">
           Real-time scam detection overview
         </p>
       </div>
 
-      {/* Security Score */}
-      <div className="glass" style={{
+      <div className="glass stagger stagger-2" style={{
         padding: 24, marginBottom: 24,
         background: score >= 80
           ? 'linear-gradient(135deg, rgba(34,197,94,0.08), rgba(13,31,60,0.8))'
@@ -78,12 +73,12 @@ export default function Dashboard({ setPage }) {
             width: 62, height: 62, borderRadius: '50%',
             background: 'var(--bg-card)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: 'Syne', fontWeight: 800, fontSize: 18,
+            fontFamily: 'Sora', fontWeight: 800, fontSize: 18,
             color: score >= 80 ? '#22c55e' : score >= 50 ? '#f59e0b' : '#ef4444'
           }}>{score}%</div>
         </div>
         <div>
-          <div style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 20,
+          <div style={{ fontFamily: 'Sora', fontWeight: 700, fontSize: 20,
                         color: '#e2e8f0', marginBottom: 4 }}>
             Security Score
           </div>
@@ -102,24 +97,28 @@ export default function Dashboard({ setPage }) {
         </div>
       </div>
 
-      {/* Stat Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-                    gap: 16, marginBottom: 24 }}>
-        <StatCard icon="🔍" label="Total Scans"     value={stats?.total || 0}
+      <div className="stats-grid">
+        <div className="stagger stagger-2">
+          <StatCard icon="🔍" label="Total Scans"     value={stats?.total || 0}
                   color="#00d4ff" />
-        <StatCard icon="🚨" label="Scams Detected"  value={stats?.scam_count || 0}
+        </div>
+        <div className="stagger stagger-3">
+          <StatCard icon="🚨" label="Scams Detected"  value={stats?.scam_count || 0}
                   color="#ef4444" />
-        <StatCard icon="⚠️" label="Suspicious"       value={stats?.suspicious_count || 0}
+        </div>
+        <div className="stagger stagger-4">
+          <StatCard icon="⚠️" label="Suspicious"       value={stats?.suspicious_count || 0}
                   color="#f59e0b" />
-        <StatCard icon="✅" label="Safe"             value={stats?.safe_count || 0}
+        </div>
+        <div className="stagger stagger-5">
+          <StatCard icon="✅" label="Safe"             value={stats?.safe_count || 0}
                   color="#22c55e" />
+        </div>
       </div>
 
-      {/* By Type + Recent */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: 16 }}>
-        {/* By Type */}
-        <div className="glass" style={{ padding: 24 }}>
-          <h3 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 16,
+      <div className="split-grid">
+        <div className="glass stagger stagger-3" style={{ padding: 24 }}>
+          <h3 style={{ fontFamily: 'Sora', fontWeight: 700, fontSize: 16,
                        marginBottom: 20, color: '#e2e8f0' }}>
             Scans by Type
           </h3>
@@ -132,7 +131,7 @@ export default function Dashboard({ setPage }) {
               <div style={{ display: 'flex', justifyContent: 'space-between',
                             marginBottom: 6, fontSize: 13 }}>
                 <span style={{ color: '#94a3b8' }}>{t.icon} {t.label}</span>
-                <span style={{ color: '#e2e8f0', fontFamily: 'Space Mono',
+                <span style={{ color: '#e2e8f0', fontFamily: 'JetBrains Mono',
                                fontWeight: 700 }}>{t.count}</span>
               </div>
               <div style={{ height: 6, background: 'rgba(255,255,255,0.05)',
@@ -147,11 +146,10 @@ export default function Dashboard({ setPage }) {
           ))}
         </div>
 
-        {/* Recent Detections */}
-        <div className="glass" style={{ padding: 24 }}>
+        <div className="glass stagger stagger-4" style={{ padding: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between',
                         alignItems: 'center', marginBottom: 20 }}>
-            <h3 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 16,
+            <h3 style={{ fontFamily: 'Sora', fontWeight: 700, fontSize: 16,
                          color: '#e2e8f0' }}>Recent Detections</h3>
             <button onClick={() => setPage('alerts')}
               style={{ background: 'none', border: 'none', color: '#00d4ff',
@@ -177,7 +175,7 @@ export default function Dashboard({ setPage }) {
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8,
                               marginBottom: 3 }}>
-                  <span style={{ fontSize: 12, color: '#94a3b8', fontFamily: 'Space Mono',
+                  <span style={{ fontSize: 12, color: '#94a3b8', fontFamily: 'JetBrains Mono',
                                  textTransform: 'uppercase' }}>
                     {d.detection_type === 'email' ? '📧' : d.detection_type === 'sms' ? '📱' : '🔗'}
                     {' '}{d.detection_type}

@@ -1,0 +1,15 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+
+# Local virtual environments
+.venv/
+venv/
+backend/venv/
+
+# Build outputs
+frontend/dist/
+
+# OS/editor noise
+.DS_Store
+*.swp

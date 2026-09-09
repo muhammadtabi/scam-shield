@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AuthProvider, useAuth } from './hooks/useAuth'
 import Login    from './components/auth/Login'
 import Register from './components/auth/Register'
@@ -11,18 +11,8 @@ import Reports  from './components/reports/Reports'
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
   return (
-    <div className="grid-bg" style={{
-      minHeight: '100vh', display: 'flex',
-      alignItems: 'center', justifyContent: 'center',
-      padding: 24, position: 'relative'
-    }}>
-      {/* Glow effect */}
-      <div style={{
-        position: 'fixed', top: '20%', left: '50%', transform: 'translateX(-50%)',
-        width: 600, height: 600, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%)',
-        pointerEvents: 'none'
-      }} />
+    <div className="grid-bg auth-shell">
+      <div className="ambient-orb" />
       {isLogin
         ? <Login    onSwitch={() => setIsLogin(false)} />
         : <Register onSwitch={() => setIsLogin(true)} />
@@ -34,6 +24,20 @@ function AuthPage() {
 function AppContent() {
   const { user, loading } = useAuth()
   const [page, setPage] = useState('dashboard')
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === 'undefined') return 'dark'
+    const stored = localStorage.getItem('scam-shield-theme')
+    return stored === 'light' ? 'light' : 'dark'
+  })
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('scam-shield-theme', theme)
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
+  }
 
   if (loading) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center',
@@ -52,10 +56,9 @@ function AppContent() {
   }
 
   return (
-    <div className="grid-bg" style={{ minHeight: '100vh', display: 'flex' }}>
-      <Sidebar page={page} setPage={setPage} />
-      <main style={{ marginLeft: 240, flex: 1, padding: '32px 40px',
-                     maxWidth: 'calc(100vw - 240px)' }}>
+    <div className="grid-bg app-shell">
+      <Sidebar page={page} setPage={setPage} theme={theme} onToggleTheme={toggleTheme} />
+      <main className="app-main">
         {pages[page] || <Dashboard setPage={setPage} />}
       </main>
     </div>

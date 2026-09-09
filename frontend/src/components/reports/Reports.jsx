@@ -32,16 +32,15 @@ export default function Reports() {
 
   return (
     <div className="fade-in">
-      <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: 28,
-                     color: '#e2e8f0', marginBottom: 6 }}>Reports</h1>
-        <p style={{ color: '#94a3b8', fontSize: 14 }}>
+      <div className="page-header stagger stagger-1">
+        <h1 className="page-title">Reports</h1>
+        <p className="page-subtitle">
           Export your scam detection history
         </p>
       </div>
 
       {message && (
-        <div style={{
+        <div className="stagger stagger-2" style={{
           background: message.startsWith('✅') ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)',
           border: `1px solid ${message.startsWith('✅') ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'}`,
           borderRadius: 8, padding: '12px 16px', marginBottom: 20,
@@ -49,11 +48,10 @@ export default function Reports() {
         }}>{message}</div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-        {/* PDF Report */}
-        <div className="glass" style={{ padding: 32 }}>
+      <div className="report-grid">
+        <div className="glass stagger stagger-3" style={{ padding: 32 }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>📄</div>
-          <h2 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 20,
+          <h2 style={{ fontFamily: 'Sora', fontWeight: 700, fontSize: 20,
                        color: '#e2e8f0', marginBottom: 8 }}>PDF Report</h2>
           <p style={{ color: '#94a3b8', fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>
             Download a formatted PDF report with detection summaries,
@@ -77,10 +75,9 @@ export default function Reports() {
           </button>
         </div>
 
-        {/* CSV Report */}
-        <div className="glass" style={{ padding: 32 }}>
+        <div className="glass stagger stagger-4" style={{ padding: 32 }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>📊</div>
-          <h2 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: 20,
+          <h2 style={{ fontFamily: 'Sora', fontWeight: 700, fontSize: 20,
                        color: '#e2e8f0', marginBottom: 8 }}>CSV Export</h2>
           <p style={{ color: '#94a3b8', fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>
             Export raw detection data as CSV for analysis in Excel,
@@ -106,7 +103,7 @@ export default function Reports() {
       </div>
 
       {/* Info */}
-      <div className="glass" style={{ padding: 20, marginTop: 20,
+      <div className="glass stagger stagger-5" style={{ padding: 20, marginTop: 20,
                                        display: 'flex', alignItems: 'center', gap: 14 }}>
         <span style={{ fontSize: 24 }}>💡</span>
         <div style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.6 }}>
