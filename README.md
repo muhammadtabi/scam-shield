@@ -1,4 +1,4 @@
-# 🛡️ Scam Shield — AI-Powered Scam Detection Dashboard
+# 🛡️ Scam Shield — Scam Detection Dashboard
 
 **Final Year Project | COMSATS University Islamabad, Attock Campus**
 **Students:** Muhammad Tayyaab | Aqib Rahim
@@ -72,6 +72,49 @@ npm run dev
 
 ---
 
+## 📬 Gmail Inbox Monitoring
+
+This project can watch one Gmail inbox, classify each new message as safe, suspicious, or scam, and log it into the existing alerts/history view.
+
+### 1) Create Google OAuth credentials
+1. Open the [Google Cloud Console](https://console.cloud.google.com/).
+2. Create or select a project.
+3. Enable the Gmail API.
+4. Configure the OAuth consent screen.
+5. Create an OAuth client ID of type Web application.
+6. Add this redirect URI exactly:
+    `http://localhost:8000/api/gmail/callback`
+
+### 2) Add backend environment variables
+Set these in `backend/.env`:
+
+```env
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/api/gmail/callback
+FRONTEND_URL=http://localhost:5173
+GMAIL_POLL_INTERVAL_SECONDS=60
+```
+
+### 3) Start the app locally
+1. Start MongoDB and the backend.
+2. Start the frontend.
+3. Open the dashboard and click `Connect Gmail`.
+4. Sign in to the Gmail account you want to monitor.
+5. Grant read-only Gmail access.
+
+### 4) Verify it works
+1. Send a fresh email to that Gmail inbox.
+2. Wait for the poll interval or click `Sync now` on the dashboard.
+3. Check the Alerts page for a new Gmail entry.
+
+### Notes
+- The first release uses polling, not Gmail push notifications.
+- The monitored account is read-only; the app does not send, delete, or archive mail.
+- If you deploy to Render or another host, the Gmail redirect URI must match the deployed backend URL, not localhost.
+
+---
+
 ## 📋 Build Phases
 
 - [x] Phase 1 — Project Structure
@@ -87,7 +130,7 @@ npm run dev
 - ✅ Email/Text Scam Detection
 - ✅ URL/Website Analysis
 - ✅ Phone Number Spam Check
-- ✅ Explainable AI (LIME)
+- ✅ Feature-Level Explanations
 - ✅ Real-time Alerts Dashboard
 - ✅ PDF/CSV Report Export
 - ✅ Evidence Logging
