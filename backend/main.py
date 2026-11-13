@@ -3,23 +3,35 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
+import asyncio
 from app.core.config import settings
 from app.db.database import connect_db, close_db
 from app.ml.predictor import load_models
-from app.api.routes import auth, detection, reports, dashboard
+from app.api.routes import auth, detection, reports, dashboard, gmail
+from app.services.gmail_monitor import gmail_monitor_loop
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
     await connect_db()
     load_models()
+    stop_event = asyncio.Event()
+    monitor_task = asyncio.create_task(gmail_monitor_loop(stop_event))
+    app.state.gmail_stop_event = stop_event
+    app.state.gmail_monitor_task = monitor_task
     yield
     # Shutdown
+    stop_event.set()
+    monitor_task.cancel()
+    try:
+        await monitor_task
+    except asyncio.CancelledError:
+        pass
     await close_db()
 
 app = FastAPI(
     title="Scam Shield API",
-    description="AI-Powered Scam Detection and Awareness Dashboard",
+    description="Scam Detection and Threat Awareness API",
     version="1.0.0",
     lifespan=lifespan
 )
@@ -66,6 +78,7 @@ app.include_router(auth.router,       prefix="/api/auth",      tags=["Auth"])
 app.include_router(detection.router,  prefix="/api/detect",    tags=["Detection"])
 app.include_router(reports.router,    prefix="/api/reports",   tags=["Reports"])
 app.include_router(dashboard.router,  prefix="/api/dashboard", tags=["Dashboard"])
+app.include_router(gmail.router,      prefix="/api/gmail",     tags=["Gmail"])
 
 @app.get("/")
 async def root():

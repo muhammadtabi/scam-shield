@@ -8,13 +8,13 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
-from app.core.dependencies import get_current_user
+from app.core.dependencies import get_current_user_flexible
 from app.db.database import get_db
 
 router = APIRouter()
 
 @router.get("/csv")
-async def download_csv(current_user: dict = Depends(get_current_user)):
+async def download_csv(current_user: dict = Depends(get_current_user_flexible)):
     db = get_db()
     cursor = db.detections.find(
         {"user_id": current_user["sub"]}
@@ -49,7 +49,7 @@ async def download_csv(current_user: dict = Depends(get_current_user)):
     )
 
 @router.get("/pdf")
-async def download_pdf(current_user: dict = Depends(get_current_user)):
+async def download_pdf(current_user: dict = Depends(get_current_user_flexible)):
     db = get_db()
 
     # Get user

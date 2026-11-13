@@ -3,6 +3,7 @@ from urllib.parse import urlparse
 from pydantic import BaseModel, field_validator, model_validator
 from typing import Optional, List
 from datetime import datetime
+from pydantic import Field
 from enum import Enum
 
 class ScamLevel(str, Enum):
@@ -50,13 +51,19 @@ class SMSDetectRequest(BaseModel):
                 raise ValueError("Sender ID must start with a letter and contain only letters, numbers, _ or -")
             return compact
 
-        # Numeric sender values must be full 11-digit phone numbers.
+        # Allow 4-6 digit carrier/bank SMS shortcodes (e.g. 8558, 3737, 8171).
+        if re.fullmatch(r"\d{4,6}", compact):
+            return compact
+
+        # Otherwise require a full 11-digit phone number.
         if not re.fullmatch(r"^[+\d\s().-]+$", sender):
             raise ValueError("Invalid sender number format")
 
         digits_only = re.sub(r"\D", "", sender)
         if len(digits_only) != 11:
-            raise ValueError("Sender number must contain exactly 11 digits")
+            raise ValueError(
+                "Sender must be an 11-digit number, 4-6 digit shortcode, or alphanumeric sender ID"
+            )
 
         return sender
 
@@ -110,5 +117,5 @@ class DetectionResult(BaseModel):
     confidence: float
     reasons: List[str]
     explanation: Optional[str] = None
-    timestamp: datetime = datetime.utcnow()
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
     user_id: Optional[str] = None
