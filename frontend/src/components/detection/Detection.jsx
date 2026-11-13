@@ -23,15 +23,15 @@ const TABS = [
 const ResultCard = ({ result }) => {
   if (result?.error) {
     return (
-      <div className="fade-in glass" style={{
-        background: 'rgba(239, 68, 68, 0.08)',
-        borderColor: 'rgba(239, 68, 68, 0.25)',
-        padding: 22, marginTop: 20
+      <div className="fade-in card" style={{
+        background: 'rgba(239, 68, 68, 0.06)',
+        borderColor: 'rgba(239, 68, 68, 0.2)',
+        padding: 20, marginTop: 18
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <AlertCircle size={28} color="var(--accent-red)" />
+          <AlertCircle size={24} color="var(--accent-red)" />
           <div>
-            <div style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: 18, color: 'var(--accent-red)' }}>
+            <div style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: 16, color: 'var(--accent-red)' }}>
               Detection Error
             </div>
             <div style={{ color: 'var(--text-secondary)', fontSize: 13, marginTop: 2 }}>
@@ -48,38 +48,38 @@ const ResultCard = ({ result }) => {
   const reasons = Array.isArray(result?.reasons) ? result.reasons : []
 
   const colors = {
-    scam:       { bg: 'rgba(239, 68, 68, 0.08)',  border: 'rgba(239, 68, 68, 0.25)',  color: 'var(--accent-red)',    Icon: ShieldAlert },
-    suspicious: { bg: 'rgba(245, 158, 11, 0.08)', border: 'rgba(245, 158, 11, 0.25)', color: 'var(--accent-yellow)', Icon: AlertTriangle },
-    safe:       { bg: 'rgba(16, 185, 129, 0.08)', border: 'rgba(16, 185, 129, 0.25)', color: 'var(--accent-green)',  Icon: ShieldCheck },
+    scam:       { bg: 'rgba(239, 68, 68, 0.06)',  border: 'rgba(239, 68, 68, 0.2)',  color: 'var(--accent-red)',    Icon: ShieldAlert },
+    suspicious: { bg: 'rgba(245, 158, 11, 0.06)', border: 'rgba(245, 158, 11, 0.2)', color: 'var(--accent-yellow)', Icon: AlertTriangle },
+    safe:       { bg: 'rgba(16, 185, 129, 0.06)', border: 'rgba(16, 185, 129, 0.2)', color: 'var(--accent-green)',  Icon: ShieldCheck },
   }
   const c = colors[scamLevel] || colors.safe
   const VerdictIcon = c.Icon
 
   return (
-    <div className="fade-in glass" style={{
+    <div className="fade-in card" style={{
       background: c.bg, borderColor: c.border,
-      padding: 24, marginTop: 24
+      padding: 22, marginTop: 20
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 18 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
         <div style={{
-          width: 44, height: 44, borderRadius: 10,
+          width: 40, height: 40, borderRadius: 'var(--radius-md)',
           background: 'var(--bg-card)',
           border: `1px solid ${c.border}`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           color: c.color, flexShrink: 0
         }}>
-          <VerdictIcon size={24} strokeWidth={2.2} />
+          <VerdictIcon size={22} strokeWidth={2.2} />
         </div>
         <div>
-          <div style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 800, fontSize: 20, color: c.color, letterSpacing: '0.02em' }}>
+          <div style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 800, fontSize: 18, color: c.color, letterSpacing: '0.02em' }}>
             {scamLevel.toUpperCase()}
           </div>
-          <div style={{ color: 'var(--text-secondary)', fontSize: 13, fontFamily: 'JetBrains Mono' }}>
+          <div style={{ color: 'var(--text-secondary)', fontSize: 12.5, fontFamily: 'JetBrains Mono' }}>
             {confidence}% confidence score
           </div>
         </div>
         <div style={{ flex: 1, marginLeft: 16 }}>
-          <div style={{ height: 6, background: 'var(--bg-secondary)',
+          <div style={{ height: 5, background: 'var(--bg-secondary)',
                         borderRadius: 3, overflow: 'hidden' }}>
             <div style={{
               height: '100%', borderRadius: 3, background: c.color,
@@ -94,19 +94,19 @@ const ResultCard = ({ result }) => {
         </div>
       </div>
 
-      <div style={{ marginBottom: 18 }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)',
+      <div style={{ marginBottom: 16 }}>
+        <div style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-primary)',
                       marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
-          <CheckCircle2 size={14} color={c.color} />
+          <CheckCircle2 size={13} color={c.color} />
           <span>Detection Factors:</span>
         </div>
         {reasons.map((r, i) => (
           <div key={i} style={{
             display: 'flex', alignItems: 'flex-start', gap: 8,
-            padding: '6px 0', fontSize: 13, color: 'var(--text-secondary)',
+            padding: '5px 0', fontSize: 12.5, color: 'var(--text-secondary)',
             borderBottom: '1px solid var(--border-subtle)'
           }}>
-            <ChevronRight size={14} color={c.color} style={{ marginTop: 2, flexShrink: 0 }} />
+            <ChevronRight size={13} color={c.color} style={{ marginTop: 2, flexShrink: 0 }} />
             <span>{r}</span>
           </div>
         ))}
@@ -115,14 +115,14 @@ const ResultCard = ({ result }) => {
       {result.explanation && (
         <div style={{
           background: 'var(--bg-card)', border: '1px solid var(--border)',
-          borderRadius: 8, padding: 14
+          borderRadius: 'var(--radius-md)', padding: 12
         }}>
-          <div style={{ fontSize: 11, color: 'var(--accent-cyan)', fontWeight: 700,
-                        marginBottom: 4, fontFamily: 'JetBrains Mono', display: 'flex', alignItems: 'center', gap: 5 }}>
-            <Info size={12} />
+          <div style={{ fontSize: 11, color: 'var(--accent-primary)', fontWeight: 700,
+                        marginBottom: 3, fontFamily: 'JetBrains Mono', display: 'flex', alignItems: 'center', gap: 5 }}>
+            <Info size={11} />
             <span>EXPLANATION</span>
           </div>
-          <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+          <div style={{ fontSize: 12.5, color: 'var(--text-secondary)', lineHeight: 1.55 }}>
             {result.explanation}
           </div>
         </div>
@@ -356,7 +356,7 @@ export default function Detection() {
         })}
       </div>
 
-      <form className="glass stagger stagger-3" style={{ padding: 26 }} onSubmit={handleFormSubmit}>
+      <form className="card stagger stagger-3" style={{ padding: 24 }} onSubmit={handleFormSubmit}>
         <p style={{ color: 'var(--text-secondary)', fontSize: 13, marginBottom: 18 }}>
           {TABS.find(t => t.id === tab)?.desc}
         </p>

@@ -1,7 +1,7 @@
 export default function Terms() {
   return (
-    <main className="legal-page grid-bg">
-      <article className="legal-content glass">
+    <main className="legal-page">
+      <article className="legal-content card">
         <p className="legal-eyebrow">Scam Shield</p>
         <h1 className="page-title">Terms of Service</h1>
         <p className="page-subtitle">Last updated: October 27, 2026</p>

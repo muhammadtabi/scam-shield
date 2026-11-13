@@ -46,10 +46,10 @@ export default function GmailConnect({
   const displayedError = localError || error
 
   return (
-    <div className="glass stagger stagger-3 gmail-connect-panel">
+    <div className="card stagger stagger-3 gmail-connect-panel">
       <div className="gmail-connect-copy">
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Mail size={16} color="var(--accent-cyan)" />
+          <Mail size={15} color="var(--accent-primary)" />
           <div className="panel-title">Email Monitor</div>
         </div>
         <div className="panel-subtitle">

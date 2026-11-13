@@ -36,7 +36,7 @@ const GmailInboxSkeleton = () => (
     </div>
     <div className="gmail-list">
       {[1, 2, 3].map(item => (
-        <article key={item} className="glass gmail-email-card gmail-skeleton-card">
+        <article key={item} className="card gmail-email-card gmail-skeleton-card">
           <div className="gmail-email-header">
             <div className="gmail-email-main">
               <div className="gmail-skeleton gmail-skeleton-sender" />
@@ -113,21 +113,21 @@ export default function GmailInbox() {
 
   if (loading) return <GmailInboxSkeleton />
   if (error) return (
-    <div className="glass" style={{ padding: 24, color: 'var(--accent-red)', maxWidth: 640 }}>
+    <div className="card" style={{ padding: 20, color: 'var(--accent-red)', maxWidth: 640 }}>
       {error}
     </div>
   )
 
   return (
     <div className="gmail-inbox-page fade-in">
-      <div className="page-header stagger stagger-1" style={{ marginBottom: 20 }}>
+      <div className="page-header stagger stagger-1" style={{ marginBottom: 18 }}>
         <h1 className="page-title">Gmail Inbox</h1>
         <p className="page-subtitle">Inspect, verify, and review scanned messages in your inbox</p>
       </div>
 
       <div className="gmail-list">
         {emails.map(e => (
-          <article key={e.id} className="glass gmail-email-card stagger stagger-2">
+          <article key={e.id} className="card gmail-email-card stagger stagger-2">
             <div className="gmail-email-header">
               <div className="gmail-email-main">
                 <div className="gmail-email-sender">{e.sender || 'Unknown Sender'}</div>
@@ -164,7 +164,7 @@ export default function GmailInbox() {
                 {e.scan?.explanation && (
                   <div className="gmail-email-explanation">
                     <strong style={{ display: 'inline-flex', alignItems: 'center', gap: 5, color: 'var(--text-primary)', marginBottom: 4 }}>
-                      <Info size={13} color="var(--accent-cyan)" />
+                      <Info size={13} color="var(--accent-primary)" />
                       <span>Analysis:</span>
                     </strong>
                     <div>{e.scan.explanation}</div>

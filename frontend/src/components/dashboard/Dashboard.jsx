@@ -16,19 +16,19 @@ import {
 } from 'lucide-react'
 
 const StatCard = ({ icon: Icon, label, value, color, bgLight }) => (
-  <div className="glass stagger" style={{ padding: '20px 22px' }}>
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+  <div className="card stagger" style={{ padding: '18px 20px' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
       <span style={{ fontSize: 13, color: 'var(--text-secondary)', fontWeight: 500 }}>{label}</span>
       <div style={{
-        width: 32, height: 32, borderRadius: 8,
-        background: bgLight || 'rgba(56, 189, 248, 0.1)',
+        width: 32, height: 32, borderRadius: 'var(--radius-md)',
+        background: bgLight || 'rgba(59, 130, 246, 0.1)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         color: color
       }}>
         <Icon size={16} strokeWidth={2.2} />
       </div>
     </div>
-    <div style={{ fontSize: 28, fontWeight: 700, fontFamily: 'Plus Jakarta Sans, sans-serif', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+    <div style={{ fontSize: 26, fontWeight: 700, fontFamily: 'Plus Jakarta Sans, sans-serif', color: 'var(--text-primary)', letterSpacing: '-0.025em' }}>
       {value}
     </div>
   </div>
@@ -68,10 +68,10 @@ const ActivityChart = ({ trend }) => {
   const total7Days = counts.reduce((a, b) => a + b, 0)
 
   const width = 640
-  const height = 150
-  const padX = 40
-  const padTop = 26
-  const padBottom = 28
+  const height = 145
+  const padX = 36
+  const padTop = 24
+  const padBottom = 26
   const plotWidth = width - padX * 2
   const plotHeight = height - padTop - padBottom
   const baselineY = height - padBottom
@@ -87,25 +87,25 @@ const ActivityChart = ({ trend }) => {
   const areaD = `${lineD} L ${points[points.length - 1].x.toFixed(1)} ${baselineY} L ${points[0].x.toFixed(1)} ${baselineY} Z`
 
   return (
-    <div className="glass stagger stagger-3" style={{ padding: '20px 24px', marginBottom: 24 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12, marginBottom: 16 }}>
+    <div className="card stagger stagger-3" style={{ padding: '18px 22px', marginBottom: 20 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12, marginBottom: 14 }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Activity size={16} color="var(--accent-cyan)" />
-            <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: 15, color: 'var(--text-primary)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+            <Activity size={15} color="var(--accent-primary)" />
+            <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: 14.5, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
               7-Day Scan Activity
             </h3>
           </div>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 13, marginTop: 2 }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 12.5, marginTop: 2 }}>
             Daily scan volume across all detection channels
           </p>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6,
-                      background: 'rgba(56, 189, 248, 0.08)',
-                      border: '1px solid rgba(56, 189, 248, 0.2)',
-                      padding: '4px 12px', borderRadius: 20 }}>
-          <Calendar size={13} color="var(--accent-cyan)" />
-          <span style={{ fontSize: 12, color: 'var(--accent-cyan)', fontFamily: 'JetBrains Mono', fontWeight: 600 }}>
+                      background: 'var(--bg-elevated)',
+                      border: '1px solid var(--border)',
+                      padding: '4px 10px', borderRadius: 20 }}>
+          <Calendar size={12} color="var(--text-secondary)" />
+          <span style={{ fontSize: 11.5, color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono', fontWeight: 600 }}>
             {total7Days} scans this week
           </span>
         </div>
@@ -114,12 +114,12 @@ const ActivityChart = ({ trend }) => {
       <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
         <svg
           viewBox={`0 0 ${width} ${height}`}
-          style={{ width: '100%', minWidth: 420, height: 'auto', display: 'block' }}
+          style={{ width: '100%', minWidth: 400, height: 'auto', display: 'block' }}
         >
           <defs>
             <linearGradient id="trendGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--accent-cyan)" stopOpacity="0.28" />
-              <stop offset="100%" stopColor="var(--accent-cyan)" stopOpacity="0.0" />
+              <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="var(--accent-primary)" stopOpacity="0.0" />
             </linearGradient>
           </defs>
 
@@ -130,7 +130,7 @@ const ActivityChart = ({ trend }) => {
             x2={width - padX}
             y2={padTop}
             stroke="var(--border)"
-            strokeDasharray="3 3"
+            strokeDasharray="2 3"
           />
           <line
             x1={padX}
@@ -138,7 +138,7 @@ const ActivityChart = ({ trend }) => {
             x2={width - padX}
             y2={padTop + plotHeight / 2}
             stroke="var(--border)"
-            strokeDasharray="3 3"
+            strokeDasharray="2 3"
           />
           <line
             x1={padX}
@@ -155,8 +155,8 @@ const ActivityChart = ({ trend }) => {
           <path
             d={lineD}
             fill="none"
-            stroke="var(--accent-cyan)"
-            strokeWidth="2.5"
+            stroke="var(--accent-primary)"
+            strokeWidth="2.2"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -178,8 +178,8 @@ const ActivityChart = ({ trend }) => {
                     y1={padTop}
                     x2={p.x}
                     y2={baselineY}
-                    stroke="var(--accent-cyan)"
-                    strokeOpacity="0.4"
+                    stroke="var(--accent-primary)"
+                    strokeOpacity="0.3"
                     strokeWidth="1"
                     strokeDasharray="2 2"
                   />
@@ -189,23 +189,23 @@ const ActivityChart = ({ trend }) => {
                 <circle
                   cx={p.x}
                   cy={p.y}
-                  r={isHovered ? 5.5 : 3.5}
+                  r={isHovered ? 5 : 3}
                   fill="var(--bg-card)"
-                  stroke="var(--accent-cyan)"
+                  stroke="var(--accent-primary)"
                   strokeWidth={isHovered ? 2.5 : 2}
-                  style={{ transition: 'all 0.15s ease' }}
+                  style={{ transition: 'all 0.12s ease' }}
                 />
 
                 {/* Value tooltip above point */}
                 {(isHovered || p.count > 0) && (
                   <text
                     x={p.x}
-                    y={p.y - 8}
+                    y={p.y - 7}
                     textAnchor="middle"
                     fill={isHovered ? 'var(--text-primary)' : 'var(--text-secondary)'}
                     fontSize="10"
                     fontFamily="JetBrains Mono, monospace"
-                    fontWeight="700"
+                    fontWeight="600"
                   >
                     {p.count}
                   </text>
@@ -214,10 +214,10 @@ const ActivityChart = ({ trend }) => {
                 {/* Date label at bottom */}
                 <text
                   x={p.x}
-                  y={height - 8}
+                  y={height - 7}
                   textAnchor="middle"
                   fill={isHovered ? 'var(--text-primary)' : 'var(--text-muted)'}
-                  fontSize="11"
+                  fontSize="10.5"
                   fontFamily="Inter, sans-serif"
                   fontWeight={isHovered ? '600' : '400'}
                 >
@@ -353,7 +353,7 @@ export default function Dashboard({ setPage }) {
 
   if (loading) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  height: 380, gap: 12, color: 'var(--text-secondary)' }}>
+                  height: 340, gap: 10, color: 'var(--text-secondary)', fontSize: 13 }}>
       <span className="loader"></span> Loading dashboard metrics...
     </div>
   )
@@ -369,45 +369,45 @@ export default function Dashboard({ setPage }) {
         </p>
       </div>
 
-      <div className="glass stagger stagger-2" style={{
-        padding: '22px 24px', marginBottom: 24,
-        display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap'
+      <div className="card stagger stagger-2" style={{
+        padding: '20px 22px', marginBottom: 20,
+        display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap'
       }}>
         <div style={{
-          width: 72, height: 72, borderRadius: '50%',
+          width: 64, height: 64, borderRadius: '50%',
           background: `conic-gradient(${score >= 80 ? 'var(--accent-green)' : score >= 50 ? 'var(--accent-yellow)' : 'var(--accent-red)'} ${score * 3.6}deg, var(--border) 0deg)`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           flexShrink: 0
         }}>
           <div style={{
-            width: 58, height: 58, borderRadius: '50%',
+            width: 52, height: 52, borderRadius: '50%',
             background: 'var(--bg-card)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: 'JetBrains Mono', fontWeight: 700, fontSize: 16,
+            fontFamily: 'JetBrains Mono', fontWeight: 700, fontSize: 15,
             color: score >= 80 ? 'var(--accent-green)' : score >= 50 ? 'var(--accent-yellow)' : 'var(--accent-red)'
           }}>{score}%</div>
         </div>
 
-        <div style={{ flex: 1, minWidth: 240 }}>
-          <div style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: 18,
-                        color: 'var(--text-primary)', marginBottom: 4 }}>
+        <div style={{ flex: 1, minWidth: 220 }}>
+          <div style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: 16.5,
+                        color: 'var(--text-primary)', marginBottom: 3, letterSpacing: '-0.015em' }}>
             Security Health Score
           </div>
           <div style={{ color: 'var(--text-secondary)', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
             {score >= 80 ? (
               <>
-                <ShieldCheck size={16} color="var(--accent-green)" />
+                <ShieldCheck size={15} color="var(--accent-green)" />
                 <span>Low threat activity — recent scans clean</span>
               </>
             ) : score >= 50 ? (
               <>
-                <AlertTriangle size={16} color="var(--accent-yellow)" />
+                <AlertTriangle size={15} color="var(--accent-yellow)" />
                 <span>Threats detected — review alerts</span>
               </>
             ) : (
               <>
-                <ShieldAlert size={16} color="var(--accent-red)" />
-                <span>Multiple threats detected — action recommended</span>
+                <ShieldAlert size={15} color="var(--accent-red)" />
+                <span>Multiple threats detected — review recommended</span>
               </>
             )}
           </div>
@@ -416,7 +416,7 @@ export default function Dashboard({ setPage }) {
         <button className="btn-primary"
           onClick={() => setPage('detect')}
           type="button">
-          <ScanSearch size={16} />
+          <ScanSearch size={15} />
           <span>New Scan</span>
         </button>
       </div>
@@ -437,8 +437,8 @@ export default function Dashboard({ setPage }) {
           icon={ScanSearch}
           label="Total Scans"
           value={stats?.total || 0}
-          color="var(--accent-cyan)"
-          bgLight="rgba(56, 189, 248, 0.12)"
+          color="var(--accent-primary)"
+          bgLight="rgba(59, 130, 246, 0.12)"
         />
         <StatCard
           icon={ShieldAlert}
@@ -467,29 +467,29 @@ export default function Dashboard({ setPage }) {
       <ActivityChart trend={stats?.trend} />
 
       <div className="split-grid">
-        <div className="glass stagger stagger-3" style={{ padding: 22 }}>
-          <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: 15,
-                       marginBottom: 18, color: 'var(--text-primary)' }}>
+        <div className="card stagger stagger-3" style={{ padding: '18px 20px' }}>
+          <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: 14.5,
+                       marginBottom: 16, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
             Scans by Type
           </h3>
           {[
-            { label: 'Email', icon: Mail, count: stats?.by_type?.email || 0, color: 'var(--accent-cyan)' },
+            { label: 'Email', icon: Mail, count: stats?.by_type?.email || 0, color: 'var(--accent-primary)' },
             { label: 'SMS', icon: MessageSquare, count: stats?.by_type?.sms || 0, color: '#a855f7' },
             { label: 'URLs', icon: Link2, count: stats?.by_type?.url || 0, color: 'var(--accent-green)' },
           ].map(t => {
             const IconComp = t.icon
             return (
-              <div key={t.label} style={{ marginBottom: 14 }}>
+              <div key={t.label} style={{ marginBottom: 12 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between',
-                              marginBottom: 6, fontSize: 13 }}>
+                              marginBottom: 5, fontSize: 12.5 }}>
                   <span style={{ color: 'var(--text-secondary)', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                    <IconComp size={14} color={t.color} />
+                    <IconComp size={13} color={t.color} />
                     {t.label}
                   </span>
                   <span style={{ color: 'var(--text-primary)', fontFamily: 'JetBrains Mono',
                                  fontWeight: 600 }}>{t.count}</span>
                 </div>
-                <div style={{ height: 6, background: 'var(--bg-secondary)',
+                <div style={{ height: 5, background: 'var(--bg-secondary)',
                               borderRadius: 3, overflow: 'hidden' }}>
                   <div style={{
                     height: '100%', borderRadius: 3, background: t.color,
@@ -502,51 +502,51 @@ export default function Dashboard({ setPage }) {
           })}
         </div>
 
-        <div className="glass stagger stagger-4" style={{ padding: 22 }}>
+        <div className="card stagger stagger-4" style={{ padding: '18px 20px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between',
-                        alignItems: 'center', marginBottom: 16 }}>
-            <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: 15,
-                         color: 'var(--text-primary)' }}>Recent Detections</h3>
+                        alignItems: 'center', marginBottom: 14 }}>
+            <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: 14.5,
+                         color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>Recent Detections</h3>
             <button onClick={() => setPage('alerts')}
-              style={{ background: 'none', border: 'none', color: 'var(--accent-cyan)',
-                       cursor: 'pointer', fontSize: 13, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              style={{ background: 'none', border: 'none', color: 'var(--accent-primary)',
+                       cursor: 'pointer', fontSize: 12.5, fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
               <span>View all</span>
-              <ArrowRight size={13} />
+              <ArrowRight size={12} />
             </button>
           </div>
           {!stats?.recent?.length ? (
-            <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '36px 16px',
-                          fontSize: 13 }}>
+            <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '32px 16px',
+                          fontSize: 12.5 }}>
               No detections recorded yet.<br/>
               <button onClick={() => setPage('detect')}
-                style={{ background: 'none', border: 'none', color: 'var(--accent-cyan)',
+                style={{ background: 'none', border: 'none', color: 'var(--accent-primary)',
                          cursor: 'pointer', marginTop: 8, fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                 <span>Run first scan</span>
-                <ArrowRight size={13} />
+                <ArrowRight size={12} />
               </button>
             </div>
           ) : stats.recent.map(d => (
             <div key={d.id} style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-              padding: '10px 0', borderBottom: '1px solid var(--border-subtle)'
+              padding: '9px 0', borderBottom: '1px solid var(--border-subtle)'
             }}>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8,
-                              marginBottom: 3 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6,
+                              marginBottom: 2 }}>
                   <span style={{ fontSize: 11, color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono',
                                  textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                    {d.detection_type === 'email' ? <Mail size={12} /> : d.detection_type === 'sms' ? <MessageSquare size={12} /> : <Link2 size={12} />}
+                    {d.detection_type === 'email' ? <Mail size={11} /> : d.detection_type === 'sms' ? <MessageSquare size={11} /> : <Link2 size={11} />}
                     {d.detection_type}
                   </span>
                   {d.source === 'gmail' && (
-                    <span style={{ fontSize: 10, color: 'var(--accent-cyan)', fontFamily: 'JetBrains Mono', textTransform: 'uppercase',
-                                   background: 'rgba(56, 189, 248, 0.1)', padding: '1px 6px', borderRadius: 4 }}>
+                    <span style={{ fontSize: 9.5, color: 'var(--accent-primary)', fontFamily: 'JetBrains Mono', textTransform: 'uppercase',
+                                   background: 'rgba(59, 130, 246, 0.1)', padding: '1px 5px', borderRadius: 4 }}>
                       Gmail
                     </span>
                   )}
                 </div>
                 {d.input_data?.subject && (
-                  <div style={{ fontSize: 13, color: 'var(--text-primary)', marginBottom: 2 }}>
+                  <div style={{ fontSize: 12.5, color: 'var(--text-primary)', marginBottom: 2 }}>
                     {d.input_data.subject}
                   </div>
                 )}

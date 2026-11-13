@@ -70,18 +70,18 @@ export default function Sidebar({ page, setPage, theme, onToggleTheme }) {
         </button>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10,
-                      padding: '8px 10px', marginBottom: 8 }}>
+                      padding: '8px 8px', marginBottom: 6 }}>
           <div style={{
-            width: 32, height: 32, borderRadius: 8,
+            width: 30, height: 30, borderRadius: 'var(--radius-md)',
             background: 'var(--bg-elevated)',
             border: '1px solid var(--border)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 13, fontWeight: 700, color: 'var(--text-primary)'
+            fontSize: 12.5, fontWeight: 700, color: 'var(--text-primary)'
           }}>
             {user?.full_name?.[0]?.toUpperCase() || 'U'}
           </div>
           <div style={{ minWidth: 0, flex: 1 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)',
+            <div style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-primary)',
                           whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {user?.full_name || 'User'}
             </div>
