@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scam Shield</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <span class="brand-name">Scam Shield</span>
+          <span class="brand-sub">BROWSER DEFENSE</span>
+        </div>
+      </div>
+      <div class="server-status" id="serverStatus" title="Connecting to backend...">
+        <span class="status-dot"></span>
+        <span class="status-label">API</span>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tabCurrent">Current Page</button>
+      <button class="tab-btn" id="tabQuick">Quick Scanner</button>
+      <button class="tab-btn" id="tabSettings">Settings</button>
+    </div>
+
+    <!-- View: Current Tab -->
+    <main class="view-panel" id="viewCurrent">
+      <div class="card current-card">
+        <div class="card-meta">
+          <span class="meta-label">ACTIVE URL</span>
+          <span class="url-badge" id="currentDomain">Detecting...</span>
+        </div>
+        
+        <div class="verdict-banner safe" id="currentVerdictBanner">
+          <div class="verdict-main">
+            <span class="verdict-badge" id="currentVerdict">ANALYZING</span>
+            <span class="confidence-val" id="currentConfidence">--%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="currentProgressBar" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="reasons-list" id="currentReasons">
+          <div class="reason-item">Inspecting page security factors...</div>
+        </div>
+
+        <div class="explanation-box" id="currentExplanationBox" style="display: none;">
+          <div class="explanation-title">EXPLANATION</div>
+          <p class="explanation-text" id="currentExplanation"></p>
+        </div>
+      </div>
+
+      <button class="btn btn-secondary rescan-btn" id="btnRescan">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/>
+        </svg>
+        <span>Re-scan Current Page</span>
+      </button>
+    </main>
+
+    <!-- View: Quick Scanner -->
+    <main class="view-panel hidden" id="viewQuick">
+      <div class="card">
+        <label class="form-label" for="manualUrlInput">Analyze Any URL</label>
+        <div class="input-group">
+          <input type="text" id="manualUrlInput" class="input-field" placeholder="https://example.com/login" />
+          <button class="btn btn-primary" id="btnManualScan">Scan</button>
+        </div>
+
+        <div class="manual-results hidden" id="manualResults">
+          <div class="verdict-banner safe" id="manualVerdictBanner">
+            <div class="verdict-main">
+              <span class="verdict-badge" id="manualVerdict">SAFE</span>
+              <span class="confidence-val" id="manualConfidence">--%</span>
+            </div>
+          </div>
+          <div class="reasons-list" id="manualReasons"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- View: Settings -->
+    <main class="view-panel hidden" id="viewSettings">
+      <div class="card">
+        <div class="setting-item">
+          <label class="form-label" for="apiEndpointInput">Scam Shield Backend URL</label>
+          <input type="text" id="apiEndpointInput" class="input-field" value="http://localhost:8000" />
+          <span class="helper-text">Address where Scam Shield FastAPI is running.</span>
+        </div>
+
+        <div class="setting-item" style="margin-top: 12px;">
+          <label class="form-label" for="authTokenInput">Account JWT Token (Optional)</label>
+          <input type="password" id="authTokenInput" class="input-field" placeholder="Paste Bearer token from web app" />
+          <span class="helper-text">Logs scans directly to your dashboard history.</span>
+        </div>
+
+        <button class="btn btn-primary" id="btnSaveSettings" style="width: 100%; margin-top: 14px;">
+          Save Settings
+        </button>
+        <span class="save-toast hidden" id="saveToast">Saved successfully!</span>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <a href="http://localhost:5173" target="_blank" rel="noreferrer" class="dashboard-link">
+        Open Scam Shield Dashboard &rarr;
+      </a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+

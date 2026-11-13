@@ -1,0 +1,131 @@
+/* Scam Shield In-Page Warning Banner Styles */
+
+#scam-shield-warning-overlay {
+  all: initial;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+#scam-shield-warning-overlay * {
+  box-sizing: border-box;
+}
+
+.scam-shield-banner {
+  background: #09090b;
+  color: #fafafa;
+  border-bottom: 2px solid #ef4444;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  animation: scamShieldSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scamShieldSlideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.scam-shield-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 280px;
+}
+
+.scam-shield-icon-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.scam-shield-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.scam-shield-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.01em;
+}
+
+.scam-shield-confidence-tag {
+  font-size: 11px;
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+.scam-shield-subtitle {
+  font-size: 12.5px;
+  color: #a1a1aa;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.scam-shield-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scam-shield-btn-leave {
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.scam-shield-btn-leave:hover {
+  opacity: 0.9;
+}
+
+.scam-shield-btn-dismiss {
+  background: #1e1e24;
+  color: #a1a1aa;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.scam-shield-btn-dismiss:hover {
+  color: #fafafa;
+  background: #27272a;
+}
+
