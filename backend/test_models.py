@@ -4,6 +4,8 @@ import joblib
 import numpy as np
 import re
 
+from app.ml import predictor
+
 MODELS_DIR = Path(__file__).resolve().parent / "app" / "ml" / "saved_models"
 
 print("=" * 60)
@@ -14,29 +16,30 @@ print("=" * 60)
 email_model   = joblib.load(MODELS_DIR / "email_model.pkl")
 sms_model     = joblib.load(MODELS_DIR / "sms_model.pkl")
 url_model     = joblib.load(MODELS_DIR / "url_model.pkl")
+predictor.load_models()
 print("✅ All models loaded\n")
 
 # ── Email Tests ────────────────────────────────────────────
 print("📧 EMAIL MODEL TEST")
 print("-" * 40)
 email_tests = [
-    ("SCAM",  "Congratulations! You won $1000. Click here to claim your prize now!"),
-    ("SCAM",  "URGENT: Your bank account suspended. Verify immediately at paypal-secure.xyz"),
-    ("SCAM",  "FREE iPhone! You have been selected. Limited time offer. Act now!"),
-    ("SCAM",  "Dear winner, You have won £500,000. Send your details to claim."),
-    ("LEGIT", "Hi team, please find the project report attached for tomorrow meeting."),
-    ("LEGIT", "Your order #4521 has been delivered. Thank you for shopping with us."),
-    ("LEGIT", "Meeting rescheduled to 3pm. Please confirm your attendance."),
-    ("LEGIT", "Dear Muhammad, your invoice is ready. Login to view details."),
+    ("SCAM",  "Congratulations! You won $1000. Click here to claim your prize now!", "offers@unknown.xyz"),
+    ("SCAM",  "URGENT: Your bank account suspended. Verify immediately at paypal-secure.xyz", "security@paypal-secure.xyz"),
+    ("SCAM",  "FREE iPhone! You have been selected. Limited time offer. Act now!", "winner@unknown.tk"),
+    ("SCAM",  "Dear winner, You have won £500,000. Send your details to claim.", "claims@unknown.xyz"),
+    ("LEGIT", "Hi team, please find the project report attached for tomorrow meeting.", "team@company.com"),
+    ("LEGIT", "Your order #4521 has been delivered. Thank you for shopping with us.", "shipments@amazon.com"),
+    ("LEGIT", "A bank transfer of $250.00 was completed successfully. Your account activity is available in your statement.", "Chase Alerts <no-reply@chase.com>"),
+    ("LEGIT", "Meeting rescheduled to 3pm. Please confirm your attendance.", "team@company.com"),
 ]
 
 email_correct = 0
-for expected, text in email_tests:
-    prob = email_model.predict_proba([text])[0]
-    predicted = "SCAM" if prob[1] > 0.92 else "LEGIT"
+for expected, text, sender in email_tests:
+    result = predictor.detect_email("", sender, text)
+    predicted = "SCAM" if result["scam_level"] != "safe" else "LEGIT"
     correct = "✅" if predicted == expected else "❌"
     email_correct += 1 if predicted == expected else 0
-    print(f"  {correct} Expected: {expected:5} | Got: {predicted:5} ({prob[1]*100:.1f}%) | {text[:45]}...")
+    print(f"  {correct} Expected: {expected:5} | Got: {predicted:5} ({result['confidence']:.1f}%) | {text[:45]}...")
 
 print(f"\n  📊 Email Accuracy: {email_correct}/{len(email_tests)} = {email_correct/len(email_tests)*100:.0f}%\n")
 
@@ -108,12 +111,11 @@ url_tests = [
 
 url_correct = 0
 for expected, url in url_tests:
-    features = np.array([extract_url_features(url)])
-    prob = url_model.predict_proba(features)[0]
-    predicted = "MALICIOUS" if prob[1] > 0.5 else "SAFE"
+    result = predictor.detect_url(url)
+    predicted = "MALICIOUS" if result["scam_level"] != "safe" else "SAFE"
     correct = "✅" if predicted == expected else "❌"
     url_correct += 1 if predicted == expected else 0
-    print(f"  {correct} Expected: {expected:10} | Got: {predicted:10} ({prob[1]*100:.1f}%) | {url[:40]}...")
+    print(f"  {correct} Expected: {expected:10} | Got: {predicted:10} ({result['confidence']:.1f}%) | {url[:40]}...")
 
 print(f"\n  📊 URL Accuracy: {url_correct}/{len(url_tests)} = {url_correct/len(url_tests)*100:.0f}%\n")
 

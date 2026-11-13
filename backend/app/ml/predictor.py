@@ -2,21 +2,26 @@ import joblib
 import numpy as np
 import re
 import os
-from typing import Tuple, List
-from lime.lime_text import LimeTextExplainer
+from typing import Any, Dict, List, Optional
+
+from app.ml.email_features import explain_linear_text_pipeline, extract_email_signals
+from app.ml.sms_features import extract_sms_signals
+from app.ml.url_features import extract_url_features, parse_canonical_url, predict_url_bundle
 
 # ── Paths ──────────────────────────────────────────────────
 BASE = os.path.dirname(__file__)
 MODELS_DIR = os.path.join(BASE, "saved_models")
 
 # ── Load Models ────────────────────────────────────────────
-email_model   = None
-sms_model     = None
-url_model     = None
-anomaly_model = None
+email_model      = None
+email_meta_model = None
+sms_model        = None
+sms_meta_model   = None
+url_model        = None
+anomaly_model    = None
 
 def load_models():
-    global email_model, sms_model, url_model, anomaly_model
+    global email_model, email_meta_model, sms_model, sms_meta_model, url_model, anomaly_model
     try:
         email_model   = joblib.load(os.path.join(MODELS_DIR, "email_model.pkl"))
         print("Email model loaded")
@@ -24,10 +29,20 @@ def load_models():
         print(f"Email model not found: {e}")
 
     try:
+        email_meta_model = joblib.load(os.path.join(MODELS_DIR, "email_meta_model.pkl"))
+    except Exception:
+        email_meta_model = None
+
+    try:
         sms_model     = joblib.load(os.path.join(MODELS_DIR, "sms_model.pkl"))
         print("SMS model loaded")
     except Exception as e:
         print(f"SMS model not found: {e}")
+
+    try:
+        sms_meta_model = joblib.load(os.path.join(MODELS_DIR, "sms_meta_model.pkl"))
+    except Exception:
+        sms_meta_model = None
 
     try:
         url_model     = joblib.load(os.path.join(MODELS_DIR, "url_model.pkl"))
@@ -41,35 +56,6 @@ def load_models():
     except Exception as e:
         print(f"Anomaly model not found: {e}")
 
-# ── URL Feature Extractor ──────────────────────────────────
-def extract_url_features(url: str) -> list:
-    url = str(url).lower().strip()
-    try:
-        domain = url.split("/")[2] if len(url.split("/")) > 2 else url
-    except:
-        domain = url
-
-    return [
-        len(url), len(domain),
-        url.count("."), url.count("-"), url.count("/"),
-        url.count("@"), url.count("?"), url.count("="),
-        url.count("_"), url.count("%"), url.count("~"), url.count("#"),
-        sum(c.isdigit() for c in url),
-        sum(c.isupper() for c in url),
-        sum(c.isalpha() for c in url),
-        int("https" in url),
-        int(bool(re.search(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', url))),
-        int(any(t in domain for t in [".tk",".ml",".xyz",".win",".click",".gq",".cf",".ga"])),
-        int("login" in url), int("verify" in url),
-        int("secure" in url), int("account" in url),
-        int("update" in url), int("free" in url),
-        int("paypal" in url), int("bank" in url),
-        int("signin" in url), int("confirm" in url),
-        int("password" in url), int("admin" in url),
-        len(domain.replace("www.", "")),
-        domain.count("-"), domain.count("."),
-    ]
-
 # ── Scam Level Helper ──────────────────────────────────────
 def get_scam_level(confidence: float) -> str:
     if confidence >= 0.70:
@@ -79,10 +65,24 @@ def get_scam_level(confidence: float) -> str:
     return "safe"
 
 # ── Email Detection ────────────────────────────────────────
-def detect_email(subject: str, sender: str, body: str) -> dict:
-    reasons = []
+TRUSTED_EMAIL_DOMAINS = {
+    "amazon.com", "microsoft.com", "apple.com", "google.com", "github.com",
+    "netflix.com", "paypal.com", "stripe.com", "square.com", "linkedin.com",
+    "facebook.com", "twitter.com", "instagram.com", "youtube.com", "reddit.com",
+    "wikipedia.org", "stackoverflow.com", "bankofamerica.com", "chase.com",
+    "wellsfargo.com", "citibank.com", "hsbc.com", "barclays.com", "lloyds.com",
+    "nab.com.au", "anz.com.au", "americanexpress.com", "visa.com", "mastercard.com",
+    "nayapay.com", "emergent.sh", "skool.com",
+}
 
-    # Check if empty
+
+def detect_email(
+    subject: str,
+    sender: str,
+    body: str,
+    metadata: Optional[Dict[str, Any]] = None,
+) -> dict:
+    """Analyze email context via debiased ML, sender impersonation, and URL risk checks."""
     if not subject.strip() and not body.strip():
         return {
             "detection_type": "email",
@@ -96,92 +96,137 @@ def detect_email(subject: str, sender: str, body: str) -> dict:
     if email_model is None:
         return {"error": "Email model not loaded"}
 
-    text = f"{subject} {sender} {body}"
-    text_lower = text.lower()
-    sender_lower = sender.lower()
-    prob = email_model.predict_proba([text])[0]
-    confidence = float(prob[1])
+    sig = extract_email_signals(
+        subject, sender, body, url_risk_fn=detect_url, metadata=metadata
+    )
+    p_text = float(email_model.predict_proba([sig.cleaned_model_text])[0][1])
 
-    # Trust known legitimate senders — reduce false alarms from real companies
-    trusted_email_domains = {
-        "amazon.com", "microsoft.com", "apple.com", "google.com", "github.com",
-        "netflix.com", "paypal.com", "stripe.com", "square.com", "linkedin.com",
-        "facebook.com", "twitter.com", "instagram.com", "youtube.com", "reddit.com",
-        "wikipedia.org", "stackoverflow.com", "github.com",
-        # Banks and financial
-        "bankofamerica.com", "chase.com", "wellsfargo.com", "citibank.com",
-        "hsbc.com", "barclays.com", "lloyds.com", "nab.com.au", "anz.com.au",
-    }
-    is_trusted_sender = any(
-        sender_lower.endswith(f"@{domain}") or sender_lower.endswith(f".{domain}")
-        for domain in trusted_email_domains
+    if isinstance(email_meta_model, dict) and email_meta_model.get("meta_clf") is not None:
+        X_meta = np.array([sig.to_meta_vector(p_text)], dtype=float)
+        p_meta = float(email_meta_model["meta_clf"].predict_proba(X_meta)[0][1])
+        # When sender/links are absent (raw body paste), keep high-confidence text signal intact.
+        p_fused = max(p_meta, p_text * 0.90) if (not sig.sender_domain and not sig.extracted_urls and p_text >= 0.70) else p_meta
+    else:
+        p_fused = p_text
+
+    # Corroborate verifiable phishing, spoofing, BEC, and malicious-link cues.
+    if sig.flagged_urls:
+        p_fused = max(p_fused, min(0.99, sig.max_url_risk * 0.96))
+    if sig.has_anchor_href_mismatch:
+        p_fused = max(p_fused, 0.88)
+    if sig.sender_brand_domain_spoof:
+        p_fused = max(p_fused, 0.86)
+    if sig.display_name_spoof and (
+        sig.has_credential_harvest
+        or sig.has_urgency_threat
+        or sig.flagged_urls
+        or sig.has_remote_support_scam
+        or sig.sender_digit_run
+        or sig.sender_is_freemail
+        or sig.sender_suspicious_tld
+    ):
+        p_fused = max(p_fused, 0.85)
+    if sig.has_credential_harvest and (
+        sig.sender_suspicious_tld
+        or sig.sender_is_freemail
+        or sig.flagged_urls
+        or sig.has_urgency_threat
+        or (sig.extracted_urls and not sig.links_match_sender_domain)
+    ):
+        p_fused = max(p_fused, 0.84)
+    if sig.has_bec_giftcard or sig.has_remote_support_scam:
+        p_fused = max(p_fused, 0.84)
+    if sig.has_advance_fee_lure and not sig.links_match_sender_domain:
+        p_fused = max(p_fused, 0.84)
+    if sig.auth_failed:
+        if sig.has_credential_harvest or sig.has_urgency_threat or sig.flagged_urls or sig.reply_to_mismatch:
+            p_fused = max(p_fused, 0.84)
+        else:
+            p_fused = max(p_fused, 0.55)
+
+    has_any_threat_signal = bool(
+        sig.flagged_urls
+        or sig.has_anchor_href_mismatch
+        or sig.sender_brand_domain_spoof
+        or sig.display_name_spoof
+        or sig.sender_suspicious_tld
+        or sig.has_credential_harvest
+        or sig.has_bec_giftcard
+        or sig.has_remote_support_scam
+        or sig.has_advance_fee_lure
+        or sig.auth_failed
+        or sig.reply_to_mismatch
     )
 
-    # Define keyword lists once for consistent use
-    aggressive_scam_keywords = ["congratulations", "you won", "claim your", "act now", 
-                                "limited time", "click here", "urgent action",
-                                "verify account", "confirm identity", "update payment",
-                                "suspended", "compromised", "immediately"]
-    found_aggressive = [kw for kw in aggressive_scam_keywords if kw in text_lower]
-    
-    generic_keywords = ["verify", "click", "confirm", "password", "account", "update"]
-    found_generic = [kw for kw in generic_keywords if kw in text_lower]
+    # Reduce false positives on genuine transactional alerts, OTPs, and opt-in marketing
+    # only when zero verifiable phishing or spoofing cues exist.
+    if not has_any_threat_signal:
+        if sig.links_match_sender_domain or sig.auth_passed or sig.has_otp_disclaimer:
+            p_fused = min(p_fused, 0.22)
+        elif (sig.has_legit_transactional or sig.has_unsubscribe_marketing) and not sig.has_urgency_threat:
+            p_fused = min(p_fused, 0.25)
+        elif sig.sender_registrable_domain in TRUSTED_EMAIL_DOMAINS:
+            p_fused = min(p_fused, 0.22)
+        elif p_text < 0.78:
+            p_fused = min(p_fused, 0.42)
 
-    # For trusted senders, trust them completely — only flag if AGGRESSIVE scam keywords
-    if is_trusted_sender:
-        scam_level = "safe"
-        # Only override to suspicious if aggressive scam keywords are present AND high model confidence
-        if found_aggressive and confidence >= 0.80:
-            scam_level = "suspicious"
+    p_fused = max(0.0, min(0.99, p_fused))
+
+    if p_fused >= 0.72:
+        scam_level = "scam"
+    elif p_fused >= 0.45:
+        scam_level = "suspicious"
     else:
-        # Use higher thresholds to reduce false positives on unknown senders
-        # The model is already well-calibrated (98.96% accuracy in training)
-        if confidence >= 0.95:
-            scam_level = "scam"
-        elif confidence >= 0.85:
-            scam_level = "suspicious"
-        else:
-            scam_level = "safe"
+        scam_level = "safe"
 
-    # Rule-based reasons — only count aggressive scam patterns, not general business words
+    reasons: List[str] = []
+    if sig.flagged_urls:
+        reasons.append(f"Contains suspicious/malicious link ({', '.join(sig.flagged_urls[:2])})")
+    if sig.has_anchor_href_mismatch:
+        reasons.append("HTML link text displays a different domain than the actual destination URL")
+    if sig.sender_brand_domain_spoof:
+        reasons.append(f"Sender domain ({sig.sender_domain}) mimics or spoofs a trusted brand")
+    if sig.display_name_spoof:
+        reasons.append("Sender display name impersonates an organization from an unverified domain")
+    if sig.sender_suspicious_tld and scam_level != "safe":
+        reasons.append(f"Sender uses a high-abuse domain extension ({sig.sender_domain})")
+    if sig.has_credential_harvest:
+        reasons.append("Requests sensitive password, PIN, OTP, or financial card details")
+    if sig.has_bec_giftcard:
+        reasons.append("Matches executive impersonation / gift-card fraud patterns")
+    if sig.has_remote_support_scam:
+        reasons.append("Matches fake refund / remote-support desk scam patterns")
+    if sig.has_advance_fee_lure and not sig.links_match_sender_domain:
+        reasons.append("Contains lottery, inheritance, or advance-fee giveaway wording")
+    if sig.auth_failed:
+        reasons.append("Email authentication check (SPF/DKIM/DMARC) failed")
+    if sig.reply_to_mismatch:
+        reasons.append("Reply-To points to a freemail address different from the sender domain")
 
-    if found_aggressive and not is_trusted_sender:
-        reasons.append(f"Aggressive scam keywords detected: {', '.join(found_aggressive)}")
-    elif found_generic and confidence >= 0.70 and not is_trusted_sender:
-        reasons.append(f"Generic action keywords detected: {', '.join(found_generic)}")
+    if scam_level == "safe":
+        if sig.links_match_sender_domain:
+            reasons.append(f"Embedded URLs verified on sender domain ({sig.sender_registrable_domain})")
+        if sig.has_legit_transactional:
+            reasons.append("Legitimate transactional/account notification context with no spoofing cues")
+        elif sig.has_unsubscribe_marketing:
+            reasons.append("Standard opt-in newsletter or promotional email with no phishing cues")
+        if not reasons:
+            reasons.append("Calibrated email content and sender checks appear legitimate")
+    elif not reasons:
+        reasons.append("Calibrated email classifier flagged elevated phishing/spam probability")
 
-    if re.search(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+])+', body):
-        reasons.append("Contains embedded URLs — verify authenticity before clicking")
-
-    # Suspicious sender domains only matter if model already suspects it AND not a trusted sender
-    suspicious_sender_domains = [".xyz", ".tk", ".ml", ".gq", ".cf", ".win", ".click"]
-    if not is_trusted_sender:
-        if any(x in sender_lower for x in suspicious_sender_domains) and confidence >= 0.60:
-            reasons.append("Sender uses highly suspicious domain extension")
-        elif re.search(r'\d{5,}@', sender) and confidence >= 0.60:
-            reasons.append("Sender email contains suspicious number sequence")
-
-    # LIME explanation
-    explanation = None
-    try:
-        explainer = LimeTextExplainer(class_names=["Legit", "Scam"])
-        exp = explainer.explain_instance(
-            text, email_model.predict_proba, num_features=5
-        )
-        top_words = [f"'{w}' ({'+' if s > 0 else ''}{s:.3f})"
-                     for w, s in exp.as_list()]
-        explanation = "Key factors: " + ", ".join(top_words)
-    except:
-        explanation = "Explanation unavailable"
-
-    if not reasons:
-        reasons.append("AI model flagged content as suspicious" if scam_level != "safe"
-                       else "No suspicious patterns detected — email appears legitimate")
+    confidence = round(p_fused * 100.0, 2)
+    linear_factors = explain_linear_text_pipeline(email_model, sig.cleaned_model_text, top_k=5)
+    summary_prefix = (
+        f"Calibrated email risk: {confidence:.1f}% "
+        f"(text model: {p_text*100:.1f}%, URL risk: {sig.max_url_risk*100:.1f}%)."
+    )
+    explanation = f"{summary_prefix} {linear_factors}" if linear_factors else summary_prefix
 
     return {
         "detection_type": "email",
         "scam_level": scam_level,
-        "confidence": round(confidence * 100, 2),
+        "confidence": confidence,
         "reasons": reasons,
         "explanation": explanation,
         "input_data": {"subject": subject, "sender": sender, "body": body[:200]}
@@ -189,41 +234,127 @@ def detect_email(subject: str, sender: str, body: str) -> dict:
 
 # ── SMS Detection ──────────────────────────────────────────
 def detect_sms(sender_id: str, message: str) -> dict:
-    reasons = []
-
+    """Analyze an SMS using sender context, embedded URL checks, and calibrated ML fusion."""
     if sms_model is None:
         return {"error": "SMS model not loaded"}
 
-    prob = sms_model.predict_proba([message])[0]
-    confidence = float(prob[1])
-    scam_level = get_scam_level(confidence)
+    sig = extract_sms_signals(sender_id, message, url_risk_fn=detect_url)
+    p_text = float(sms_model.predict_proba([sig.model_input_text])[0][1])
 
-    spam_keywords = ["free", "winner", "prize", "urgent", "claim",
-                     "won", "cash", "call now", "limited", "offer",
-                     "txt", "mobile", "stop", "reply"]
-    found = [kw for kw in spam_keywords if kw in message.lower()]
-    if found:
-        reasons.append(f"Spam keywords found: {', '.join(found)}")
+    if isinstance(sms_meta_model, dict) and sms_meta_model.get("meta_clf") is not None:
+        X_meta = np.array([sig.to_meta_vector(p_text)], dtype=float)
+        p_meta = float(sms_meta_model["meta_clf"].predict_proba(X_meta)[0][1])
+        # Never let neutral metadata suppress strong calibrated text probabilities
+        # unless an explicit verified benign context guard applies below.
+        p_fused = max(p_meta, p_text * 0.90) if p_text >= 0.65 else p_meta
+    else:
+        p_fused = p_text
 
-    if re.search(r'\b\d{5,}\b', message):
-        reasons.append("Contains suspicious number sequence")
+    # Corroborate verifiable smishing/social-engineering cues and dampen verified benign patterns.
+    if sig.flagged_urls:
+        p_fused = max(p_fused, min(0.99, sig.max_url_risk * 0.96))
+    if sig.asks_for_secret and not sig.has_otp_disclaimer:
+        p_fused = max(p_fused, 0.80)
+    if sig.has_job_loan_bait:
+        p_fused = max(p_fused, 0.78)
+    if sig.has_payment_fee_ask and (sig.flagged_urls or sig.sender_is_mobile or sig.has_urgency_suspension):
+        p_fused = max(p_fused, 0.78)
+    if sig.has_prize_claim and (sig.flagged_urls or sig.sender_is_mobile or sig.sender_is_premium_num or sig.has_payment_fee_ask):
+        p_fused = max(p_fused, 0.78)
+    if sig.sender_is_mobile and sig.has_urgency_suspension and (sig.flagged_urls or sig.asks_for_secret or sig.has_payment_fee_ask):
+        p_fused = max(p_fused, 0.82)
 
-    if re.search(r'http[s]?://', message):
-        reasons.append("Contains URL in SMS — potential phishing link")
+    is_registered_sender = sig.sender_is_alpha or sig.sender_is_shortcode
+    if sig.has_otp_disclaimer and not sig.asks_for_secret and not sig.flagged_urls and not sig.has_payment_fee_ask:
+        p_fused = min(p_fused, 0.18)
+    elif (
+        sig.has_legit_transactional
+        and not sig.flagged_urls
+        and not sig.asks_for_secret
+        and not sig.has_payment_fee_ask
+        and not sig.has_prize_claim
+        and not sig.has_job_loan_bait
+        and p_text < 0.75
+    ):
+        p_fused = min(p_fused, 0.22)
+    elif (
+        sig.extracted_urls
+        and not sig.flagged_urls
+        and sig.max_url_risk < 0.25
+        and is_registered_sender
+        and not sig.asks_for_secret
+        and not sig.has_payment_fee_ask
+        and not sig.has_prize_claim
+        and not sig.has_job_loan_bait
+        and not sig.has_urgency_suspension
+    ):
+        p_fused = min(p_fused, 0.28)
+    elif (
+        sig.has_opt_out
+        and is_registered_sender
+        and not sig.flagged_urls
+        and not sig.asks_for_secret
+        and not sig.has_payment_fee_ask
+        and not sig.has_job_loan_bait
+    ):
+        p_fused = min(p_fused, 0.35)
 
-    if re.search(r'[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}', message):
-        reasons.append("Contains phone number — potential scam callback")
+    p_fused = max(0.0, min(0.99, p_fused))
 
-    if not reasons:
-        reasons.append("AI model flagged as spam" if scam_level != "safe"
-                       else "No suspicious patterns detected")
+    if p_fused >= 0.72:
+        scam_level = "scam"
+    elif p_fused >= 0.45:
+        scam_level = "suspicious"
+    else:
+        scam_level = "safe"
+
+    reasons: List[str] = []
+    if sig.flagged_urls:
+        reasons.append(f"Contains suspicious/malicious link ({', '.join(sig.flagged_urls[:2])})")
+    if sig.asks_for_secret and not sig.has_otp_disclaimer:
+        reasons.append("Asks recipient to share, reply, or forward an OTP, PIN, or card credentials")
+    if sig.has_payment_fee_ask and (sig.flagged_urls or sig.sender_is_mobile or sig.has_urgency_suspension):
+        reasons.append("Requests urgent customs, toll, or verification fee payment")
+    if sig.has_prize_claim and (sig.flagged_urls or sig.sender_is_mobile or sig.sender_is_premium_num or sig.has_payment_fee_ask):
+        reasons.append("Uses lottery, prize, or cash-reward claim wording")
+    if sig.has_job_loan_bait:
+        reasons.append("Matches task-job or instant-loan scam patterns")
+    if sig.sender_is_mobile and (sig.has_urgency_suspension or sig.flagged_urls or sig.asks_for_secret):
+        reasons.append("Urgent account or verification alert sent from a mobile number")
+
+    if scam_level == "safe":
+        if sig.has_otp_disclaimer:
+            reasons.append("Legitimate verification alert advising not to share the code")
+        if sig.has_opt_out:
+            reasons.append("Standard service/promotional notification with opt-out instructions")
+        if sig.extracted_urls and not sig.flagged_urls:
+            reasons.append("Embedded URL passed domain & phishing checks")
+        if not reasons:
+            reasons.append("Calibrated SMS text and sender context appear legitimate")
+    elif not reasons:
+        reasons.append("Calibrated SMS language classifier flagged elevated scam risk")
+
+    confidence = round(p_fused * 100.0, 2)
+    sender_kind = (
+        "alphanumeric brand ID"
+        if sig.sender_is_alpha
+        else "premium number"
+        if sig.sender_is_premium_num
+        else "carrier/brand shortcode"
+        if sig.sender_is_shortcode
+        else "mobile/numeric"
+    )
+    explanation = (
+        f"SMS analyzed ({len(message)} chars, sender: {sender_kind}). "
+        f"Calibrated hybrid risk: {confidence:.1f}% (text model: {p_text*100:.1f}%, URL risk: {sig.max_url_risk*100:.1f}%)."
+    )
 
     return {
         "detection_type": "sms",
         "scam_level": scam_level,
-        "confidence": round(confidence * 100, 2),
+        "confidence": confidence,
         "reasons": reasons,
-        "explanation": f"SMS analyzed for {len(message)} characters. Model confidence: {confidence*100:.1f}%",
+        "explanation": explanation,
         "input_data": {
             "sender_id": sender_id,
             "message": message[:200]
@@ -254,138 +385,196 @@ TRUSTED_DOMAINS = {
 
 # ── URL Detection ──────────────────────────────────────────
 def detect_url(url: str) -> dict:
-    reasons = []
-    url_lower = url.lower().strip()
+    """Analyze a URL using scheme-invariant lexical + structural ML and verified spoofing signals."""
+    info = parse_canonical_url(url)
+    reasons: List[str] = []
 
-    # Extract domain using urllib
-    try:
-        parsed_url = urllib.parse.urlparse(url_lower)
-        # If there's no scheme, netloc points to the path sometimes.
-        domain = parsed_url.netloc or parsed_url.path.split("/")[0]
-    except Exception:
-        domain = url_lower
-
-    # Normalize host for suffix checks and trusted-domain matching.
-    host = domain.split("@")[-1].split(":")[0].strip(".").lower()
-    host_no_www = host[4:] if host.startswith("www.") else host
-
-    is_trusted_domain = any(
-        host_no_www == trusted or host_no_www.endswith(f".{trusted}")
-        for trusted in TRUSTED_DOMAINS
+    is_trusted_domain = (
+        info.registrable_domain in TRUSTED_DOMAINS
+        and not info.has_userinfo_at
+        and not info.is_ip_host
     )
 
-    # Rule-based scoring
-    score = 0
-
-    if re.search(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', host_no_www):
-        score += 40
-        reasons.append("Uses raw IP address instead of domain name")
-
-    if any(host_no_www.endswith(t) for t in [".tk", ".ml", ".xyz", ".win", ".click", ".gq", ".cf", ".ga", ".top", ".cc", ".cn"]):
-        score += 35
-        reasons.append("Uses a highly suspicious domain extension")
-
-    # Brand spoofing checks: If the URL contains a brand name, but the domain doesn't match the brand
-    targeted_brands = ["paypal", "apple", "netflix", "amazon", "google", "microsoft", "facebook", "chase", "bankofamerica", "wellsfargo"]
-    for brand in targeted_brands:
-        if brand in url_lower and brand not in host_no_www:
-            score += 30
-            reasons.append(f"Spoofs brand '{brand}' outside of the main domain")
-
-    suspicious_words = ["login", "verify", "secure", "account", "auth",
-                        "update", "bank", "signin", "support",
-                        "confirm", "password", "winner", "free", "prize", "invoice"]
-    
-    # We only penalize general suspicious words if they appear in an unusually constructed URL or not organically part of a safe brand
-    is_safe_domain = is_trusted_domain
-
-    if not is_safe_domain:
-        found = [w for w in suspicious_words if w in url_lower]
-        if found:
-            score += len(found) * 15
-            reasons.append(f"Suspicious keywords in URL: {', '.join(found)}")
-
-    if not url_lower.startswith("https://"):
-        score += 20
-        reasons.append("URL does not use HTTPS — connection is not secure")
-
-    if url.count("-") > 3:
-        score += 20
-        reasons.append("Excessive hyphens in URL — common phishing pattern")
-
-    if host_no_www.count(".") > 3:
-        score += 15
-        reasons.append("Too many subdomains — common phishing/obfuscation pattern")
-
-    if len(url) > 100:
-        score += 10
-        reasons.append("Unusually long URL — common obfuscation technique")
-
-    if "@" in url:
-        score += 30
-        reasons.append("URL contains @ symbol — hides true destination")
-
-    # Cap score at 100
-    score = min(score, 99)
-
-    # Blend rule-based score with the trained URL model when available.
-    # The classifier is useful as a signal, but it should not override a URL
-    # that has no meaningful phishing indicators on its own.
-    ml_confidence = None
-    heuristic_score = score
+    p_ml = 0.0
+    p_host = 0.0
+    p_path = 0.0
+    ml_available = False
     if url_model is not None:
         try:
-            features = np.array([extract_url_features(url_lower)])
-            prob = url_model.predict_proba(features)[0]
-            classes = list(getattr(url_model, "classes_", [0, 1]))
-            malicious_label = 1 if 1 in classes else classes[-1]
-            malicious_idx = classes.index(malicious_label)
-            ml_confidence = round(float(prob[malicious_idx]) * 100, 2)
+            scored = predict_url_bundle(url_model, [url])[0]
+            p_ml = scored["prob"]
+            p_host = scored["p_host"]
+            p_path = scored["p_path"]
+            ml_available = True
+        except Exception as exc:
+            print(f"URL ML Prediction Error: {exc}")
 
-            # Use model prediction as a signal, but do not let it blindly override trusted domains.
-            model_pred = url_model.predict(features)[0]
-            model_flags_malicious = model_pred == malicious_label
+    # Collect verifiable domain/authority security signals (avoiding path-keyword traps).
+    verified_floor = 0.0
+    additive_nudge = 0.0
+    has_host_risk_cue = False
 
-            if model_flags_malicious and ml_confidence >= 75 and not is_trusted_domain:
-                if heuristic_score >= 30:
-                    score = min(99, max(score, heuristic_score + 30))
-                    reasons.append("AI URL model reinforced suspicious URL patterns")
-                else:
-                    score = max(score, 25)
-                    reasons.append("AI URL model flagged the link, but heuristics were weak")
-            elif ml_confidence <= 30:
-                reasons.append("AI URL model classified this link as low risk")
-        except Exception as e:
-            print(f"URL ML Prediction Error: {e}")
+    if info.has_userinfo_at:
+        verified_floor = max(verified_floor, 0.85)
+        has_host_risk_cue = True
+        reasons.append("URL uses '@' credential syntax to mask the true destination domain")
 
-    if is_trusted_domain and score < 60:
-        score = min(score, 20)
-        if not any("trusted" in reason.lower() for reason in reasons):
-            reasons.append("Domain matches a trusted provider and no strong phishing indicators were found")
+    if info.is_ip_host:
+        ip_floor = 0.80 if (info.auth_path_hits or info.has_executable_ext or info.has_nonstandard_port) else 0.58
+        verified_floor = max(verified_floor, ip_floor)
+        has_host_risk_cue = True
+        reasons.append("Uses raw IP address instead of a registered domain name")
 
-    # Determine level
-    if score >= 65:
+    if info.brand_typosquat_hits:
+        verified_floor = max(verified_floor, 0.86)
+        has_host_risk_cue = True
+        reasons.append(
+            f"Domain mimics trusted brand ({', '.join(info.brand_typosquat_hits)}) via lookalike spelling"
+        )
+
+    if info.brand_subdomain_hits:
+        verified_floor = max(verified_floor, 0.85)
+        has_host_risk_cue = True
+        reasons.append(
+            f"Brand name ({', '.join(info.brand_subdomain_hits)}) spoofed in subdomain of '{info.registrable_domain}'"
+        )
+
+    if info.brand_squat_hits:
+        squat_floor = 0.86 if (info.suspicious_tld or info.auth_domain_hits or info.auth_path_hits) else 0.78
+        verified_floor = max(verified_floor, squat_floor)
+        has_host_risk_cue = True
+        reasons.append(
+            f"Domain combines brand keyword ({', '.join(info.brand_squat_hits)}) with deceptive terms"
+        )
+
+    if info.is_punycode:
+        verified_floor = max(verified_floor, 0.55)
+        has_host_risk_cue = True
+        reasons.append("Uses internationalized punycode ('xn--') domain encoding")
+
+    if info.has_executable_ext:
+        verified_floor = max(verified_floor, 0.78)
+        has_host_risk_cue = True
+        reasons.append("Direct link to an executable or binary payload")
+
+    if info.has_phishing_kit_path:
+        has_host_risk_cue = True
+        additive_nudge += 0.14
+        reasons.append("Path matches automated phishing-kit directory patterns")
+
+    if info.suspicious_tld:
+        has_host_risk_cue = True
+        additive_nudge += 0.12
+        if info.auth_domain_hits or info.auth_path_hits:
+            verified_floor = max(verified_floor, 0.52)
+        reasons.append(f"Uses a high-abuse top-level domain (.{info.suffix})")
+
+    if info.has_nonstandard_port:
+        has_host_risk_cue = True
+        additive_nudge += 0.10
+        reasons.append("Specifies a non-standard network port")
+
+    if info.subdomain_depth >= 3 or (info.domain_label_entropy >= 3.80 and len(info.domain_label) >= 12):
+        if not is_trusted_domain and not info.trusted_suffix:
+            has_host_risk_cue = True
+            additive_nudge += 0.10
+            reasons.append("Deep subdomain nesting or high-randomness domain string")
+
+    if info.auth_domain_hits and not is_trusted_domain and info.subdomain_depth == 0:
+        # Terms like login/verify inside the registrable domain itself (e.g. login-verify-portal.com).
+        if not info.trusted_suffix and "-" in info.domain_label:
+            has_host_risk_cue = True
+            additive_nudge += 0.08
+
+    if info.is_shortener:
+        additive_nudge += 0.12
+        reasons.append(f"Uses URL shortener ({info.registrable_domain}) hiding the final destination")
+
+    # Optional benign-trained IsolationForest novelty check (advisory only).
+    is_anomalous_structure = False
+    if anomaly_model is not None and not is_trusted_domain:
+        try:
+            iso_pred = int(anomaly_model.predict([list(info.features)])[0])
+            is_anomalous_structure = iso_pred == -1
+        except Exception:
+            is_anomalous_structure = False
+
+    if is_anomalous_structure and has_host_risk_cue:
+        additive_nudge += 0.05
+        reasons.append("Structural anomaly detector flagged unusual domain/URL structure")
+
+    fused = min(0.99, p_ml + additive_nudge) if ml_available else min(0.99, additive_nudge)
+    fused = max(fused, verified_floor)
+
+    # Guard against path-only false positives when the host itself looks benign.
+    if (
+        ml_available
+        and not has_host_risk_cue
+        and not info.has_phishing_kit_path
+        and p_host < 0.78
+    ):
+        fused = min(fused, max(0.32, p_host * 0.45))
+    elif (
+        ml_available
+        and info.suspicious_tld
+        and verified_floor == 0.0
+        and not info.has_phishing_kit_path
+        and not info.has_nonstandard_port
+        and not info.is_shortener
+        and not info.auth_domain_hits
+        and not info.auth_path_hits
+        and not info.brand_path_hits
+        and info.subdomain_depth < 3
+        and info.domain_label_entropy < 3.80
+        and "-" not in info.host
+        and not any(ch.isdigit() for ch in info.host)
+        and p_host < 0.78
+        and p_path < 0.55
+    ):
+        # A clean domain/path whose sole risk indicator is a high-abuse gTLD warrants caution ('suspicious'), not 99% scam.
+        fused = min(fused, max(0.54, min(0.64, p_host * 0.90 + 0.08)))
+
+    if is_trusted_domain:
+        fused = min(fused, 0.12)
+        reasons.append(f"Domain matches trusted provider ({info.registrable_domain})")
+    elif info.trusted_suffix and not has_host_risk_cue:
+        fused = min(fused, 0.25)
+        reasons.append(f"Institutional domain extension (.{info.suffix}) with no spoofing cues")
+
+    if not info.scheme_is_https and info.scheme == "http":
+        if fused >= 0.45 or info.auth_path_hits:
+            reasons.append("Uses unencrypted HTTP rather than HTTPS")
+
+    if fused >= 0.72:
         scam_level = "scam"
-    elif score >= 30:
+    elif fused >= 0.45:
         scam_level = "suspicious"
     else:
         scam_level = "safe"
 
+    if ml_available:
+        if p_ml >= 0.70 and "AI URL model" not in " ".join(reasons):
+            reasons.append(f"Calibrated ML model scored host/URL patterns high risk ({p_ml*100:.1f}%)")
+        elif scam_level == "safe" and not reasons:
+            reasons.append("Calibrated ML model and domain checks indicate a benign URL")
+
     if not reasons:
-        reasons.append("URL appears to be a standard secure format")
+        reasons.append("URL structure appears legitimate with no spoofing indicators")
 
-    # Confidence is reported as scam probability on a 0-100 scale.
-    confidence = float(score)
-
-    explanation = "URL analyzed using domain reputation heuristics."
-    if ml_confidence is not None:
-        explanation = f"URL analyzed using the trained URL model plus heuristics. ML confidence: {ml_confidence:.1f}%"
+    confidence = round(float(fused) * 100.0, 2)
+    explanation = (
+        f"URL analyzed via scheme-invariant ML ensemble (risk: {confidence:.1f}%, "
+        f"host pattern: {p_host*100:.1f}%, path pattern: {p_path*100:.1f}%) "
+        f"for domain '{info.registrable_domain or info.host}'."
+        if ml_available
+        else f"URL analyzed via domain structural heuristics for '{info.registrable_domain or info.host}'."
+    )
 
     return {
         "detection_type": "url",
         "scam_level": scam_level,
-        "confidence": round(confidence, 2),
+        "confidence": confidence,
         "reasons": reasons,
         "explanation": explanation,
-        "input_data": {"url": url}
+        "input_data": {"url": url.lower().strip()}
     }
