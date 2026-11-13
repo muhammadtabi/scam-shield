@@ -1,0 +1,1137 @@
+{
+  "suite_path": "/mnt/data/scam-shield/backend/evaluation/benchmark_suite.json",
+  "suite_b": {
+    "sms": {
+      "overall": {
+        "total": 55,
+        "positives": 20,
+        "negatives": 35,
+        "strict_scam": {
+          "tn": 35,
+          "fp": 0,
+          "fn": 0,
+          "tp": 20,
+          "fpr": 0.0,
+          "fnr": 0.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "f0_5": 1.0
+        },
+        "any_alert": {
+          "tn": 35,
+          "fp": 0,
+          "fn": 0,
+          "tp": 20,
+          "fpr": 0.0,
+          "fnr": 0.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "f0_5": 1.0
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 1.0,
+          "pr_auc": 1.0,
+          "brier_score": 0.0148
+        }
+      },
+      "hard_benign": {
+        "count": 26,
+        "flagged_scam": 0,
+        "flagged_suspicious": 0,
+        "scam_fpr": 0.0,
+        "any_alert_fpr": 0.0
+      },
+      "by_category": {
+        "otp_2fa": {
+          "count": 7,
+          "scam_fpr": 0.0,
+          "any_alert_fpr": 0.0,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "delivery_update": {
+          "count": 7,
+          "scam_fpr": 0.0,
+          "any_alert_fpr": 0.0,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "bank_alert": {
+          "count": 6,
+          "scam_fpr": 0.0,
+          "any_alert_fpr": 0.0,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "telecom_promo": {
+          "count": 6,
+          "scam_fpr": 0.0,
+          "any_alert_fpr": 0.0,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "personal_urgent": {
+          "count": 9,
+          "scam_fpr": 0.0,
+          "any_alert_fpr": 0.0,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "prize_scam": {
+          "count": 6,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 1.0,
+          "any_alert_recall": 1.0
+        },
+        "smishing_link": {
+          "count": 8,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 1.0,
+          "any_alert_recall": 1.0
+        },
+        "kyc_impersonation": {
+          "count": 4,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 1.0,
+          "any_alert_recall": 1.0
+        },
+        "job_crypto_scam": {
+          "count": 2,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 1.0,
+          "any_alert_recall": 1.0
+        }
+      },
+      "latency_ms": {
+        "mean": 25.61,
+        "p95": 46.24
+      },
+      "false_positives": [],
+      "false_negatives": [],
+      "per_case": [
+        {
+          "id": "sms_benign_bank_otp",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 18.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 25.8,
+          "reasons": [
+            "Legitimate verification alert advising not to share the code"
+          ]
+        },
+        {
+          "id": "sms_benign_google_otp",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 0.32,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.7,
+          "reasons": [
+            "Legitimate verification alert advising not to share the code"
+          ]
+        },
+        {
+          "id": "sms_benign_nayapay_otp",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 1.54,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.66,
+          "reasons": [
+            "Legitimate verification alert advising not to share the code"
+          ]
+        },
+        {
+          "id": "sms_benign_numeric_otp",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 1.22,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.82,
+          "reasons": [
+            "Legitimate verification alert advising not to share the code"
+          ]
+        },
+        {
+          "id": "sms_benign_fedex_delivery",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 1.56,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 74.27,
+          "reasons": [
+            "Standard service/promotional notification with opt-out instructions",
+            "Embedded URL passed domain & phishing checks"
+          ]
+        },
+        {
+          "id": "sms_benign_tcs_delivery",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 2.48,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 40.86,
+          "reasons": [
+            "Embedded URL passed domain & phishing checks"
+          ]
+        },
+        {
+          "id": "sms_benign_amazon_delivered",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 32.04,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.59,
+          "reasons": [
+            "Standard service/promotional notification with opt-out instructions"
+          ]
+        },
+        {
+          "id": "sms_benign_meezan_debit",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 22.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.65,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_hbl_credit",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 17.46,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.65,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_card_stmt",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 15.83,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.47,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_jazz_bundle",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 35.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.78,
+          "reasons": [
+            "Standard service/promotional notification with opt-out instructions"
+          ]
+        },
+        {
+          "id": "sms_benign_zong_recharge",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 4.71,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.97,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_store_loyalty",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 7.93,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.83,
+          "reasons": [
+            "Standard service/promotional notification with opt-out instructions"
+          ]
+        },
+        {
+          "id": "sms_benign_clinic_appt",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 22.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.65,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_urgent_friend",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 1.56,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.82,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_mom_groceries",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 0.04,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.59,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_colleague_meeting",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 0.04,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.64,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_uber_pin",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 4.52,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.64,
+          "reasons": [
+            "Legitimate verification alert advising not to share the code",
+            "Standard service/promotional notification with opt-out instructions"
+          ]
+        },
+        {
+          "id": "sms_benign_careem_arrival",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 21.48,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 18.17,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_electricity_bill",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 1.77,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 16.62,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_university_fee",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 22.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 16.99,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_pharmacy_ready",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 0.71,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 16.64,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_flight_gate",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 1.22,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 14.64,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_github_2fa",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 1.13,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 21.4,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_classmate_cash",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 1.56,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 16.44,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_foodpanda_promo",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 19.51,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 14.98,
+          "reasons": [
+            "Standard service/promotional notification with opt-out instructions"
+          ]
+        },
+        {
+          "id": "sms_benign_icloud_backup",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 1.13,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.2,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_gym_membership",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 22.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 14.74,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_library_due",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 2.54,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 42.1,
+          "reasons": [
+            "Embedded URL passed domain & phishing checks"
+          ]
+        },
+        {
+          "id": "sms_benign_whatsapp_code",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 28.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 31.24,
+          "reasons": [
+            "Embedded URL passed domain & phishing checks"
+          ]
+        },
+        {
+          "id": "sms_benign_stripe_payout",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 4.71,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 14.86,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_car_service",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 2.84,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.23,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_internet_down",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 7.38,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.01,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_blood_drive",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 0.04,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 16.72,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_benign_parcel_locker",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 1.54,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 15.96,
+          "reasons": [
+            "Calibrated SMS text and sender context appear legitimate"
+          ]
+        },
+        {
+          "id": "sms_scam_walmart_prize",
+          "label": 1,
+          "category": "prize_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 42.61,
+          "reasons": [
+            "Contains suspicious/malicious link (http://walmart-claim.tk/win)",
+            "Uses lottery, prize, or cash-reward claim wording",
+            "Urgent account or verification alert sent from a mobile number"
+          ]
+        },
+        {
+          "id": "sms_scam_dhl_customs_smish",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 41.71,
+          "reasons": [
+            "Contains suspicious/malicious link (http://dhl-track-fee.xyz/pay)",
+            "Requests urgent customs, toll, or verification fee payment",
+            "Urgent account or verification alert sent from a mobile number"
+          ]
+        },
+        {
+          "id": "sms_scam_bank_kyc_number",
+          "label": 1,
+          "category": "kyc_impersonation",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 44.54,
+          "reasons": [
+            "Contains suspicious/malicious link (http://bank-kyc-help.top/login)",
+            "Urgent account or verification alert sent from a mobile number"
+          ]
+        },
+        {
+          "id": "sms_scam_bisp_relief_fake",
+          "label": 1,
+          "category": "prize_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 43.39,
+          "reasons": [
+            "Contains suspicious/malicious link (http://relief-cash-portal.ml/claim)",
+            "Requests urgent customs, toll, or verification fee payment",
+            "Uses lottery, prize, or cash-reward claim wording"
+          ]
+        },
+        {
+          "id": "sms_scam_usps_redelivery",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 95.04,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 42.97,
+          "reasons": [
+            "Contains suspicious/malicious link (http://parcel-reschedule-now.win/address)",
+            "Urgent account or verification alert sent from a mobile number"
+          ]
+        },
+        {
+          "id": "sms_scam_netflix_hold",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 45.79,
+          "reasons": [
+            "Contains suspicious/malicious link (http://netflix-billing-fix.click/update)",
+            "Urgent account or verification alert sent from a mobile number"
+          ]
+        },
+        {
+          "id": "sms_scam_crypto_job_task",
+          "label": 1,
+          "category": "job_crypto_scam",
+          "difficulty": "evasion_threat",
+          "scam_level": "scam",
+          "confidence": 79.72,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 40.22,
+          "reasons": [
+            "Requests urgent customs, toll, or verification fee payment",
+            "Matches task-job or instant-loan scam patterns"
+          ]
+        },
+        {
+          "id": "sms_scam_jeeto_prize_call",
+          "label": 1,
+          "category": "prize_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 16.29,
+          "reasons": [
+            "Requests urgent customs, toll, or verification fee payment",
+            "Uses lottery, prize, or cash-reward claim wording"
+          ]
+        },
+        {
+          "id": "sms_scam_loan_instant",
+          "label": 1,
+          "category": "job_crypto_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 44.22,
+          "reasons": [
+            "Contains suspicious/malicious link (http://fast-cash-pk.xyz/app)",
+            "Asks recipient to share, reply, or forward an OTP, PIN, or card credentials",
+            "Matches task-job or instant-loan scam patterns"
+          ]
+        },
+        {
+          "id": "sms_scam_toll_unpaid",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 95.04,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 47.29,
+          "reasons": [
+            "Contains suspicious/malicious link (http://toll-notice-pay.cfd/invoice)",
+            "Requests urgent customs, toll, or verification fee payment",
+            "Urgent account or verification alert sent from a mobile number"
+          ]
+        },
+        {
+          "id": "sms_scam_paypal_limit",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 43.31,
+          "reasons": [
+            "Contains suspicious/malicious link (http://paypa1-account-verify.gq/signin)",
+            "Urgent account or verification alert sent from a mobile number"
+          ]
+        },
+        {
+          "id": "sms_scam_otp_social_eng",
+          "label": 1,
+          "category": "kyc_impersonation",
+          "difficulty": "evasion_threat",
+          "scam_level": "scam",
+          "confidence": 82.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 19.82,
+          "reasons": [
+            "Asks recipient to share, reply, or forward an OTP, PIN, or card credentials",
+            "Urgent account or verification alert sent from a mobile number"
+          ]
+        },
+        {
+          "id": "sms_scam_whatsapp_hijack",
+          "label": 1,
+          "category": "kyc_impersonation",
+          "difficulty": "evasion_threat",
+          "scam_level": "scam",
+          "confidence": 80.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 14.85,
+          "reasons": [
+            "Asks recipient to share, reply, or forward an OTP, PIN, or card credentials",
+            "Urgent account or verification alert sent from a mobile number"
+          ]
+        },
+        {
+          "id": "sms_scam_tax_refund_link",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 95.04,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 40.96,
+          "reasons": [
+            "Contains suspicious/malicious link (http://gov-tax-refund-claim.xyz/form)",
+            "Asks recipient to share, reply, or forward an OTP, PIN, or card credentials",
+            "Uses lottery, prize, or cash-reward claim wording"
+          ]
+        },
+        {
+          "id": "sms_scam_apple_findmy",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 54.43,
+          "reasons": [
+            "Contains suspicious/malicious link (http://icloud-locate-device.tk/login)",
+            "Urgent account or verification alert sent from a mobile number"
+          ]
+        },
+        {
+          "id": "sms_scam_binance_withdraw",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 35.4,
+          "reasons": [
+            "Contains suspicious/malicious link (http://binance-cancel-auth.top/verify)",
+            "Urgent account or verification alert sent from a mobile number"
+          ]
+        },
+        {
+          "id": "sms_scam_uk_ringtone_classic",
+          "label": 1,
+          "category": "prize_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 13.09,
+          "reasons": [
+            "Calibrated SMS language classifier flagged elevated scam risk"
+          ]
+        },
+        {
+          "id": "sms_scam_amazon_gift_survey",
+          "label": 1,
+          "category": "prize_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 34.87,
+          "reasons": [
+            "Contains suspicious/malicious link (http://amzn-reward-claim.ml/gift)",
+            "Requests urgent customs, toll, or verification fee payment",
+            "Uses lottery, prize, or cash-reward claim wording"
+          ]
+        },
+        {
+          "id": "sms_scam_bank_otp_fraud_link",
+          "label": 1,
+          "category": "kyc_impersonation",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 36.41,
+          "reasons": [
+            "Contains suspicious/malicious link (http://jazzcash-biometric-update.xyz)",
+            "Asks recipient to share, reply, or forward an OTP, PIN, or card credentials",
+            "Urgent account or verification alert sent from a mobile number"
+          ]
+        },
+        {
+          "id": "sms_scam_fake_missed_call_premium",
+          "label": 1,
+          "category": "prize_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 13.18,
+          "reasons": [
+            "Uses lottery, prize, or cash-reward claim wording"
+          ]
+        }
+      ]
+    }
+  },
+  "suite_a": {
+    "model_sizes_kb": {
+      "anomaly_model.pkl": 575.46,
+      "email_model.pkl": 701.54,
+      "sms_meta_model.pkl": 169.75,
+      "sms_model.pkl": 1328.95,
+      "url_model.pkl": 2220.4
+    },
+    "email": {
+      "rows_total": 82486,
+      "exact_duplicate_rows": 408,
+      "train_test_exact_overlap": 137,
+      "dedup_test_rows": 16339,
+      "punctuation_rate": 0.0,
+      "ml_threshold_07_09_metrics": {
+        "total": 16339,
+        "positives": 8566,
+        "negatives": 7773,
+        "strict_scam": {
+          "tn": 7765,
+          "fp": 8,
+          "fn": 635,
+          "tp": 7931,
+          "fpr": 0.001,
+          "fnr": 0.0741,
+          "precision": 0.999,
+          "recall": 0.9259,
+          "f1": 0.961,
+          "f0_5": 0.9835
+        },
+        "any_alert": {
+          "tn": 7730,
+          "fp": 43,
+          "fn": 215,
+          "tp": 8351,
+          "fpr": 0.0055,
+          "fnr": 0.0251,
+          "precision": 0.9949,
+          "recall": 0.9749,
+          "f1": 0.9848,
+          "f0_5": 0.9908
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.9992,
+          "pr_auc": 0.9992,
+          "brier_score": 0.0097
+        }
+      }
+    },
+    "sms": {
+      "rows_total": 5572,
+      "exact_duplicate_rows": 403,
+      "train_test_exact_overlap": 115,
+      "dedup_test_rows": 977,
+      "ham_rate": 0.8659,
+      "end_to_end_dedup_metrics": {
+        "total": 977,
+        "positives": 117,
+        "negatives": 860,
+        "strict_scam": {
+          "tn": 859,
+          "fp": 1,
+          "fn": 17,
+          "tp": 100,
+          "fpr": 0.0012,
+          "fnr": 0.1453,
+          "precision": 0.9901,
+          "recall": 0.8547,
+          "f1": 0.9174,
+          "f0_5": 0.9597
+        },
+        "any_alert": {
+          "tn": 859,
+          "fp": 1,
+          "fn": 14,
+          "tp": 103,
+          "fpr": 0.0012,
+          "fnr": 0.1197,
+          "precision": 0.9904,
+          "recall": 0.8803,
+          "f1": 0.9321,
+          "f0_5": 0.9662
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.9997,
+          "pr_auc": 0.998,
+          "brier_score": 0.0092
+        }
+      }
+    },
+    "url": {
+      "rows_total": 651191,
+      "exact_duplicate_rows": 10072,
+      "has_scheme_rate_by_type": {
+        "benign": 0.0826,
+        "defacement": 1.0,
+        "malware": 0.9628,
+        "phishing": 0.2641
+      },
+      "ml_raw_csv_20k": {
+        "total": 20000,
+        "positives": 6807,
+        "negatives": 13193,
+        "strict_scam": {
+          "tn": 11659,
+          "fp": 1534,
+          "fn": 4177,
+          "tp": 2630,
+          "fpr": 0.1163,
+          "fnr": 0.6136,
+          "precision": 0.6316,
+          "recall": 0.3864,
+          "f1": 0.4794,
+          "f0_5": 0.5605
+        },
+        "any_alert": {
+          "tn": 11659,
+          "fp": 1534,
+          "fn": 4177,
+          "tp": 2630,
+          "fpr": 0.1163,
+          "fnr": 0.6136,
+          "precision": 0.6316,
+          "recall": 0.3864,
+          "f1": 0.4794,
+          "f0_5": 0.5605
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.7629,
+          "pr_auc": 0.5703,
+          "brier_score": 0.2472
+        }
+      },
+      "ml_after_http_normalization_20k": {
+        "total": 20000,
+        "positives": 6807,
+        "negatives": 13193,
+        "strict_scam": {
+          "tn": 11659,
+          "fp": 1534,
+          "fn": 4177,
+          "tp": 2630,
+          "fpr": 0.1163,
+          "fnr": 0.6136,
+          "precision": 0.6316,
+          "recall": 0.3864,
+          "f1": 0.4794,
+          "f0_5": 0.5605
+        },
+        "any_alert": {
+          "tn": 11659,
+          "fp": 1534,
+          "fn": 4177,
+          "tp": 2630,
+          "fpr": 0.1163,
+          "fnr": 0.6136,
+          "precision": 0.6316,
+          "recall": 0.3864,
+          "f1": 0.4794,
+          "f0_5": 0.5605
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.7629,
+          "pr_auc": 0.5703,
+          "brier_score": 0.2472
+        }
+      },
+      "end_to_end_domain_grouped_400": {
+        "total": 400,
+        "positives": 46,
+        "negatives": 354,
+        "strict_scam": {
+          "tn": 353,
+          "fp": 1,
+          "fn": 17,
+          "tp": 29,
+          "fpr": 0.0028,
+          "fnr": 0.3696,
+          "precision": 0.9667,
+          "recall": 0.6304,
+          "f1": 0.7632,
+          "f0_5": 0.8735
+        },
+        "any_alert": {
+          "tn": 353,
+          "fp": 1,
+          "fn": 17,
+          "tp": 29,
+          "fpr": 0.0028,
+          "fnr": 0.3696,
+          "precision": 0.9667,
+          "recall": 0.6304,
+          "f1": 0.7632,
+          "f0_5": 0.8735
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.9873,
+          "pr_auc": 0.9203,
+          "brier_score": 0.0302
+        }
+      }
+    }
+  },
+  "comparison_vs_baseline": {
+    "sms": {
+      "hard_benign_alert_fpr_delta": -0.6538,
+      "hard_benign_scam_fpr_delta": -0.3077,
+      "threat_alert_recall_delta": 0.15,
+      "f1_alert_delta": 0.4035,
+      "roc_auc_delta": 0.2657,
+      "brier_delta": -0.2303,
+      "mcnemar_alert": {
+        "baseline_only_correct": 0,
+        "current_only_correct": 23,
+        "exact_p_value": 0.0
+      }
+    }
+  }
+}

@@ -1,0 +1,4015 @@
+{
+  "suite_path": "/mnt/data/scam-shield/backend/evaluation/benchmark_suite.json",
+  "suite_b": {
+    "email": {
+      "overall": {
+        "total": 60,
+        "positives": 20,
+        "negatives": 40,
+        "strict_scam": {
+          "tn": 28,
+          "fp": 12,
+          "fn": 4,
+          "tp": 16,
+          "fpr": 0.3,
+          "fnr": 0.2,
+          "precision": 0.5714,
+          "recall": 0.8,
+          "f1": 0.6667,
+          "f0_5": 0.6061
+        },
+        "any_alert": {
+          "tn": 24,
+          "fp": 16,
+          "fn": 2,
+          "tp": 18,
+          "fpr": 0.4,
+          "fnr": 0.1,
+          "precision": 0.5294,
+          "recall": 0.9,
+          "f1": 0.6667,
+          "f0_5": 0.5769
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.8212,
+          "pr_auc": 0.7124,
+          "brier_score": 0.3285
+        }
+      },
+      "hard_benign": {
+        "count": 33,
+        "flagged_scam": 11,
+        "flagged_suspicious": 3,
+        "scam_fpr": 0.3333,
+        "any_alert_fpr": 0.4242
+      },
+      "by_category": {
+        "saas_security_otp": {
+          "count": 11,
+          "scam_fpr": 0.1818,
+          "any_alert_fpr": 0.4545,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "bank_receipt": {
+          "count": 10,
+          "scam_fpr": 0.4,
+          "any_alert_fpr": 0.4,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "promo_newsletter": {
+          "count": 9,
+          "scam_fpr": 0.5556,
+          "any_alert_fpr": 0.5556,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "work_urgent": {
+          "count": 10,
+          "scam_fpr": 0.1,
+          "any_alert_fpr": 0.2,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "credential_phishing": {
+          "count": 11,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 0.7273,
+          "any_alert_recall": 0.9091
+        },
+        "brand_spoof": {
+          "count": 3,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 1.0,
+          "any_alert_recall": 1.0
+        },
+        "advance_fee": {
+          "count": 4,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 1.0,
+          "any_alert_recall": 1.0
+        },
+        "payment_redirect_evasion": {
+          "count": 2,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 0.5,
+          "any_alert_recall": 0.5
+        }
+      },
+      "latency_ms": {
+        "mean": 1194.86,
+        "p95": 1900.74
+      },
+      "false_positives": [
+        {
+          "id": "email_benign_spotify_offer",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 99.51,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1842.56,
+          "reasons": [
+            "Aggressive scam keywords detected: limited time"
+          ]
+        },
+        {
+          "id": "email_benign_regional_bank_transfer",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 99.18,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1127.39,
+          "reasons": [
+            "Legitimate transaction wording detected: transaction, transaction alert"
+          ]
+        },
+        {
+          "id": "email_benign_coursera_promo",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 97.86,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1037.67,
+          "reasons": [
+            "Aggressive scam keywords detected: limited time, click here"
+          ]
+        },
+        {
+          "id": "email_benign_docker_security",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 97.79,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1279.32,
+          "reasons": [
+            "Generic action keywords detected: account, update",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_pharmacy_order",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "standard_benign",
+          "scam_level": "scam",
+          "confidence": 97.4,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 880.3,
+          "reasons": [
+            "AI model flagged content as suspicious"
+          ]
+        },
+        {
+          "id": "email_benign_figma_promo",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 95.82,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1245.17,
+          "reasons": [
+            "Aggressive scam keywords detected: claim your, limited time, click here",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_airline_checkin",
+          "label": 0,
+          "category": "work_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 94.84,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1112.95,
+          "reasons": [
+            "Generic action keywords detected: verify, confirm"
+          ]
+        },
+        {
+          "id": "email_benign_mongodb_usage",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 92.75,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1208.55,
+          "reasons": [
+            "Generic action keywords detected: update"
+          ]
+        },
+        {
+          "id": "email_benign_canva_newsletter",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 92.03,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1148.61,
+          "reasons": [
+            "Generic action keywords detected: account"
+          ]
+        },
+        {
+          "id": "email_benign_jazzcash_receipt",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 91.02,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 824.21,
+          "reasons": [
+            "Legitimate transaction wording detected: transaction"
+          ]
+        },
+        {
+          "id": "email_benign_proton_recovery",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 86.1,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 940.98,
+          "reasons": [
+            "Generic action keywords detected: verify, confirm, password, account",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_jetbrains_license",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 85.88,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1097.88,
+          "reasons": [
+            "Aggressive scam keywords detected: click here",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_discord_otp",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 85.73,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 960.78,
+          "reasons": [
+            "Aggressive scam keywords detected: immediately"
+          ]
+        },
+        {
+          "id": "email_benign_cloudflare_2fa",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 85.08,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1185.12,
+          "reasons": [
+            "Generic action keywords detected: account",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_gitlab_token",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 74.84,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 968.37,
+          "reasons": [
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_friend_casual",
+          "label": 0,
+          "category": "work_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "suspicious",
+          "confidence": 71.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 877.7,
+          "reasons": [
+            "AI model flagged content as suspicious"
+          ]
+        }
+      ],
+      "false_negatives": [
+        {
+          "id": "email_scam_hr_payroll_phish",
+          "label": 1,
+          "category": "credential_phishing",
+          "difficulty": "evasion_threat",
+          "scam_level": "safe",
+          "confidence": 40.32,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1157.18,
+          "reasons": [
+            "Legitimate transaction wording detected: direct deposit",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_scam_evasion_completed_transfer",
+          "label": 1,
+          "category": "payment_redirect_evasion",
+          "difficulty": "evasion_threat",
+          "scam_level": "safe",
+          "confidence": 82.98,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1389.79,
+          "reasons": [
+            "Legitimate transaction wording detected: transaction, bank transfer",
+            "Contains embedded URLs \u2014 verify authenticity before clicking",
+            "Sender uses highly suspicious domain extension"
+          ]
+        }
+      ],
+      "per_case": [
+        {
+          "id": "email_benign_notion_reset",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 61.59,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 911.66,
+          "reasons": [
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_discord_otp",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 85.73,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 960.78,
+          "reasons": [
+            "Aggressive scam keywords detected: immediately"
+          ]
+        },
+        {
+          "id": "email_benign_university_it",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 55.98,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1071.04,
+          "reasons": [
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_slack_signin",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 39.73,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 742.87,
+          "reasons": [
+            "No suspicious patterns detected \u2014 email appears legitimate"
+          ]
+        },
+        {
+          "id": "email_benign_cloudflare_2fa",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 85.08,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1185.12,
+          "reasons": [
+            "Generic action keywords detected: account",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_aws_root_alert",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 59.32,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1164.55,
+          "reasons": [
+            "No suspicious patterns detected \u2014 email appears legitimate"
+          ]
+        },
+        {
+          "id": "email_benign_gitlab_token",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 74.84,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 968.37,
+          "reasons": [
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_proton_recovery",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 86.1,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 940.98,
+          "reasons": [
+            "Generic action keywords detected: verify, confirm, password, account",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_digitalocean_billing",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 66.81,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1375.31,
+          "reasons": [
+            "Legitimate transaction wording detected: invoice, statement, monthly statement",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_vercel_receipt",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 69.99,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1198.4,
+          "reasons": [
+            "Legitimate transaction wording detected: invoice, receipt"
+          ]
+        },
+        {
+          "id": "email_benign_regional_bank_transfer",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 99.18,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1127.39,
+          "reasons": [
+            "Legitimate transaction wording detected: transaction, transaction alert"
+          ]
+        },
+        {
+          "id": "email_benign_jazzcash_receipt",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 91.02,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 824.21,
+          "reasons": [
+            "Legitimate transaction wording detected: transaction"
+          ]
+        },
+        {
+          "id": "email_benign_wise_transfer",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 94.4,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1113.57,
+          "reasons": [
+            "Legitimate transaction wording detected: transaction",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_mongodb_usage",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 92.75,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1208.55,
+          "reasons": [
+            "Generic action keywords detected: update"
+          ]
+        },
+        {
+          "id": "email_benign_daraz_order",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 56.48,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1107.19,
+          "reasons": [
+            "No suspicious patterns detected \u2014 email appears legitimate"
+          ]
+        },
+        {
+          "id": "email_benign_figma_promo",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 95.82,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1245.17,
+          "reasons": [
+            "Aggressive scam keywords detected: claim your, limited time, click here",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_coursera_promo",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 97.86,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1037.67,
+          "reasons": [
+            "Aggressive scam keywords detected: limited time, click here"
+          ]
+        },
+        {
+          "id": "email_benign_canva_newsletter",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 92.03,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1148.61,
+          "reasons": [
+            "Generic action keywords detected: account"
+          ]
+        },
+        {
+          "id": "email_benign_jetbrains_license",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 85.88,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1097.88,
+          "reasons": [
+            "Aggressive scam keywords detected: click here",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_substack_digest",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 58.79,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1275.23,
+          "reasons": [
+            "Aggressive scam keywords detected: click here"
+          ]
+        },
+        {
+          "id": "email_benign_spotify_offer",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 99.51,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1842.56,
+          "reasons": [
+            "Aggressive scam keywords detected: limited time"
+          ]
+        },
+        {
+          "id": "email_benign_grammarly_summary",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 50.85,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1969.87,
+          "reasons": [
+            "Aggressive scam keywords detected: limited time"
+          ]
+        },
+        {
+          "id": "email_benign_hr_interview",
+          "label": 0,
+          "category": "work_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 5.78,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1897.1,
+          "reasons": [
+            "No suspicious patterns detected \u2014 email appears legitimate"
+          ]
+        },
+        {
+          "id": "email_benign_fyp_supervisor",
+          "label": 0,
+          "category": "work_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 3.95,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 2036.01,
+          "reasons": [
+            "No suspicious patterns detected \u2014 email appears legitimate"
+          ]
+        },
+        {
+          "id": "email_benign_team_deploy_note",
+          "label": 0,
+          "category": "work_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 15.75,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1513.31,
+          "reasons": [
+            "No suspicious patterns detected \u2014 email appears legitimate"
+          ]
+        },
+        {
+          "id": "email_benign_client_invoice_followup",
+          "label": 0,
+          "category": "work_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 13.53,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 949.83,
+          "reasons": [
+            "Legitimate transaction wording detected: invoice, receipt"
+          ]
+        },
+        {
+          "id": "email_benign_github_pr",
+          "label": 0,
+          "category": "work_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 35.28,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 923.39,
+          "reasons": [
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_google_calendar",
+          "label": 0,
+          "category": "work_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 52.44,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1023.84,
+          "reasons": [
+            "No suspicious patterns detected \u2014 email appears legitimate"
+          ]
+        },
+        {
+          "id": "email_benign_zoom_recording",
+          "label": 0,
+          "category": "work_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 29.68,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1086.9,
+          "reasons": [
+            "No suspicious patterns detected \u2014 email appears legitimate"
+          ]
+        },
+        {
+          "id": "email_benign_airline_checkin",
+          "label": 0,
+          "category": "work_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 94.84,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1112.95,
+          "reasons": [
+            "Generic action keywords detected: verify, confirm"
+          ]
+        },
+        {
+          "id": "email_benign_pharmacy_order",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "standard_benign",
+          "scam_level": "scam",
+          "confidence": 97.4,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 880.3,
+          "reasons": [
+            "AI model flagged content as suspicious"
+          ]
+        },
+        {
+          "id": "email_benign_kaggle_competition",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 48.13,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 953.81,
+          "reasons": [
+            "Aggressive scam keywords detected: click here"
+          ]
+        },
+        {
+          "id": "email_benign_render_deploy",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 56.18,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 990.23,
+          "reasons": [
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_docker_security",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 97.79,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1279.32,
+          "reasons": [
+            "Generic action keywords detected: account, update",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_benign_google_workspace_storage",
+          "label": 0,
+          "category": "saas_security_otp",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 13.83,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1287.19,
+          "reasons": [
+            "No suspicious patterns detected \u2014 email appears legitimate"
+          ]
+        },
+        {
+          "id": "email_benign_uber_trip_receipt",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 12.58,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 893.14,
+          "reasons": [
+            "Legitimate transaction wording detected: receipt"
+          ]
+        },
+        {
+          "id": "email_benign_coursera_reminder",
+          "label": 0,
+          "category": "work_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 5.7,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 928.4,
+          "reasons": [
+            "No suspicious patterns detected \u2014 email appears legitimate"
+          ]
+        },
+        {
+          "id": "email_benign_linkedin_security_article",
+          "label": 0,
+          "category": "promo_newsletter",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 31.95,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1046.65,
+          "reasons": [
+            "No suspicious patterns detected \u2014 email appears legitimate"
+          ]
+        },
+        {
+          "id": "email_benign_stripe_payout",
+          "label": 0,
+          "category": "bank_receipt",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 91.76,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1073.92,
+          "reasons": [
+            "No suspicious patterns detected \u2014 email appears legitimate"
+          ]
+        },
+        {
+          "id": "email_benign_friend_casual",
+          "label": 0,
+          "category": "work_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "suspicious",
+          "confidence": 71.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 877.7,
+          "reasons": [
+            "AI model flagged content as suspicious"
+          ]
+        },
+        {
+          "id": "email_scam_paypal_suspended_xyz",
+          "label": 1,
+          "category": "credential_phishing",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.92,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1145.07,
+          "reasons": [
+            "Aggressive scam keywords detected: suspended",
+            "Contains embedded URLs \u2014 verify authenticity before clicking",
+            "Sender uses highly suspicious domain extension"
+          ]
+        },
+        {
+          "id": "email_scam_microsoft_mfa_tk",
+          "label": 1,
+          "category": "credential_phishing",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 97.38,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1159.11,
+          "reasons": [
+            "Aggressive scam keywords detected: click here, urgent action, immediately",
+            "Contains embedded URLs \u2014 verify authenticity before clicking",
+            "Sender uses highly suspicious domain extension"
+          ]
+        },
+        {
+          "id": "email_scam_bank_kyc_top",
+          "label": 1,
+          "category": "credential_phishing",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.76,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1138.46,
+          "reasons": [
+            "Aggressive scam keywords detected: immediately, final warning",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_scam_netflix_billing",
+          "label": 1,
+          "category": "credential_phishing",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.69,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1113.01,
+          "reasons": [
+            "Aggressive scam keywords detected: click here, update payment, immediately",
+            "Contains embedded URLs \u2014 verify authenticity before clicking",
+            "Sender uses highly suspicious domain extension"
+          ]
+        },
+        {
+          "id": "email_scam_apple_icloud_locked",
+          "label": 1,
+          "category": "credential_phishing",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.57,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1063.16,
+          "reasons": [
+            "Generic action keywords detected: verify, click, confirm, password",
+            "Contains embedded URLs \u2014 verify authenticity before clicking",
+            "Sender uses highly suspicious domain extension"
+          ]
+        },
+        {
+          "id": "email_scam_display_spoof_gmail",
+          "label": 1,
+          "category": "brand_spoof",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 95.89,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1160.22,
+          "reasons": [
+            "Legitimate transaction wording detected: security alert",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_scam_display_spoof_bank_yahoo",
+          "label": 1,
+          "category": "brand_spoof",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 98.4,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1666.41,
+          "reasons": [
+            "Generic action keywords detected: password, account",
+            "Sender email contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "email_scam_ceo_giftcard_bec",
+          "label": 1,
+          "category": "brand_spoof",
+          "difficulty": "evasion_threat",
+          "scam_level": "scam",
+          "confidence": 90.83,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 2303.77,
+          "reasons": [
+            "AI model flagged content as suspicious"
+          ]
+        },
+        {
+          "id": "email_scam_dhl_customs_fee",
+          "label": 1,
+          "category": "credential_phishing",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.46,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1658.42,
+          "reasons": [
+            "Contains embedded URLs \u2014 verify authenticity before clicking",
+            "Sender uses highly suspicious domain extension"
+          ]
+        },
+        {
+          "id": "email_scam_lottery_prize",
+          "label": 1,
+          "category": "advance_fee",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 96.01,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1313.25,
+          "reasons": [
+            "Aggressive scam keywords detected: congratulations, you won, claim your, act now, one time payment",
+            "Sender uses highly suspicious domain extension"
+          ]
+        },
+        {
+          "id": "email_scam_crypto_double",
+          "label": 1,
+          "category": "advance_fee",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 97.3,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1215.63,
+          "reasons": [
+            "Aggressive scam keywords detected: limited time",
+            "Contains embedded URLs \u2014 verify authenticity before clicking",
+            "Sender uses highly suspicious domain extension"
+          ]
+        },
+        {
+          "id": "email_scam_inheritance",
+          "label": 1,
+          "category": "advance_fee",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.4,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1247.6,
+          "reasons": [
+            "Aggressive scam keywords detected: immediately"
+          ]
+        },
+        {
+          "id": "email_scam_evasion_completed_transfer",
+          "label": 1,
+          "category": "payment_redirect_evasion",
+          "difficulty": "evasion_threat",
+          "scam_level": "safe",
+          "confidence": 82.98,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1389.79,
+          "reasons": [
+            "Legitimate transaction wording detected: transaction, bank transfer",
+            "Contains embedded URLs \u2014 verify authenticity before clicking",
+            "Sender uses highly suspicious domain extension"
+          ]
+        },
+        {
+          "id": "email_scam_evasion_invoice_receipt",
+          "label": 1,
+          "category": "payment_redirect_evasion",
+          "difficulty": "evasion_threat",
+          "scam_level": "scam",
+          "confidence": 91.6,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1173.53,
+          "reasons": [
+            "Aggressive scam keywords detected: claim your, immediately",
+            "Sender email contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "email_scam_amazon_order_phish",
+          "label": 1,
+          "category": "credential_phishing",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 96.69,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1014.05,
+          "reasons": [
+            "Aggressive scam keywords detected: immediately",
+            "Contains embedded URLs \u2014 verify authenticity before clicking",
+            "Sender uses highly suspicious domain extension"
+          ]
+        },
+        {
+          "id": "email_scam_hr_payroll_phish",
+          "label": 1,
+          "category": "credential_phishing",
+          "difficulty": "evasion_threat",
+          "scam_level": "safe",
+          "confidence": 40.32,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1157.18,
+          "reasons": [
+            "Legitimate transaction wording detected: direct deposit",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_scam_docusign_credential",
+          "label": 1,
+          "category": "credential_phishing",
+          "difficulty": "evasion_threat",
+          "scam_level": "suspicious",
+          "confidence": 87.79,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1127.83,
+          "reasons": [
+            "Generic action keywords detected: password",
+            "Contains embedded URLs \u2014 verify authenticity before clicking"
+          ]
+        },
+        {
+          "id": "email_scam_meta_page_strike",
+          "label": 1,
+          "category": "credential_phishing",
+          "difficulty": "realistic_threat",
+          "scam_level": "suspicious",
+          "confidence": 73.93,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1190.46,
+          "reasons": [
+            "Generic action keywords detected: click, confirm, password, account",
+            "Contains embedded URLs \u2014 verify authenticity before clicking",
+            "Sender uses highly suspicious domain extension"
+          ]
+        },
+        {
+          "id": "email_scam_free_iphone_spam",
+          "label": 1,
+          "category": "advance_fee",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 90.93,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1104.39,
+          "reasons": [
+            "Aggressive scam keywords detected: congratulations, claim your, click here",
+            "Sender uses highly suspicious domain extension"
+          ]
+        },
+        {
+          "id": "email_scam_irs_tax_refund",
+          "label": 1,
+          "category": "credential_phishing",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 96.2,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1079.09,
+          "reasons": [
+            "Legitimate transaction wording detected: direct deposit",
+            "Contains embedded URLs \u2014 verify authenticity before clicking",
+            "Sender uses highly suspicious domain extension"
+          ]
+        }
+      ]
+    },
+    "sms": {
+      "overall": {
+        "total": 55,
+        "positives": 20,
+        "negatives": 35,
+        "strict_scam": {
+          "tn": 27,
+          "fp": 8,
+          "fn": 10,
+          "tp": 10,
+          "fpr": 0.2286,
+          "fnr": 0.5,
+          "precision": 0.5556,
+          "recall": 0.5,
+          "f1": 0.5263,
+          "f0_5": 0.5435
+        },
+        "any_alert": {
+          "tn": 15,
+          "fp": 20,
+          "fn": 3,
+          "tp": 17,
+          "fpr": 0.5714,
+          "fnr": 0.15,
+          "precision": 0.4595,
+          "recall": 0.85,
+          "f1": 0.5965,
+          "f0_5": 0.506
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.7343,
+          "pr_auc": 0.6089,
+          "brier_score": 0.2451
+        }
+      },
+      "hard_benign": {
+        "count": 26,
+        "flagged_scam": 8,
+        "flagged_suspicious": 9,
+        "scam_fpr": 0.3077,
+        "any_alert_fpr": 0.6538
+      },
+      "by_category": {
+        "otp_2fa": {
+          "count": 7,
+          "scam_fpr": 0.2857,
+          "any_alert_fpr": 0.5714,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "delivery_update": {
+          "count": 7,
+          "scam_fpr": 0.2857,
+          "any_alert_fpr": 0.7143,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "bank_alert": {
+          "count": 6,
+          "scam_fpr": 0.1667,
+          "any_alert_fpr": 0.6667,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "telecom_promo": {
+          "count": 6,
+          "scam_fpr": 0.5,
+          "any_alert_fpr": 0.6667,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "personal_urgent": {
+          "count": 9,
+          "scam_fpr": 0.0,
+          "any_alert_fpr": 0.3333,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "prize_scam": {
+          "count": 6,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 1.0,
+          "any_alert_recall": 1.0
+        },
+        "smishing_link": {
+          "count": 8,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 0.375,
+          "any_alert_recall": 0.875
+        },
+        "kyc_impersonation": {
+          "count": 4,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 0.25,
+          "any_alert_recall": 0.75
+        },
+        "job_crypto_scam": {
+          "count": 2,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 0.0,
+          "any_alert_recall": 0.5
+        }
+      },
+      "latency_ms": {
+        "mean": 1.15,
+        "p95": 1.53
+      },
+      "false_positives": [
+        {
+          "id": "sms_benign_jazz_bundle",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 98.59,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.52,
+          "reasons": [
+            "Spam keywords found: free, offer, mobile, stop, reply"
+          ]
+        },
+        {
+          "id": "sms_benign_fedex_delivery",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 97.13,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.41,
+          "reasons": [
+            "Spam keywords found: stop, reply",
+            "Contains suspicious number sequence",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_benign_amazon_delivered",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 95.71,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.4,
+          "reasons": [
+            "Spam keywords found: stop, reply"
+          ]
+        },
+        {
+          "id": "sms_benign_uber_pin",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 93.53,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.41,
+          "reasons": [
+            "Spam keywords found: stop, reply"
+          ]
+        },
+        {
+          "id": "sms_benign_foodpanda_promo",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 93.37,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.36,
+          "reasons": [
+            "Spam keywords found: free, stop, reply"
+          ]
+        },
+        {
+          "id": "sms_benign_store_loyalty",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 86.69,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.41,
+          "reasons": [
+            "Spam keywords found: stop"
+          ]
+        },
+        {
+          "id": "sms_benign_whatsapp_code",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 79.51,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.25,
+          "reasons": [
+            "Contains suspicious number sequence",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_benign_card_stmt",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 71.99,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.54,
+          "reasons": [
+            "Spam keywords found: mobile"
+          ]
+        },
+        {
+          "id": "sms_benign_tcs_delivery",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 62.45,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.45,
+          "reasons": [
+            "Contains suspicious number sequence",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_benign_urgent_friend",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 60.45,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.51,
+          "reasons": [
+            "Spam keywords found: urgent"
+          ]
+        },
+        {
+          "id": "sms_benign_electricity_bill",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 60.07,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.38,
+          "reasons": [
+            "Contains suspicious number sequence",
+            "Contains phone number \u2014 potential scam callback"
+          ]
+        },
+        {
+          "id": "sms_benign_university_fee",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 59.4,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.41,
+          "reasons": [
+            "AI model flagged as spam"
+          ]
+        },
+        {
+          "id": "sms_benign_zong_recharge",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 56.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.47,
+          "reasons": [
+            "AI model flagged as spam"
+          ]
+        },
+        {
+          "id": "sms_benign_meezan_debit",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 52.68,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.41,
+          "reasons": [
+            "Contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "sms_benign_numeric_otp",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 51.9,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.35,
+          "reasons": [
+            "Contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "sms_benign_github_2fa",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 49.2,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.4,
+          "reasons": [
+            "Contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "sms_benign_pharmacy_ready",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "standard_benign",
+          "scam_level": "suspicious",
+          "confidence": 46.5,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.53,
+          "reasons": [
+            "AI model flagged as spam"
+          ]
+        },
+        {
+          "id": "sms_benign_flight_gate",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "standard_benign",
+          "scam_level": "suspicious",
+          "confidence": 45.94,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.52,
+          "reasons": [
+            "AI model flagged as spam"
+          ]
+        },
+        {
+          "id": "sms_benign_stripe_payout",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "standard_benign",
+          "scam_level": "suspicious",
+          "confidence": 43.04,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 0.69,
+          "reasons": [
+            "AI model flagged as spam"
+          ]
+        },
+        {
+          "id": "sms_benign_clinic_appt",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 42.2,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.41,
+          "reasons": [
+            "Spam keywords found: reply",
+            "Contains suspicious number sequence",
+            "Contains phone number \u2014 potential scam callback"
+          ]
+        }
+      ],
+      "false_negatives": [
+        {
+          "id": "sms_scam_whatsapp_hijack",
+          "label": 1,
+          "category": "kyc_impersonation",
+          "difficulty": "evasion_threat",
+          "scam_level": "safe",
+          "confidence": 14.62,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 0.74,
+          "reasons": [
+            "Spam keywords found: urgent"
+          ]
+        },
+        {
+          "id": "sms_scam_crypto_job_task",
+          "label": 1,
+          "category": "job_crypto_scam",
+          "difficulty": "evasion_threat",
+          "scam_level": "safe",
+          "confidence": 23.17,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 0.67,
+          "reasons": [
+            "Spam keywords found: offer",
+            "Contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "sms_scam_dhl_customs_smish",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "safe",
+          "confidence": 32.83,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 0.81,
+          "reasons": [
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        }
+      ],
+      "per_case": [
+        {
+          "id": "sms_benign_bank_otp",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 17.89,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 3.4,
+          "reasons": [
+            "Contains suspicious number sequence",
+            "Contains phone number \u2014 potential scam callback"
+          ]
+        },
+        {
+          "id": "sms_benign_google_otp",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 16.48,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1.51,
+          "reasons": [
+            "Contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "sms_benign_nayapay_otp",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 12.15,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1.46,
+          "reasons": [
+            "Contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "sms_benign_numeric_otp",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 51.9,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.35,
+          "reasons": [
+            "Contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "sms_benign_fedex_delivery",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 97.13,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.41,
+          "reasons": [
+            "Spam keywords found: stop, reply",
+            "Contains suspicious number sequence",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_benign_tcs_delivery",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 62.45,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.45,
+          "reasons": [
+            "Contains suspicious number sequence",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_benign_amazon_delivered",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 95.71,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.4,
+          "reasons": [
+            "Spam keywords found: stop, reply"
+          ]
+        },
+        {
+          "id": "sms_benign_meezan_debit",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 52.68,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.41,
+          "reasons": [
+            "Contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "sms_benign_hbl_credit",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 20.69,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1.39,
+          "reasons": [
+            "No suspicious patterns detected"
+          ]
+        },
+        {
+          "id": "sms_benign_card_stmt",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 71.99,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.54,
+          "reasons": [
+            "Spam keywords found: mobile"
+          ]
+        },
+        {
+          "id": "sms_benign_jazz_bundle",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 98.59,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.52,
+          "reasons": [
+            "Spam keywords found: free, offer, mobile, stop, reply"
+          ]
+        },
+        {
+          "id": "sms_benign_zong_recharge",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 56.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.47,
+          "reasons": [
+            "AI model flagged as spam"
+          ]
+        },
+        {
+          "id": "sms_benign_store_loyalty",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 86.69,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.41,
+          "reasons": [
+            "Spam keywords found: stop"
+          ]
+        },
+        {
+          "id": "sms_benign_clinic_appt",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 42.2,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.41,
+          "reasons": [
+            "Spam keywords found: reply",
+            "Contains suspicious number sequence",
+            "Contains phone number \u2014 potential scam callback"
+          ]
+        },
+        {
+          "id": "sms_benign_urgent_friend",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 60.45,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.51,
+          "reasons": [
+            "Spam keywords found: urgent"
+          ]
+        },
+        {
+          "id": "sms_benign_mom_groceries",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 2.35,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1.41,
+          "reasons": [
+            "No suspicious patterns detected"
+          ]
+        },
+        {
+          "id": "sms_benign_colleague_meeting",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 3.37,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1.46,
+          "reasons": [
+            "No suspicious patterns detected"
+          ]
+        },
+        {
+          "id": "sms_benign_uber_pin",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 93.53,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.41,
+          "reasons": [
+            "Spam keywords found: stop, reply"
+          ]
+        },
+        {
+          "id": "sms_benign_careem_arrival",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 29.12,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1.42,
+          "reasons": [
+            "Spam keywords found: free"
+          ]
+        },
+        {
+          "id": "sms_benign_electricity_bill",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 60.07,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.38,
+          "reasons": [
+            "Contains suspicious number sequence",
+            "Contains phone number \u2014 potential scam callback"
+          ]
+        },
+        {
+          "id": "sms_benign_university_fee",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 59.4,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.41,
+          "reasons": [
+            "AI model flagged as spam"
+          ]
+        },
+        {
+          "id": "sms_benign_pharmacy_ready",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "standard_benign",
+          "scam_level": "suspicious",
+          "confidence": 46.5,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.53,
+          "reasons": [
+            "AI model flagged as spam"
+          ]
+        },
+        {
+          "id": "sms_benign_flight_gate",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "standard_benign",
+          "scam_level": "suspicious",
+          "confidence": 45.94,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.52,
+          "reasons": [
+            "AI model flagged as spam"
+          ]
+        },
+        {
+          "id": "sms_benign_github_2fa",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 49.2,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 1.4,
+          "reasons": [
+            "Contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "sms_benign_classmate_cash",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 8.76,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1.42,
+          "reasons": [
+            "No suspicious patterns detected"
+          ]
+        },
+        {
+          "id": "sms_benign_foodpanda_promo",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 93.37,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.36,
+          "reasons": [
+            "Spam keywords found: free, stop, reply"
+          ]
+        },
+        {
+          "id": "sms_benign_icloud_backup",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 16.34,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1.33,
+          "reasons": [
+            "No suspicious patterns detected"
+          ]
+        },
+        {
+          "id": "sms_benign_gym_membership",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 31.65,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1.44,
+          "reasons": [
+            "Contains suspicious number sequence",
+            "Contains phone number \u2014 potential scam callback"
+          ]
+        },
+        {
+          "id": "sms_benign_library_due",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 10.08,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 1.4,
+          "reasons": [
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_benign_whatsapp_code",
+          "label": 0,
+          "category": "otp_2fa",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 79.51,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 1.25,
+          "reasons": [
+            "Contains suspicious number sequence",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_benign_stripe_payout",
+          "label": 0,
+          "category": "bank_alert",
+          "difficulty": "standard_benign",
+          "scam_level": "suspicious",
+          "confidence": 43.04,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 0.69,
+          "reasons": [
+            "AI model flagged as spam"
+          ]
+        },
+        {
+          "id": "sms_benign_car_service",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 21.46,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 0.81,
+          "reasons": [
+            "No suspicious patterns detected"
+          ]
+        },
+        {
+          "id": "sms_benign_internet_down",
+          "label": 0,
+          "category": "telecom_promo",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 24.37,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 0.81,
+          "reasons": [
+            "Contains suspicious number sequence",
+            "Contains phone number \u2014 potential scam callback"
+          ]
+        },
+        {
+          "id": "sms_benign_blood_drive",
+          "label": 0,
+          "category": "personal_urgent",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 1.81,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 0.66,
+          "reasons": [
+            "No suspicious patterns detected"
+          ]
+        },
+        {
+          "id": "sms_benign_parcel_locker",
+          "label": 0,
+          "category": "delivery_update",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 11.32,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 0.64,
+          "reasons": [
+            "Contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "sms_scam_walmart_prize",
+          "label": 1,
+          "category": "prize_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.36,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 0.8,
+          "reasons": [
+            "Spam keywords found: prize, claim, won, cash",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_dhl_customs_smish",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "safe",
+          "confidence": 32.83,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 0.81,
+          "reasons": [
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_bank_kyc_number",
+          "label": 1,
+          "category": "kyc_impersonation",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 84.65,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 0.7,
+          "reasons": [
+            "Spam keywords found: urgent, mobile",
+            "Contains suspicious number sequence",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_bisp_relief_fake",
+          "label": 1,
+          "category": "prize_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 95.66,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 0.68,
+          "reasons": [
+            "Spam keywords found: claim, cash",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_usps_redelivery",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "suspicious",
+          "confidence": 52.55,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 0.71,
+          "reasons": [
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_netflix_hold",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "suspicious",
+          "confidence": 67.29,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 0.67,
+          "reasons": [
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_crypto_job_task",
+          "label": 1,
+          "category": "job_crypto_scam",
+          "difficulty": "evasion_threat",
+          "scam_level": "safe",
+          "confidence": 23.17,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 0.67,
+          "reasons": [
+            "Spam keywords found: offer",
+            "Contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "sms_scam_jeeto_prize_call",
+          "label": 1,
+          "category": "prize_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 96.34,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 0.65,
+          "reasons": [
+            "Spam keywords found: won, cash, mobile",
+            "Contains suspicious number sequence",
+            "Contains phone number \u2014 potential scam callback"
+          ]
+        },
+        {
+          "id": "sms_scam_loan_instant",
+          "label": 1,
+          "category": "job_crypto_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "suspicious",
+          "confidence": 62.02,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 0.67,
+          "reasons": [
+            "Spam keywords found: cash",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_toll_unpaid",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "suspicious",
+          "confidence": 57.3,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 0.66,
+          "reasons": [
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_paypal_limit",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "suspicious",
+          "confidence": 58.93,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 0.68,
+          "reasons": [
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_otp_social_eng",
+          "label": 1,
+          "category": "kyc_impersonation",
+          "difficulty": "evasion_threat",
+          "scam_level": "suspicious",
+          "confidence": 45.4,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 0.77,
+          "reasons": [
+            "Spam keywords found: reply"
+          ]
+        },
+        {
+          "id": "sms_scam_whatsapp_hijack",
+          "label": 1,
+          "category": "kyc_impersonation",
+          "difficulty": "evasion_threat",
+          "scam_level": "safe",
+          "confidence": 14.62,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 0.74,
+          "reasons": [
+            "Spam keywords found: urgent"
+          ]
+        },
+        {
+          "id": "sms_scam_tax_refund_link",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 96.41,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 0.81,
+          "reasons": [
+            "Spam keywords found: claim",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_apple_findmy",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 73.44,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 0.96,
+          "reasons": [
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_binance_withdraw",
+          "label": 1,
+          "category": "smishing_link",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 73.32,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 0.88,
+          "reasons": [
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_uk_ringtone_classic",
+          "label": 1,
+          "category": "prize_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 98.85,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 0.72,
+          "reasons": [
+            "Spam keywords found: free, cash",
+            "Contains suspicious number sequence"
+          ]
+        },
+        {
+          "id": "sms_scam_amazon_gift_survey",
+          "label": 1,
+          "category": "prize_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 90.25,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 0.67,
+          "reasons": [
+            "Spam keywords found: claim",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_bank_otp_fraud_link",
+          "label": 1,
+          "category": "kyc_impersonation",
+          "difficulty": "realistic_threat",
+          "scam_level": "suspicious",
+          "confidence": 69.47,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 0.77,
+          "reasons": [
+            "Spam keywords found: cash",
+            "Contains URL in SMS \u2014 potential phishing link"
+          ]
+        },
+        {
+          "id": "sms_scam_fake_missed_call_premium",
+          "label": 1,
+          "category": "prize_scam",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 96.49,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 0.69,
+          "reasons": [
+            "Spam keywords found: urgent, claim, cash",
+            "Contains suspicious number sequence",
+            "Contains phone number \u2014 potential scam callback"
+          ]
+        }
+      ]
+    },
+    "url": {
+      "overall": {
+        "total": 65,
+        "positives": 25,
+        "negatives": 40,
+        "strict_scam": {
+          "tn": 33,
+          "fp": 7,
+          "fn": 4,
+          "tp": 21,
+          "fpr": 0.175,
+          "fnr": 0.16,
+          "precision": 0.75,
+          "recall": 0.84,
+          "f1": 0.7925,
+          "f0_5": 0.7664
+        },
+        "any_alert": {
+          "tn": 29,
+          "fp": 11,
+          "fn": 3,
+          "tp": 22,
+          "fpr": 0.275,
+          "fnr": 0.12,
+          "precision": 0.6667,
+          "recall": 0.88,
+          "f1": 0.7586,
+          "f0_5": 0.7006
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.874,
+          "pr_auc": 0.7867,
+          "brier_score": 0.1549
+        }
+      },
+      "hard_benign": {
+        "count": 33,
+        "flagged_scam": 7,
+        "flagged_suspicious": 4,
+        "scam_fpr": 0.2121,
+        "any_alert_fpr": 0.3333
+      },
+      "by_category": {
+        "auth_subdomain": {
+          "count": 12,
+          "scam_fpr": 0.0,
+          "any_alert_fpr": 0.1667,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "support_docs_password": {
+          "count": 10,
+          "scam_fpr": 0.1,
+          "any_alert_fpr": 0.2,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "blog_brand_in_path": {
+          "count": 6,
+          "scam_fpr": 0.6667,
+          "any_alert_fpr": 0.8333,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "long_ecommerce_query": {
+          "count": 7,
+          "scam_fpr": 0.1429,
+          "any_alert_fpr": 0.1429,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "bare_academic_http": {
+          "count": 5,
+          "scam_fpr": 0.2,
+          "any_alert_fpr": 0.2,
+          "scam_recall": null,
+          "any_alert_recall": null
+        },
+        "brand_spoof_domain": {
+          "count": 14,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 1.0,
+          "any_alert_recall": 1.0
+        },
+        "typosquat": {
+          "count": 5,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 0.4,
+          "any_alert_recall": 0.6
+        },
+        "raw_ip_at_obfuscation": {
+          "count": 4,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 1.0,
+          "any_alert_recall": 1.0
+        },
+        "dga_shortener_phishing": {
+          "count": 2,
+          "scam_fpr": null,
+          "any_alert_fpr": null,
+          "scam_recall": 0.5,
+          "any_alert_recall": 0.5
+        }
+      },
+      "latency_ms": {
+        "mean": 120.68,
+        "p95": 155.95
+      },
+      "false_positives": [
+        {
+          "id": "url_benign_cloudflare_blog_paypal",
+          "label": 0,
+          "category": "blog_brand_in_path",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 105.74,
+          "reasons": [
+            "Spoofs brand 'paypal' outside of the main domain",
+            "Spoofs brand 'apple' outside of the main domain",
+            "Excessive hyphens in URL \u2014 common phishing pattern"
+          ]
+        },
+        {
+          "id": "url_benign_ars_microsoft_google",
+          "label": 0,
+          "category": "blog_brand_in_path",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 95.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 107.28,
+          "reasons": [
+            "Spoofs brand 'google' outside of the main domain",
+            "Spoofs brand 'microsoft' outside of the main domain",
+            "Suspicious keywords in URL: account"
+          ]
+        },
+        {
+          "id": "url_benign_mozilla_password_kb",
+          "label": 0,
+          "category": "support_docs_password",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 80.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 155.94,
+          "reasons": [
+            "Suspicious keywords in URL: support, password",
+            "Excessive hyphens in URL \u2014 common phishing pattern",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_medium_netflix_arch",
+          "label": 0,
+          "category": "blog_brand_in_path",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 80.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 108.4,
+          "reasons": [
+            "Spoofs brand 'netflix' outside of the main domain",
+            "Suspicious keywords in URL: auth, free",
+            "Excessive hyphens in URL \u2014 common phishing pattern"
+          ]
+        },
+        {
+          "id": "url_benign_techcrunch_amazon",
+          "label": 0,
+          "category": "blog_brand_in_path",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 75.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 111.04,
+          "reasons": [
+            "Spoofs brand 'amazon' outside of the main domain",
+            "Suspicious keywords in URL: update",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_daraz_product_slug",
+          "label": 0,
+          "category": "long_ecommerce_query",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 75.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 106.01,
+          "reasons": [
+            "Suspicious keywords in URL: free",
+            "Excessive hyphens in URL \u2014 common phishing pattern",
+            "Unusually long URL \u2014 common obfuscation technique"
+          ]
+        },
+        {
+          "id": "url_benign_bare_fastapi",
+          "label": 0,
+          "category": "bare_academic_http",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 65.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 154.52,
+          "reasons": [
+            "Suspicious keywords in URL: auth",
+            "URL does not use HTTPS \u2014 connection is not secure",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_bankalfalah_login",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 60.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 50.14,
+          "reasons": [
+            "Suspicious keywords in URL: login, bank",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_proton_verify_support",
+          "label": 0,
+          "category": "support_docs_password",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 60.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 106.15,
+          "reasons": [
+            "Suspicious keywords in URL: support, password",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_wikipedia_paypal",
+          "label": 0,
+          "category": "blog_brand_in_path",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 60.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 107.36,
+          "reasons": [
+            "Spoofs brand 'paypal' outside of the main domain",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_mongodb_atlas_login",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 60.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 105.9,
+          "reasons": [
+            "Suspicious keywords in URL: login, account",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        }
+      ],
+      "false_negatives": [
+        {
+          "id": "url_scam_arnazon_typosquat",
+          "label": 1,
+          "category": "typosquat",
+          "difficulty": "realistic_threat",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 136.29,
+          "reasons": [
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_scam_dga_wallet_cfd",
+          "label": 1,
+          "category": "dga_shortener_phishing",
+          "difficulty": "realistic_threat",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 128.82,
+          "reasons": [
+            "Suspicious keywords in URL: verify",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_scam_punycode_spoof",
+          "label": 1,
+          "category": "typosquat",
+          "difficulty": "evasion_threat",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 120.65,
+          "reasons": [
+            "Suspicious keywords in URL: login",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        }
+      ],
+      "per_case": [
+        {
+          "id": "url_benign_salesforce_login",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 48.56,
+          "reasons": [
+            "Suspicious keywords in URL: login",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_bankalfalah_login",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 60.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 50.14,
+          "reasons": [
+            "Suspicious keywords in URL: login, bank",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_nust_lms",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 80.55,
+          "reasons": [
+            "Suspicious keywords in URL: login",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_shopify_lookup",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 142.24,
+          "reasons": [
+            "Suspicious keywords in URL: account",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_atlassian_login",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 159.92,
+          "reasons": [
+            "Suspicious keywords in URL: login",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_notion_signin",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 141.08,
+          "reasons": [
+            "Suspicious keywords in URL: login",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_figma_signin",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 155.96,
+          "reasons": [
+            "Suspicious keywords in URL: login",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_digitalocean_auth",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 152.19,
+          "reasons": [
+            "Suspicious keywords in URL: login",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_mozilla_password_kb",
+          "label": 0,
+          "category": "support_docs_password",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 80.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 155.94,
+          "reasons": [
+            "Suspicious keywords in URL: support, password",
+            "Excessive hyphens in URL \u2014 common phishing pattern",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_stripe_invoicing_docs",
+          "label": 0,
+          "category": "support_docs_password",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 154.57,
+          "reasons": [
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_ubuntu_reset_password",
+          "label": 0,
+          "category": "support_docs_password",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 119.75,
+          "reasons": [
+            "Suspicious keywords in URL: password",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_gitlab_tokens_docs",
+          "label": 0,
+          "category": "support_docs_password",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 106.17,
+          "reasons": [
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_owasp_auth_guide",
+          "label": 0,
+          "category": "support_docs_password",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 105.5,
+          "reasons": [
+            "Suspicious keywords in URL: auth",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_proton_verify_support",
+          "label": 0,
+          "category": "support_docs_password",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 60.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 106.15,
+          "reasons": [
+            "Suspicious keywords in URL: support, password",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_cloudflare_blog_paypal",
+          "label": 0,
+          "category": "blog_brand_in_path",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 105.74,
+          "reasons": [
+            "Spoofs brand 'paypal' outside of the main domain",
+            "Spoofs brand 'apple' outside of the main domain",
+            "Excessive hyphens in URL \u2014 common phishing pattern"
+          ]
+        },
+        {
+          "id": "url_benign_techcrunch_amazon",
+          "label": 0,
+          "category": "blog_brand_in_path",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 75.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 111.04,
+          "reasons": [
+            "Spoofs brand 'amazon' outside of the main domain",
+            "Suspicious keywords in URL: update",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_ars_microsoft_google",
+          "label": 0,
+          "category": "blog_brand_in_path",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 95.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 107.28,
+          "reasons": [
+            "Spoofs brand 'google' outside of the main domain",
+            "Spoofs brand 'microsoft' outside of the main domain",
+            "Suspicious keywords in URL: account"
+          ]
+        },
+        {
+          "id": "url_benign_medium_netflix_arch",
+          "label": 0,
+          "category": "blog_brand_in_path",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 80.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 108.4,
+          "reasons": [
+            "Spoofs brand 'netflix' outside of the main domain",
+            "Suspicious keywords in URL: auth, free",
+            "Excessive hyphens in URL \u2014 common phishing pattern"
+          ]
+        },
+        {
+          "id": "url_benign_wikipedia_paypal",
+          "label": 0,
+          "category": "blog_brand_in_path",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 60.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 107.36,
+          "reasons": [
+            "Spoofs brand 'paypal' outside of the main domain",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_daraz_product_slug",
+          "label": 0,
+          "category": "long_ecommerce_query",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 75.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 106.01,
+          "reasons": [
+            "Suspicious keywords in URL: free",
+            "Excessive hyphens in URL \u2014 common phishing pattern",
+            "Unusually long URL \u2014 common obfuscation technique"
+          ]
+        },
+        {
+          "id": "url_benign_coursera_utm",
+          "label": 0,
+          "category": "long_ecommerce_query",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 106.74,
+          "reasons": [
+            "Unusually long URL \u2014 common obfuscation technique",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_kaggle_dataset",
+          "label": 0,
+          "category": "long_ecommerce_query",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 105.03,
+          "reasons": [
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_aliexpress_long",
+          "label": 0,
+          "category": "long_ecommerce_query",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 110.27,
+          "reasons": [
+            "Unusually long URL \u2014 common obfuscation technique",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_pypi_scikit",
+          "label": 0,
+          "category": "long_ecommerce_query",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 131.08,
+          "reasons": [
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_huggingface_model",
+          "label": 0,
+          "category": "long_ecommerce_query",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 142.84,
+          "reasons": [
+            "Excessive hyphens in URL \u2014 common phishing pattern",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_stanford_http",
+          "label": 0,
+          "category": "bare_academic_http",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 125.88,
+          "reasons": [
+            "URL does not use HTTPS \u2014 connection is not secure",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_bare_comsats",
+          "label": 0,
+          "category": "bare_academic_http",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 129.26,
+          "reasons": [
+            "URL does not use HTTPS \u2014 connection is not secure",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_bare_mit",
+          "label": 0,
+          "category": "bare_academic_http",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 133.52,
+          "reasons": [
+            "URL does not use HTTPS \u2014 connection is not secure",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_bare_fastapi",
+          "label": 0,
+          "category": "bare_academic_http",
+          "difficulty": "hard_benign",
+          "scam_level": "scam",
+          "confidence": 65.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 154.52,
+          "reasons": [
+            "Suspicious keywords in URL: auth",
+            "URL does not use HTTPS \u2014 connection is not secure",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_bare_vercel",
+          "label": 0,
+          "category": "bare_academic_http",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 145.95,
+          "reasons": [
+            "URL does not use HTTPS \u2014 connection is not secure",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_google_root",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 0.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 150.49,
+          "reasons": [
+            "Domain matches a trusted provider and no strong phishing indicators were found"
+          ]
+        },
+        {
+          "id": "url_benign_github_repo",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 0.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 158.39,
+          "reasons": [
+            "Domain matches a trusted provider and no strong phishing indicators were found"
+          ]
+        },
+        {
+          "id": "url_benign_python_docs",
+          "label": 0,
+          "category": "support_docs_password",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 0.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 161.73,
+          "reasons": [
+            "Domain matches a trusted provider and no strong phishing indicators were found"
+          ]
+        },
+        {
+          "id": "url_benign_stackoverflow_q",
+          "label": 0,
+          "category": "support_docs_password",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 20.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 113.86,
+          "reasons": [
+            "Excessive hyphens in URL \u2014 common phishing pattern",
+            "Domain matches a trusted provider and no strong phishing indicators were found"
+          ]
+        },
+        {
+          "id": "url_benign_bbc_news",
+          "label": 0,
+          "category": "blog_brand_in_path",
+          "difficulty": "standard_benign",
+          "scam_level": "safe",
+          "confidence": 0.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 108.56,
+          "reasons": [
+            "Domain matches a trusted provider and no strong phishing indicators were found"
+          ]
+        },
+        {
+          "id": "url_benign_render_docs",
+          "label": 0,
+          "category": "support_docs_password",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 114.67,
+          "reasons": [
+            "Suspicious keywords in URL: free",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_mongodb_atlas_login",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "hard_benign",
+          "scam_level": "suspicious",
+          "confidence": 60.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 105.9,
+          "reasons": [
+            "Suspicious keywords in URL: login, account",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_benign_wise_pricing",
+          "label": 0,
+          "category": "long_ecommerce_query",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 0.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 105.58,
+          "reasons": [
+            "URL appears to be a standard secure format"
+          ]
+        },
+        {
+          "id": "url_benign_jazzcash_portal",
+          "label": 0,
+          "category": "auth_subdomain",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 110.65,
+          "reasons": [
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_benign_nayapay_help",
+          "label": 0,
+          "category": "support_docs_password",
+          "difficulty": "hard_benign",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 108.79,
+          "reasons": [
+            "Suspicious keywords in URL: account",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_scam_paypal_xyz",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 108.34,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "Suspicious keywords in URL: login, verify, secure, confirm",
+            "URL does not use HTTPS \u2014 connection is not secure"
+          ]
+        },
+        {
+          "id": "url_scam_apple_https_top",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 107.03,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "Suspicious keywords in URL: login, verify, secure, signin",
+            "Excessive hyphens in URL \u2014 common phishing pattern"
+          ]
+        },
+        {
+          "id": "url_scam_microsoft_subdomain_tk",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 106.51,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "Suspicious keywords in URL: login, verify, auth",
+            "Too many subdomains \u2014 common phishing/obfuscation pattern"
+          ]
+        },
+        {
+          "id": "url_scam_free_iphone_tk",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 104.83,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "Suspicious keywords in URL: winner, free",
+            "URL does not use HTTPS \u2014 connection is not secure"
+          ]
+        },
+        {
+          "id": "url_scam_amazon_prize_ml",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 106.13,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "Suspicious keywords in URL: verify, account, winner, prize",
+            "URL does not use HTTPS \u2014 connection is not secure"
+          ]
+        },
+        {
+          "id": "url_scam_netflix_billing_click",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 95.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 117.93,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "Suspicious keywords in URL: update, confirm",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_scam_chase_verification_ga",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 85.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 132.2,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "Suspicious keywords in URL: login, bank",
+            "URL does not use HTTPS \u2014 connection is not secure"
+          ]
+        },
+        {
+          "id": "url_scam_dhl_customs_win",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 136.57,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "URL does not use HTTPS \u2014 connection is not secure",
+            "Excessive hyphens in URL \u2014 common phishing pattern"
+          ]
+        },
+        {
+          "id": "url_scam_paypa1_typosquat",
+          "label": 1,
+          "category": "typosquat",
+          "difficulty": "realistic_threat",
+          "scam_level": "suspicious",
+          "confidence": 60.0,
+          "pred_scam": 0,
+          "pred_alert": 1,
+          "latency_ms": 130.55,
+          "reasons": [
+            "Suspicious keywords in URL: verify, signin",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_scam_micros0ft_typosquat",
+          "label": 1,
+          "category": "typosquat",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 75.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 135.04,
+          "reasons": [
+            "Suspicious keywords in URL: login, account, support",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_scam_arnazon_typosquat",
+          "label": 1,
+          "category": "typosquat",
+          "difficulty": "realistic_threat",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 136.29,
+          "reasons": [
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_scam_goog1e_typosquat",
+          "label": 1,
+          "category": "typosquat",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 75.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 116.01,
+          "reasons": [
+            "Suspicious keywords in URL: verify, account, signin",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_scam_raw_ip_admin",
+          "label": 1,
+          "category": "raw_ip_at_obfuscation",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 90.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 132.18,
+          "reasons": [
+            "Uses raw IP address instead of domain name",
+            "URL does not use HTTPS \u2014 connection is not secure",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_scam_public_ip_login",
+          "label": 1,
+          "category": "raw_ip_at_obfuscation",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 134.38,
+          "reasons": [
+            "Uses raw IP address instead of domain name",
+            "Spoofs brand 'chase' outside of the main domain",
+            "Suspicious keywords in URL: login"
+          ]
+        },
+        {
+          "id": "url_scam_at_symbol_spoof",
+          "label": 1,
+          "category": "raw_ip_at_obfuscation",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 133.44,
+          "reasons": [
+            "Spoofs brand 'paypal' outside of the main domain",
+            "Suspicious keywords in URL: signin",
+            "URL contains @ symbol \u2014 hides true destination"
+          ]
+        },
+        {
+          "id": "url_scam_at_google_trick",
+          "label": 1,
+          "category": "raw_ip_at_obfuscation",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 99.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 144.11,
+          "reasons": [
+            "Uses raw IP address instead of domain name",
+            "Spoofs brand 'google' outside of the main domain",
+            "Suspicious keywords in URL: account, auth"
+          ]
+        },
+        {
+          "id": "url_scam_dga_civpro",
+          "label": 1,
+          "category": "dga_shortener_phishing",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 80.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 110.92,
+          "reasons": [
+            "Suspicious keywords in URL: signin",
+            "URL does not use HTTPS \u2014 connection is not secure",
+            "Too many subdomains \u2014 common phishing/obfuscation pattern"
+          ]
+        },
+        {
+          "id": "url_scam_dga_wallet_cfd",
+          "label": 1,
+          "category": "dga_shortener_phishing",
+          "difficulty": "realistic_threat",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 128.82,
+          "reasons": [
+            "Suspicious keywords in URL: verify",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_scam_punycode_spoof",
+          "label": 1,
+          "category": "typosquat",
+          "difficulty": "evasion_threat",
+          "scam_level": "safe",
+          "confidence": 25.0,
+          "pred_scam": 0,
+          "pred_alert": 0,
+          "latency_ms": 120.65,
+          "reasons": [
+            "Suspicious keywords in URL: login",
+            "AI URL model flagged the link, but heuristics were weak"
+          ]
+        },
+        {
+          "id": "url_scam_meta_appeals_click",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 65.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 112.0,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_scam_binance_gq",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 95.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 104.7,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "Suspicious keywords in URL: verify, auth",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_scam_jazzcash_xyz",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 85.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 104.35,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "Suspicious keywords in URL: verify, update",
+            "URL does not use HTTPS \u2014 connection is not secure"
+          ]
+        },
+        {
+          "id": "url_scam_icloud_cf",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 65.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 102.3,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_scam_bank_of_america_subdomain",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "evasion_threat",
+          "scam_level": "scam",
+          "confidence": 75.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 115.84,
+          "reasons": [
+            "Suspicious keywords in URL: verify, secure, bank",
+            "AI URL model reinforced suspicious URL patterns"
+          ]
+        },
+        {
+          "id": "url_scam_tax_refund_ml",
+          "label": 1,
+          "category": "brand_spoof_domain",
+          "difficulty": "realistic_threat",
+          "scam_level": "scam",
+          "confidence": 75.0,
+          "pred_scam": 1,
+          "pred_alert": 1,
+          "latency_ms": 114.91,
+          "reasons": [
+            "Uses a highly suspicious domain extension",
+            "URL does not use HTTPS \u2014 connection is not secure",
+            "Excessive hyphens in URL \u2014 common phishing pattern"
+          ]
+        }
+      ]
+    }
+  },
+  "suite_a": {
+    "model_sizes_kb": {
+      "anomaly_model.pkl": 629.9,
+      "email_model.pkl": 701.54,
+      "sms_model.pkl": 337.36,
+      "url_model.pkl": 48157.46
+    },
+    "email": {
+      "rows_total": 82486,
+      "exact_duplicate_rows": 408,
+      "train_test_exact_overlap": 137,
+      "dedup_test_rows": 16339,
+      "punctuation_rate": 0.0,
+      "ml_threshold_07_09_metrics": {
+        "total": 16339,
+        "positives": 8566,
+        "negatives": 7773,
+        "strict_scam": {
+          "tn": 7765,
+          "fp": 8,
+          "fn": 635,
+          "tp": 7931,
+          "fpr": 0.001,
+          "fnr": 0.0741,
+          "precision": 0.999,
+          "recall": 0.9259,
+          "f1": 0.961,
+          "f0_5": 0.9835
+        },
+        "any_alert": {
+          "tn": 7730,
+          "fp": 43,
+          "fn": 215,
+          "tp": 8351,
+          "fpr": 0.0055,
+          "fnr": 0.0251,
+          "precision": 0.9949,
+          "recall": 0.9749,
+          "f1": 0.9848,
+          "f0_5": 0.9908
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.9992,
+          "pr_auc": 0.9992,
+          "brier_score": 0.0097
+        }
+      }
+    },
+    "sms": {
+      "rows_total": 5572,
+      "exact_duplicate_rows": 403,
+      "train_test_exact_overlap": 115,
+      "dedup_test_rows": 977,
+      "ham_rate": 0.8659,
+      "end_to_end_dedup_metrics": {
+        "total": 977,
+        "positives": 117,
+        "negatives": 860,
+        "strict_scam": {
+          "tn": 858,
+          "fp": 2,
+          "fn": 20,
+          "tp": 97,
+          "fpr": 0.0023,
+          "fnr": 0.1709,
+          "precision": 0.9798,
+          "recall": 0.8291,
+          "f1": 0.8981,
+          "f0_5": 0.9454
+        },
+        "any_alert": {
+          "tn": 853,
+          "fp": 7,
+          "fn": 9,
+          "tp": 108,
+          "fpr": 0.0081,
+          "fnr": 0.0769,
+          "precision": 0.9391,
+          "recall": 0.9231,
+          "f1": 0.931,
+          "f0_5": 0.9359
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.9837,
+          "pr_auc": 0.9568,
+          "brier_score": 0.0191
+        }
+      }
+    },
+    "url": {
+      "rows_total": 651191,
+      "exact_duplicate_rows": 10072,
+      "has_scheme_rate_by_type": {
+        "benign": 0.0826,
+        "defacement": 1.0,
+        "malware": 0.9628,
+        "phishing": 0.2641
+      },
+      "ml_raw_csv_20k": {
+        "total": 20000,
+        "positives": 6807,
+        "negatives": 13193,
+        "strict_scam": {
+          "tn": 12711,
+          "fp": 482,
+          "fn": 464,
+          "tp": 6343,
+          "fpr": 0.0365,
+          "fnr": 0.0682,
+          "precision": 0.9294,
+          "recall": 0.9318,
+          "f1": 0.9306,
+          "f0_5": 0.9299
+        },
+        "any_alert": {
+          "tn": 12711,
+          "fp": 482,
+          "fn": 464,
+          "tp": 6343,
+          "fpr": 0.0365,
+          "fnr": 0.0682,
+          "precision": 0.9294,
+          "recall": 0.9318,
+          "f1": 0.9306,
+          "f0_5": 0.9299
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.9878,
+          "pr_auc": 0.9824,
+          "brier_score": 0.0363
+        }
+      },
+      "ml_after_http_normalization_20k": {
+        "total": 20000,
+        "positives": 6807,
+        "negatives": 13193,
+        "strict_scam": {
+          "tn": 2065,
+          "fp": 11128,
+          "fn": 175,
+          "tp": 6632,
+          "fpr": 0.8435,
+          "fnr": 0.0257,
+          "precision": 0.3734,
+          "recall": 0.9743,
+          "f1": 0.5399,
+          "f0_5": 0.426
+        },
+        "any_alert": {
+          "tn": 2065,
+          "fp": 11128,
+          "fn": 175,
+          "tp": 6632,
+          "fpr": 0.8435,
+          "fnr": 0.0257,
+          "precision": 0.3734,
+          "recall": 0.9743,
+          "f1": 0.5399,
+          "f0_5": 0.426
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.8123,
+          "pr_auc": 0.7709,
+          "brier_score": 0.4422
+        }
+      },
+      "end_to_end_domain_grouped_400": {
+        "total": 400,
+        "positives": 132,
+        "negatives": 268,
+        "strict_scam": {
+          "tn": 239,
+          "fp": 29,
+          "fn": 98,
+          "tp": 34,
+          "fpr": 0.1082,
+          "fnr": 0.7424,
+          "precision": 0.5397,
+          "recall": 0.2576,
+          "f1": 0.3487,
+          "f0_5": 0.4427
+        },
+        "any_alert": {
+          "tn": 183,
+          "fp": 85,
+          "fn": 76,
+          "tp": 56,
+          "fpr": 0.3172,
+          "fnr": 0.5758,
+          "precision": 0.3972,
+          "recall": 0.4242,
+          "f1": 0.4103,
+          "f0_5": 0.4023
+        },
+        "ranking_and_calibration": {
+          "roc_auc": 0.5883,
+          "pr_auc": 0.4668,
+          "brier_score": 0.2196
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1447 @@
+{
+  "metadata": {
+    "description": "Strict holdout benchmark for Scam Shield detectors. Never mix into training sets.",
+    "version": "1.0.0"
+  },
+  "email": [
+    {
+      "id": "email_benign_notion_reset",
+      "label": 0,
+      "category": "saas_security_otp",
+      "difficulty": "hard_benign",
+      "subject": "Reset your Notion password",
+      "sender": "Notion <no-reply@notion.so>",
+      "body": "We received a request to reset your Notion account password. Click the link below to confirm within 30 minutes: https://www.notion.so/reset?token=abc123def456"
+    },
+    {
+      "id": "email_benign_discord_otp",
+      "label": 0,
+      "category": "saas_security_otp",
+      "difficulty": "hard_benign",
+      "subject": "Your login verification code",
+      "sender": "Discord Security <security@discord.com>",
+      "body": "Enter verification code 849201 to verify your login attempt from a new browser. If this was not you, please update your password immediately."
+    },
+    {
+      "id": "email_benign_university_it",
+      "label": 0,
+      "category": "saas_security_otp",
+      "difficulty": "hard_benign",
+      "subject": "Action required: Update your student portal password",
+      "sender": "IT Helpdesk <it-helpdesk@comsats-portal.edu.pk>",
+      "body": "Dear student, campus password rotation is due this week. Please verify your account and update your password before Friday via https://portal.comsats-portal.edu.pk/account/password"
+    },
+    {
+      "id": "email_benign_slack_signin",
+      "label": 0,
+      "category": "saas_security_otp",
+      "difficulty": "hard_benign",
+      "subject": "Slack confirmation code: 482-910",
+      "sender": "Slack <feedback@slack.com>",
+      "body": "Enter this confirmation code in your browser to finish signing in to your workspace. This code expires in 10 minutes."
+    },
+    {
+      "id": "email_benign_cloudflare_2fa",
+      "label": 0,
+      "category": "saas_security_otp",
+      "difficulty": "hard_benign",
+      "subject": "New login to your Cloudflare account",
+      "sender": "Cloudflare <noreply@notify.cloudflare.com>",
+      "body": "A new sign-in was detected from Islamabad, PK. If this was you, no action is needed. Review active sessions in your dashboard: https://dash.cloudflare.com/profile/sessions"
+    },
+    {
+      "id": "email_benign_aws_root_alert",
+      "label": 0,
+      "category": "saas_security_otp",
+      "difficulty": "hard_benign",
+      "subject": "AWS Security Notification: MFA device added",
+      "sender": "Amazon Web Services <no-reply@sns.amazonaws.com>",
+      "body": "A virtual MFA device was enabled on your IAM user account. If you did not authorize this change, sign in to the AWS Management Console and rotate your credentials."
+    },
+    {
+      "id": "email_benign_gitlab_token",
+      "label": 0,
+      "category": "saas_security_otp",
+      "difficulty": "hard_benign",
+      "subject": "Your GitLab personal access token is expiring soon",
+      "sender": "GitLab <gitlab@mg.gitlab.com>",
+      "body": "Your personal access token named ci-deploy will expire in 7 days. Visit your user settings to create a replacement token: https://gitlab.com/-/user_settings/personal_access_tokens"
+    },
+    {
+      "id": "email_benign_proton_recovery",
+      "label": 0,
+      "category": "saas_security_otp",
+      "difficulty": "hard_benign",
+      "subject": "Verify your recovery email address",
+      "sender": "Proton Account <notify@proton.me>",
+      "body": "Please confirm your recovery email address so you can regain access if you ever forget your password. Open https://account.proton.me/recovery to complete verification."
+    },
+    {
+      "id": "email_benign_digitalocean_billing",
+      "label": 0,
+      "category": "bank_receipt",
+      "difficulty": "hard_benign",
+      "subject": "Your DigitalOcean monthly invoice is ready",
+      "sender": "DigitalOcean Billing <billing@digitalocean.com>",
+      "body": "Your monthly statement for April is attached. Total amount due: $12.00. Automatic payment via Visa ending in 4242 will be processed on May 1. View invoice at https://cloud.digitalocean.com/account/billing"
+    },
+    {
+      "id": "email_benign_vercel_receipt",
+      "label": 0,
+      "category": "bank_receipt",
+      "difficulty": "hard_benign",
+      "subject": "Receipt for your Vercel Pro subscription",
+      "sender": "Vercel <billing@vercel.com>",
+      "body": "Thank you for your payment of $20.00. Your invoice #INV-2026-0811 has been settled. Download your PDF receipt from your team billing settings."
+    },
+    {
+      "id": "email_benign_regional_bank_transfer",
+      "label": 0,
+      "category": "bank_receipt",
+      "difficulty": "hard_benign",
+      "subject": "Transaction Alert: Funds transfer successful",
+      "sender": "Meezan Alerts <alerts@meezanbank.com>",
+      "body": "Dear Customer, PKR 15,000 was debited from your account on 10-May-2026 via Raast transfer. Available balance details are in your mobile app. Call 111-331-331 for support."
+    },
+    {
+      "id": "email_benign_jazzcash_receipt",
+      "label": 0,
+      "category": "bank_receipt",
+      "difficulty": "hard_benign",
+      "subject": "Payment Confirmation #JC992817",
+      "sender": "JazzCash <no-reply@jazzcash.com.pk>",
+      "body": "You paid Rs. 2,450 for your electricity bill. Transaction ID: JC992817. Thank you for using JazzCash."
+    },
+    {
+      "id": "email_benign_wise_transfer",
+      "label": 0,
+      "category": "bank_receipt",
+      "difficulty": "hard_benign",
+      "subject": "Your transfer of $180.00 is on its way",
+      "sender": "Wise <noreply@wise.com>",
+      "body": "Your payment has been received and converted. The recipient should receive the funds within 1 business day. Track your transfer at https://wise.com/transactions/123456"
+    },
+    {
+      "id": "email_benign_mongodb_usage",
+      "label": 0,
+      "category": "bank_receipt",
+      "difficulty": "hard_benign",
+      "subject": "Payment method expiring soon for Atlas organization",
+      "sender": "MongoDB Cloud <cloud-support@mongodb.com>",
+      "body": "The credit card on file for your MongoDB Atlas cluster expires next month. To avoid service interruption, update your billing details under Organization Billing."
+    },
+    {
+      "id": "email_benign_daraz_order",
+      "label": 0,
+      "category": "bank_receipt",
+      "difficulty": "hard_benign",
+      "subject": "Order #3091847 confirmed and awaiting dispatch",
+      "sender": "Daraz Orders <orders@daraz.pk>",
+      "body": "Thanks for your order! Your cash-on-delivery package is being packed by the seller. Track delivery status in the Daraz app."
+    },
+    {
+      "id": "email_benign_figma_promo",
+      "label": 0,
+      "category": "promo_newsletter",
+      "difficulty": "hard_benign",
+      "subject": "50% off annual plan - limited time offer",
+      "sender": "Figma <news@figma.com>",
+      "body": "Upgrade today to save 50% on Figma Professional. Click here to view pricing and claim your student discount before the promotion ends. Unsubscribe anytime at https://www.figma.com/email/unsubscribe"
+    },
+    {
+      "id": "email_benign_coursera_promo",
+      "label": 0,
+      "category": "promo_newsletter",
+      "difficulty": "hard_benign",
+      "subject": "Claim 40% off Coursera Plus before Sunday",
+      "sender": "Coursera <no-reply@m.coursera.org>",
+      "body": "Unlock unlimited access to 7,000+ courses and certificates for a limited time. Click here to claim this special offer or manage email preferences."
+    },
+    {
+      "id": "email_benign_canva_newsletter",
+      "label": 0,
+      "category": "promo_newsletter",
+      "difficulty": "hard_benign",
+      "subject": "New AI design tools inside Canva Pro — free 30-day trial",
+      "sender": "Canva <marketing@engage.canva.com>",
+      "body": "Try Canva Pro free for 30 days and collaborate faster with your team. Offer valid for eligible accounts. View terms or unsubscribe."
+    },
+    {
+      "id": "email_benign_jetbrains_license",
+      "label": 0,
+      "category": "promo_newsletter",
+      "difficulty": "hard_benign",
+      "subject": "Renew your free student license for PyCharm Professional",
+      "sender": "JetBrains <sales@jetbrains.com>",
+      "body": "Your JetBrains educational license expires in 14 days. Click here to renew free of charge using your verified university email address at https://account.jetbrains.com/licenses"
+    },
+    {
+      "id": "email_benign_substack_digest",
+      "label": 0,
+      "category": "promo_newsletter",
+      "difficulty": "hard_benign",
+      "subject": "Weekly Security Digest: How phishing kits bypass MFA",
+      "sender": "TLDR Sec <newsletter@tldrsec.com>",
+      "body": "In this week's issue we analyze modern credential phishing URLs, SPF/DKIM misconfigurations, and browser isolation tools. Click here to read online or unsubscribe."
+    },
+    {
+      "id": "email_benign_spotify_offer",
+      "label": 0,
+      "category": "promo_newsletter",
+      "difficulty": "hard_benign",
+      "subject": "Get 2 months of Spotify Premium free",
+      "sender": "Spotify <no-reply@spotify.com>",
+      "body": "Limited time offer: come back to ad-free music and claim 2 free months on the Individual plan. Terms apply. Opt out in your account settings."
+    },
+    {
+      "id": "email_benign_grammarly_summary",
+      "label": 0,
+      "category": "promo_newsletter",
+      "difficulty": "hard_benign",
+      "subject": "Your weekly writing insights + 30% upgrade offer",
+      "sender": "Grammarly <info@send.grammarly.com>",
+      "body": "You wrote 14,200 words last week with 96% accuracy. Unlock tone suggestions with 30% off for a limited time."
+    },
+    {
+      "id": "email_benign_hr_interview",
+      "label": 0,
+      "category": "work_urgent",
+      "difficulty": "hard_benign",
+      "subject": "Urgent: Please confirm your technical interview slot",
+      "sender": "Talent Team <recruiting@acme-tech.io>",
+      "body": "Hi Tayyaab, please confirm your availability for tomorrow's technical interview at 2:00 PM PKT and let us know if you need the meeting link resent."
+    },
+    {
+      "id": "email_benign_fyp_supervisor",
+      "label": 0,
+      "category": "work_urgent",
+      "difficulty": "hard_benign",
+      "subject": "Urgent: Final Year Project thesis draft review",
+      "sender": "Dr. Khalid <khalid.awan@ciit-attock.edu.pk>",
+      "body": "Please upload your updated Chapter 4 evaluation metrics and confusion matrix tables before Friday 5pm so we can schedule the pre-defense."
+    },
+    {
+      "id": "email_benign_team_deploy_note",
+      "label": 0,
+      "category": "work_urgent",
+      "difficulty": "hard_benign",
+      "subject": "Action needed: Update environment password before staging deploy",
+      "sender": "Aqib Rahim <aqib@project-team.dev>",
+      "body": "Hey, I rotated the staging MongoDB user password in our shared .env notes. Please update your local config and confirm the API health endpoint returns 200."
+    },
+    {
+      "id": "email_benign_client_invoice_followup",
+      "label": 0,
+      "category": "work_urgent",
+      "difficulty": "hard_benign",
+      "subject": "Re: Invoice #204 for dashboard design",
+      "sender": "Sara Khan <sara@studio-design.co>",
+      "body": "Hi, attached is the revised PDF invoice with the updated tax registration number. Could you confirm receipt by tomorrow afternoon?"
+    },
+    {
+      "id": "email_benign_github_pr",
+      "label": 0,
+      "category": "work_urgent",
+      "difficulty": "hard_benign",
+      "subject": "[scam-shield] Pull request #14: Fix Gmail inbox timeout",
+      "sender": "GitHub <notifications@github.com>",
+      "body": "aqibrahim requested your review on pull request #14 in tayyaab/scam-shield. View it on GitHub: https://github.com/tayyaab/scam-shield/pull/14"
+    },
+    {
+      "id": "email_benign_google_calendar",
+      "label": 0,
+      "category": "work_urgent",
+      "difficulty": "standard_benign",
+      "subject": "Invitation: FYP Progress Check-in @ Wed 3pm",
+      "sender": "Calendar Notification <calendar-notification@google.com>",
+      "body": "You have been invited to FYP Progress Check-in on Wednesday from 3:00pm to 3:30pm. Join with Google Meet."
+    },
+    {
+      "id": "email_benign_zoom_recording",
+      "label": 0,
+      "category": "work_urgent",
+      "difficulty": "standard_benign",
+      "subject": "Cloud Recording Available: Sprint Planning",
+      "sender": "Zoom <no-reply@zoom.us>",
+      "body": "Your meeting recording is ready to view in your Zoom portal. Passcode details are available to workspace members."
+    },
+    {
+      "id": "email_benign_airline_checkin",
+      "label": 0,
+      "category": "work_urgent",
+      "difficulty": "hard_benign",
+      "subject": "Online check-in is now open for flight PK-301",
+      "sender": "Booking Desk <reservations@flyjinnah.com>",
+      "body": "Check in now to confirm your seat and download your boarding pass before arriving at the airport. Please verify your passport details at the counter."
+    },
+    {
+      "id": "email_benign_pharmacy_order",
+      "label": 0,
+      "category": "bank_receipt",
+      "difficulty": "standard_benign",
+      "subject": "Your medicine order has been dispatched",
+      "sender": "Dawaai Support <care@dawaai.pk>",
+      "body": "Your order #DW-88412 is out for delivery today. Keep PKR 1,850 ready for cash on delivery."
+    },
+    {
+      "id": "email_benign_kaggle_competition",
+      "label": 0,
+      "category": "promo_newsletter",
+      "difficulty": "hard_benign",
+      "subject": "New dataset uploaded: SMS Phishing & Smishing Corpus",
+      "sender": "Kaggle <no-reply@kaggle.com>",
+      "body": "A notebook you follow published new benchmark code for precision-recall evaluation. Click here to inspect the metrics."
+    },
+    {
+      "id": "email_benign_render_deploy",
+      "label": 0,
+      "category": "saas_security_otp",
+      "difficulty": "hard_benign",
+      "subject": "Deploy succeeded for scam-shield-api",
+      "sender": "Render <notifications@render.com>",
+      "body": "Your web service scam-shield-api is live at https://scam-shield-api.onrender.com. Check logs in the Render Dashboard if you updated environment variables."
+    },
+    {
+      "id": "email_benign_docker_security",
+      "label": 0,
+      "category": "saas_security_otp",
+      "difficulty": "hard_benign",
+      "subject": "Security update: Enable 2FA on your Docker Hub account",
+      "sender": "Docker <no-reply@docker.com>",
+      "body": "To protect your container repositories, please enable two-factor authentication under Account Security at https://hub.docker.com/settings/security"
+    },
+    {
+      "id": "email_benign_google_workspace_storage",
+      "label": 0,
+      "category": "saas_security_otp",
+      "difficulty": "hard_benign",
+      "subject": "Your Google Drive storage is 85% full",
+      "sender": "Google One <googleone-noreply@google.com>",
+      "body": "You have used 12.8 GB of your 15 GB storage. Review large files or manage your storage plan in Drive settings."
+    },
+    {
+      "id": "email_benign_uber_trip_receipt",
+      "label": 0,
+      "category": "bank_receipt",
+      "difficulty": "standard_benign",
+      "subject": "Your Thursday evening trip with Uber",
+      "sender": "Uber Receipts <noreply@uber.com>",
+      "body": "Total charged: PKR 640.00. Thanks for riding with Uber. View detailed fare breakdown in the app."
+    },
+    {
+      "id": "email_benign_coursera_reminder",
+      "label": 0,
+      "category": "work_urgent",
+      "difficulty": "standard_benign",
+      "subject": "Reminder: Machine Learning quiz deadline tonight",
+      "sender": "Coursera <notifications@coursera.org>",
+      "body": "Do not forget to submit Week 4 quiz before 11:59 PM to stay on schedule for your course certificate."
+    },
+    {
+      "id": "email_benign_linkedin_security_article",
+      "label": 0,
+      "category": "promo_newsletter",
+      "difficulty": "hard_benign",
+      "subject": "Top post: How Gmail blocks 99.9% of phishing & spam",
+      "sender": "LinkedIn <messages-noreply@linkedin.com>",
+      "body": "Engineers share how sender authentication, reputation, and ML classifiers reduce false positives on urgent and password emails."
+    },
+    {
+      "id": "email_benign_stripe_payout",
+      "label": 0,
+      "category": "bank_receipt",
+      "difficulty": "standard_benign",
+      "subject": "Payout of $420.00 has been initiated",
+      "sender": "Stripe <notifications@stripe.com>",
+      "body": "A payout of $420.00 to your linked bank account ending in 8891 is on the way and expected within 2 business days."
+    },
+    {
+      "id": "email_benign_friend_casual",
+      "label": 0,
+      "category": "work_urgent",
+      "difficulty": "standard_benign",
+      "subject": "Lunch tomorrow after the lab?",
+      "sender": "Hamza Ali <hamza.ali@gmail.com>",
+      "body": "Hey man, are you free around 1pm tomorrow? Let's grab lunch and review the presentation slides."
+    },
+    {
+      "id": "email_scam_paypal_suspended_xyz",
+      "label": 1,
+      "category": "credential_phishing",
+      "difficulty": "realistic_threat",
+      "subject": "Urgent: Your PayPal account has been suspended",
+      "sender": "PayPal Support <support@paypa1-verify-account.xyz>",
+      "body": "We detected unauthorized activity and temporarily limited your account. Verify your identity within 24 hours or your funds will be frozen: http://paypa1-verify-account.xyz/login/confirm"
+    },
+    {
+      "id": "email_scam_microsoft_mfa_tk",
+      "label": 1,
+      "category": "credential_phishing",
+      "difficulty": "realistic_threat",
+      "subject": "URGENT ACTION: Microsoft 365 Password Expiry Notice",
+      "sender": "IT Admin <helpdesk@microsoft-auth-portal.tk>",
+      "body": "Your Office 365 password expires today. Click here immediately to keep your current password and avoid mailbox lockout: http://microsoft-auth-portal.tk/signin"
+    },
+    {
+      "id": "email_scam_bank_kyc_top",
+      "label": 1,
+      "category": "credential_phishing",
+      "difficulty": "realistic_threat",
+      "subject": "Final Warning: Verify KYC details immediately",
+      "sender": "Bank Verification <alerts@secure-kyc-update.top>",
+      "body": "Your online banking access has been restricted due to incomplete KYC. Update your debit card PIN and OTP verification at http://secure-kyc-update.top/verify-bank"
+    },
+    {
+      "id": "email_scam_netflix_billing",
+      "label": 1,
+      "category": "credential_phishing",
+      "difficulty": "realistic_threat",
+      "subject": "Payment Declined — Update your Netflix billing now",
+      "sender": "Netflix Billing <billing@netf1ix-payments.ml>",
+      "body": "Your membership is on hold because we could not verify your payment card. Click here to update payment details immediately: http://netf1ix-payments.ml/account"
+    },
+    {
+      "id": "email_scam_apple_icloud_locked",
+      "label": 1,
+      "category": "credential_phishing",
+      "difficulty": "realistic_threat",
+      "subject": "Your Apple ID was locked for security reasons",
+      "sender": "Apple Support <verify@appleid-unlock-center.click>",
+      "body": "Someone tried to sign in from an unrecognized device. Confirm your identity and password within 12 hours at http://appleid-unlock-center.click/unlock"
+    },
+    {
+      "id": "email_scam_display_spoof_gmail",
+      "label": 1,
+      "category": "brand_spoof",
+      "difficulty": "realistic_threat",
+      "subject": "Security Alert: Unusual sign-in on your Google Account",
+      "sender": "Google Security Team <security.verify.desk99@gmail.com>",
+      "body": "Your account is at risk of suspension. Reset your credentials via our emergency verification portal: http://accounts-google-check.ga/auth"
+    },
+    {
+      "id": "email_scam_display_spoof_bank_yahoo",
+      "label": 1,
+      "category": "brand_spoof",
+      "difficulty": "realistic_threat",
+      "subject": "Urgent Verification Required for Your Chase Account",
+      "sender": "Chase Fraud Desk <chase_alerts_84210@yahoo.com>",
+      "body": "Please reply with your full account number, SSN, and online banking password to lift the hold placed on your checking account."
+    },
+    {
+      "id": "email_scam_ceo_giftcard_bec",
+      "label": 1,
+      "category": "brand_spoof",
+      "difficulty": "evasion_threat",
+      "subject": "Quick confidential favor needed today",
+      "sender": "Company Director <director.office.urgent@gmail.com>",
+      "body": "Are you at your desk? I am stuck in a board meeting and cannot take calls. I need you to buy 5 Apple gift cards worth $100 each and email me the scratched PIN codes urgently. I will reimburse you this evening."
+    },
+    {
+      "id": "email_scam_dhl_customs_fee",
+      "label": 1,
+      "category": "credential_phishing",
+      "difficulty": "realistic_threat",
+      "subject": "DHL Parcel Held: Pay $2.99 customs clearance fee",
+      "sender": "DHL Express <tracking@dhl-parcel-clearance.win>",
+      "body": "Your international shipment cannot be delivered until you pay the outstanding customs fee. Enter your credit card details here: http://dhl-parcel-clearance.win/pay"
+    },
+    {
+      "id": "email_scam_lottery_prize",
+      "label": 1,
+      "category": "advance_fee",
+      "difficulty": "realistic_threat",
+      "subject": "CONGRATULATIONS! You Won £750,000 in International Sweepstakes",
+      "sender": "Prize Claims <claims49201@lottery-award.xyz>",
+      "body": "Your email address was randomly selected as our grand prize winner! Act now and send a one time payment of $150 processing fee along with your passport scan to claim your cash prize."
+    },
+    {
+      "id": "email_scam_crypto_double",
+      "label": 1,
+      "category": "advance_fee",
+      "difficulty": "realistic_threat",
+      "subject": "Exclusive Bitcoin Giveaway — Claim 0.5 BTC Now!",
+      "sender": "Crypto Foundation <airdrop@btc-bonus-claim.gq>",
+      "body": "Limited time event! Send 0.05 BTC to our verification wallet and receive 0.5 BTC back within 10 minutes. Connect your MetaMask seed phrase at http://btc-bonus-claim.gq/connect"
+    },
+    {
+      "id": "email_scam_inheritance",
+      "label": 1,
+      "category": "advance_fee",
+      "difficulty": "realistic_threat",
+      "subject": "Confidential Inheritance Transfer of $4.5 Million USD",
+      "sender": "Barrister Williams <williams_chambers88@outlook.com>",
+      "body": "Dear beneficiary, I am contacting you regarding an unclaimed estate worth $4,500,000. Reply immediately with your full name, bank details, and wire transfer instructions to release the funds."
+    },
+    {
+      "id": "email_scam_evasion_completed_transfer",
+      "label": 1,
+      "category": "payment_redirect_evasion",
+      "difficulty": "evasion_threat",
+      "subject": "Bank transfer completed — confirm unauthorized wire",
+      "sender": "Security Operations <billing@chase-secure-resolution.xyz>",
+      "body": "Your bank transfer of $1,850.00 was completed and posted to an unknown recipient. If you did not authorize this transaction, click the link to cancel and enter your card PIN: http://chase-secure-resolution.xyz/refund"
+    },
+    {
+      "id": "email_scam_evasion_invoice_receipt",
+      "label": 1,
+      "category": "payment_redirect_evasion",
+      "difficulty": "evasion_threat",
+      "subject": "Receipt for your GeekSquad $499.99 renewal",
+      "sender": "GeekSquad Billing <renewals88210@gmail.com>",
+      "body": "Your automatic payment of $499.99 was successfully processed. Call our cancellation desk immediately at +1-888-555-0192 and install remote support software to claim your refund."
+    },
+    {
+      "id": "email_scam_amazon_order_phish",
+      "label": 1,
+      "category": "credential_phishing",
+      "difficulty": "realistic_threat",
+      "subject": "Unusual Amazon order of $1,299 MacBook Pro",
+      "sender": "Amazon Fraud Team <support@amzn-order-cancel.cf>",
+      "body": "An order was placed from your account. If this was not you, sign in and verify your card security code immediately: http://amzn-order-cancel.cf/dispute"
+    },
+    {
+      "id": "email_scam_hr_payroll_phish",
+      "label": 1,
+      "category": "credential_phishing",
+      "difficulty": "evasion_threat",
+      "subject": "Updated Employee Payroll & Direct Deposit Portal",
+      "sender": "HR Payroll <payroll@hr-benefits-update.xyz>",
+      "body": "All staff must sign in using their corporate email password before Friday to confirm direct deposit routing: http://hr-benefits-update.xyz/login"
+    },
+    {
+      "id": "email_scam_docusign_credential",
+      "label": 1,
+      "category": "credential_phishing",
+      "difficulty": "evasion_threat",
+      "subject": "Please sign confidential purchase agreement via DocuSign",
+      "sender": "DocuSign Notification <docs@d0cusign-viewer.top>",
+      "body": "You have an urgent document awaiting signature. Authenticate with your Microsoft or Gmail password to open the encrypted file: http://192.168.10.45/docusign/login"
+    },
+    {
+      "id": "email_scam_meta_page_strike",
+      "label": 1,
+      "category": "credential_phishing",
+      "difficulty": "realistic_threat",
+      "subject": "Important: Your Facebook Page is scheduled for deletion",
+      "sender": "Meta Copyright Desk <appeals@meta-policy-review.click>",
+      "body": "Our automated system found a trademark violation. Appeal within 24 hours by confirming your account password and 2FA code at http://meta-policy-review.click/appeal"
+    },
+    {
+      "id": "email_scam_free_iphone_spam",
+      "label": 1,
+      "category": "advance_fee",
+      "difficulty": "realistic_threat",
+      "subject": "FREE iPhone 16 Pro selected for you!",
+      "sender": "Rewards Club <winner@free-prize-hub.tk>",
+      "body": "Congratulations! You have been chosen to win a brand new iPhone 16 Pro! Click here now to claim your prize before it expires in 15 minutes!"
+    },
+    {
+      "id": "email_scam_irs_tax_refund",
+      "label": 1,
+      "category": "credential_phishing",
+      "difficulty": "realistic_threat",
+      "subject": "Tax Refund Notification — Action Required",
+      "sender": "Tax Refund Desk <claims@tax-refund-claim.ml>",
+      "body": "You are eligible for a tax refund of $842.50. Submit your bank routing number, card details, and Social Security number to receive direct deposit: http://tax-refund-claim.ml/form"
+    }
+  ],
+  "sms": [
+    {
+      "id": "sms_benign_bank_otp",
+      "label": 0,
+      "category": "otp_2fa",
+      "difficulty": "hard_benign",
+      "sender_id": "BANKALERT",
+      "message": "Your OTP is 482910 to confirm your transaction of Rs 5,000. Do not share this code with anyone. Call 08001234567 if you did not request it."
+    },
+    {
+      "id": "sms_benign_google_otp",
+      "label": 0,
+      "category": "otp_2fa",
+      "difficulty": "hard_benign",
+      "sender_id": "GOOGLE",
+      "message": "G-739104 is your Google verification code. Don't share your code with anyone."
+    },
+    {
+      "id": "sms_benign_nayapay_otp",
+      "label": 0,
+      "category": "otp_2fa",
+      "difficulty": "hard_benign",
+      "sender_id": "NayaPay",
+      "message": "Your NayaPay OTP is 651029 for login verification. Valid for 5 minutes. Never share your PIN or OTP even with staff."
+    },
+    {
+      "id": "sms_benign_numeric_otp",
+      "label": 0,
+      "category": "otp_2fa",
+      "difficulty": "hard_benign",
+      "sender_id": "03001112233",
+      "message": "Your 6-digit login verification code is 918273. It expires in 10 minutes."
+    },
+    {
+      "id": "sms_benign_fedex_delivery",
+      "label": 0,
+      "category": "delivery_update",
+      "difficulty": "hard_benign",
+      "sender_id": "FEDEX",
+      "message": "Your package #9918273 is out for delivery today. Track at https://www.fedex.com/track or reply STOP to opt out."
+    },
+    {
+      "id": "sms_benign_tcs_delivery",
+      "label": 0,
+      "category": "delivery_update",
+      "difficulty": "hard_benign",
+      "sender_id": "TCS-EXP",
+      "message": "Your TCS shipment 774128901 is arriving today between 2pm and 5pm. Track online at https://www.tcsexpress.com/tracking"
+    },
+    {
+      "id": "sms_benign_amazon_delivered",
+      "label": 0,
+      "category": "delivery_update",
+      "difficulty": "hard_benign",
+      "sender_id": "AMAZON",
+      "message": "Delivered: Your Amazon order was left near the front door. Reply STOP to unsubscribe from SMS alerts."
+    },
+    {
+      "id": "sms_benign_meezan_debit",
+      "label": 0,
+      "category": "bank_alert",
+      "difficulty": "hard_benign",
+      "sender_id": "MEEZAN",
+      "message": "PKR 2,400.00 debited from A/C **4412 at POS MART on 10/05. Avail Bal: PKR 41,200. For helpline call 111331331."
+    },
+    {
+      "id": "sms_benign_hbl_credit",
+      "label": 0,
+      "category": "bank_alert",
+      "difficulty": "hard_benign",
+      "sender_id": "HBL-ALERT",
+      "message": "Your salary deposit of PKR 85,000 has been credited to your account. Thank you for banking with HBL."
+    },
+    {
+      "id": "sms_benign_card_stmt",
+      "label": 0,
+      "category": "bank_alert",
+      "difficulty": "hard_benign",
+      "sender_id": "ALFALAH",
+      "message": "Your credit card monthly statement is ready. Minimum payment PKR 4,500 due by May 25. View details in the Alfa mobile app."
+    },
+    {
+      "id": "sms_benign_jazz_bundle",
+      "label": 0,
+      "category": "telecom_promo",
+      "difficulty": "hard_benign",
+      "sender_id": "JAZZ",
+      "message": "Enjoy free 5GB mobile internet offer for 3 days! Dial *117*4# to subscribe or reply STOP to opt out."
+    },
+    {
+      "id": "sms_benign_zong_recharge",
+      "label": 0,
+      "category": "telecom_promo",
+      "difficulty": "hard_benign",
+      "sender_id": "ZONG",
+      "message": "Your Rs. 500 recharge was successful. New account balance is Rs. 512.40. Dial *222# to check remaining data."
+    },
+    {
+      "id": "sms_benign_store_loyalty",
+      "label": 0,
+      "category": "telecom_promo",
+      "difficulty": "hard_benign",
+      "sender_id": "ALFATAH",
+      "message": "Weekend sale: 20% off electronics in-store until Sunday! Show this message at checkout. Text STOP to opt out."
+    },
+    {
+      "id": "sms_benign_clinic_appt",
+      "label": 0,
+      "category": "personal_urgent",
+      "difficulty": "hard_benign",
+      "sender_id": "CLINIC",
+      "message": "Reminder: Your dental appointment is tomorrow at 10am. Please reply YES to confirm or call 051-2345678 to reschedule."
+    },
+    {
+      "id": "sms_benign_urgent_friend",
+      "label": 0,
+      "category": "personal_urgent",
+      "difficulty": "hard_benign",
+      "sender_id": "03315123456",
+      "message": "Urgent! Can you call me back asap? My phone battery is at 2% and I need the apartment gate code."
+    },
+    {
+      "id": "sms_benign_mom_groceries",
+      "label": 0,
+      "category": "personal_urgent",
+      "difficulty": "standard_benign",
+      "sender_id": "03005551234",
+      "message": "Can you pick up milk and bread on your way home? Dinner will be ready by 8pm."
+    },
+    {
+      "id": "sms_benign_colleague_meeting",
+      "label": 0,
+      "category": "personal_urgent",
+      "difficulty": "standard_benign",
+      "sender_id": "03219876543",
+      "message": "Our FYP meeting with Dr Khalid got moved to 3:30pm in Room B-12. Please confirm if you got the slides."
+    },
+    {
+      "id": "sms_benign_uber_pin",
+      "label": 0,
+      "category": "otp_2fa",
+      "difficulty": "hard_benign",
+      "sender_id": "UBER",
+      "message": "Your Uber verification code is 5519. Never share this code. Reply STOP ALL to unsubscribe."
+    },
+    {
+      "id": "sms_benign_careem_arrival",
+      "label": 0,
+      "category": "delivery_update",
+      "difficulty": "standard_benign",
+      "sender_id": "CAREEM",
+      "message": "Your Captain Ahmed has arrived in a white Corolla (ABC-412). Free waiting time is 3 minutes."
+    },
+    {
+      "id": "sms_benign_electricity_bill",
+      "label": 0,
+      "category": "bank_alert",
+      "difficulty": "hard_benign",
+      "sender_id": "IESCO",
+      "message": "IESCO Bill for Reference 14123456789012 is PKR 6,420 due on 18-May. Ignore if already paid."
+    },
+    {
+      "id": "sms_benign_university_fee",
+      "label": 0,
+      "category": "personal_urgent",
+      "difficulty": "hard_benign",
+      "sender_id": "COMSATS",
+      "message": "Notice: Semester fee voucher submission deadline is extended to May 20. Contact accounts office for verification."
+    },
+    {
+      "id": "sms_benign_pharmacy_ready",
+      "label": 0,
+      "category": "delivery_update",
+      "difficulty": "standard_benign",
+      "sender_id": "PHARMACY",
+      "message": "Your prescription order #4412 is ready for pickup. Show code 4412 at the counter before 9pm."
+    },
+    {
+      "id": "sms_benign_flight_gate",
+      "label": 0,
+      "category": "delivery_update",
+      "difficulty": "standard_benign",
+      "sender_id": "PIA-INFO",
+      "message": "Flight PK-301 boarding starts at 18:15 from Gate 4. Have your boarding pass ready."
+    },
+    {
+      "id": "sms_benign_github_2fa",
+      "label": 0,
+      "category": "otp_2fa",
+      "difficulty": "hard_benign",
+      "sender_id": "GITHUB",
+      "message": "720491 is your GitHub two-factor authentication code."
+    },
+    {
+      "id": "sms_benign_classmate_cash",
+      "label": 0,
+      "category": "personal_urgent",
+      "difficulty": "hard_benign",
+      "sender_id": "03451122334",
+      "message": "Hey, I sent you the Rs 1500 for printing charges on NayaPay, check and let me know when you receive it."
+    },
+    {
+      "id": "sms_benign_foodpanda_promo",
+      "label": 0,
+      "category": "telecom_promo",
+      "difficulty": "hard_benign",
+      "sender_id": "FOODPANDA",
+      "message": "Free delivery on your next 3 orders over Rs 599! Use code SAVE3 in the app tonight. Reply STOP to opt out."
+    },
+    {
+      "id": "sms_benign_icloud_backup",
+      "label": 0,
+      "category": "bank_alert",
+      "difficulty": "hard_benign",
+      "sender_id": "APPLE",
+      "message": "Your Apple iCloud+ receipt for $0.99 has been emailed to you. Manage plan in Settings."
+    },
+    {
+      "id": "sms_benign_gym_membership",
+      "label": 0,
+      "category": "telecom_promo",
+      "difficulty": "hard_benign",
+      "sender_id": "FITCLUB",
+      "message": "Your monthly gym pass renews in 3 days. Call 03009998877 if you wish to pause or update your membership."
+    },
+    {
+      "id": "sms_benign_library_due",
+      "label": 0,
+      "category": "personal_urgent",
+      "difficulty": "standard_benign",
+      "sender_id": "LIBRARY",
+      "message": "Reminder: Book 'Hands-On Machine Learning' is due back tomorrow. Renew online at https://library.university.edu/renew"
+    },
+    {
+      "id": "sms_benign_whatsapp_code",
+      "label": 0,
+      "category": "otp_2fa",
+      "difficulty": "hard_benign",
+      "sender_id": "WHATSAPP",
+      "message": "Your WhatsApp code: 394-821. You can also tap on this link to verify your phone: https://v.whatsapp.com/394821"
+    },
+    {
+      "id": "sms_benign_stripe_payout",
+      "label": 0,
+      "category": "bank_alert",
+      "difficulty": "standard_benign",
+      "sender_id": "STRIPE",
+      "message": "Your payout of $250.00 is scheduled to arrive in 2 business days."
+    },
+    {
+      "id": "sms_benign_car_service",
+      "label": 0,
+      "category": "personal_urgent",
+      "difficulty": "standard_benign",
+      "sender_id": "AUTOCARE",
+      "message": "Your car oil change and inspection is complete. Total bill is Rs 4,800. Gate closes at 7pm."
+    },
+    {
+      "id": "sms_benign_internet_down",
+      "label": 0,
+      "category": "telecom_promo",
+      "difficulty": "hard_benign",
+      "sender_id": "NAYATEL",
+      "message": "Dear customer, scheduled fiber maintenance will occur tonight 2am-4am. No action is needed on your part. Support: 051111114444"
+    },
+    {
+      "id": "sms_benign_blood_drive",
+      "label": 0,
+      "category": "personal_urgent",
+      "difficulty": "standard_benign",
+      "sender_id": "03124455667",
+      "message": "Hey, are we still meeting at the library at 4pm to test the backend API?"
+    },
+    {
+      "id": "sms_benign_parcel_locker",
+      "label": 0,
+      "category": "delivery_update",
+      "difficulty": "hard_benign",
+      "sender_id": "POSTBOX",
+      "message": "Your parcel has been placed in Locker #19. Enter pickup PIN 882014 within 48 hours."
+    },
+    {
+      "id": "sms_scam_walmart_prize",
+      "label": 1,
+      "category": "prize_scam",
+      "difficulty": "realistic_threat",
+      "sender_id": "04477009001",
+      "message": "CONGRATULATIONS! You won a $1000 Walmart gift card! Claim your cash prize now at http://walmart-claim.tk/win"
+    },
+    {
+      "id": "sms_scam_dhl_customs_smish",
+      "label": 1,
+      "category": "smishing_link",
+      "difficulty": "realistic_threat",
+      "sender_id": "03019991122",
+      "message": "DHL: Your package is suspended due to unpaid customs fee of Rs 250. Pay immediately to avoid return: http://dhl-track-fee.xyz/pay"
+    },
+    {
+      "id": "sms_scam_bank_kyc_number",
+      "label": 1,
+      "category": "kyc_impersonation",
+      "difficulty": "realistic_threat",
+      "sender_id": "03459876543",
+      "message": "URGENT BANK NOTICE: Your ATM card and mobile app will be blocked today. Call 0345-9876543 or verify your PIN and OTP at http://bank-kyc-help.top/login"
+    },
+    {
+      "id": "sms_scam_bisp_relief_fake",
+      "label": 1,
+      "category": "prize_scam",
+      "difficulty": "realistic_threat",
+      "sender_id": "03187766554",
+      "message": "Congratulations! Your CNIC is approved for Rs 25,000 relief cash program. Send Rs 500 registration fee or click http://relief-cash-portal.ml/claim"
+    },
+    {
+      "id": "sms_scam_usps_redelivery",
+      "label": 1,
+      "category": "smishing_link",
+      "difficulty": "realistic_threat",
+      "sender_id": "01415550188",
+      "message": "Post Office: We could not deliver your parcel due to incomplete address. Update details within 12 hours: http://parcel-reschedule-now.win/address"
+    },
+    {
+      "id": "sms_scam_netflix_hold",
+      "label": 1,
+      "category": "smishing_link",
+      "difficulty": "realistic_threat",
+      "sender_id": "01212555014",
+      "message": "NETFLIX ALERT: Your account is suspended after failed payment. Update card info now: http://netflix-billing-fix.click/update"
+    },
+    {
+      "id": "sms_scam_crypto_job_task",
+      "label": 1,
+      "category": "job_crypto_scam",
+      "difficulty": "evasion_threat",
+      "sender_id": "03084433221",
+      "message": "Part-time online job offer: Earn Rs 5,000-15,000 daily liking YouTube videos from home! Deposit small starter balance and message wa.me/123456789"
+    },
+    {
+      "id": "sms_scam_jeeto_prize_call",
+      "label": 1,
+      "category": "prize_scam",
+      "difficulty": "realistic_threat",
+      "sender_id": "03338887766",
+      "message": "Mubarak! Your mobile number won Rs 500,000 and 10 Tola Gold in Lucky Draw! Call 0333-8887766 immediately and send JazzCash verification fee."
+    },
+    {
+      "id": "sms_scam_loan_instant",
+      "label": 1,
+      "category": "job_crypto_scam",
+      "difficulty": "realistic_threat",
+      "sender_id": "03227776655",
+      "message": "Get instant cash loan up to Rs 200,000 in 5 minutes with zero documents! Download APK and enter CNIC + bank PIN: http://fast-cash-pk.xyz/app"
+    },
+    {
+      "id": "sms_scam_toll_unpaid",
+      "label": 1,
+      "category": "smishing_link",
+      "difficulty": "realistic_threat",
+      "sender_id": "01312555019",
+      "message": "Final Reminder: You have an unpaid motorway toll of $6.50. Pay today to avoid license suspension and late penalty: http://toll-notice-pay.cfd/invoice"
+    },
+    {
+      "id": "sms_scam_paypal_limit",
+      "label": 1,
+      "category": "smishing_link",
+      "difficulty": "realistic_threat",
+      "sender_id": "01650555011",
+      "message": "PayPal Security: Unusual login detected. Verify your identity immediately or account will lock: http://paypa1-account-verify.gq/signin"
+    },
+    {
+      "id": "sms_scam_otp_social_eng",
+      "label": 1,
+      "category": "kyc_impersonation",
+      "difficulty": "evasion_threat",
+      "sender_id": "03009811223",
+      "message": "Hi this is bank helpline officer. An unauthorized transaction happened on your card. Reply immediately with the 6-digit OTP code you just received to reverse it."
+    },
+    {
+      "id": "sms_scam_whatsapp_hijack",
+      "label": 1,
+      "category": "kyc_impersonation",
+      "difficulty": "evasion_threat",
+      "sender_id": "03156677889",
+      "message": "Sorry I accidentally sent my WhatsApp verification code to your number by mistake! Please forward me the 6-digit code urgently."
+    },
+    {
+      "id": "sms_scam_tax_refund_link",
+      "label": 1,
+      "category": "smishing_link",
+      "difficulty": "realistic_threat",
+      "sender_id": "01404555017",
+      "message": "Revenue Agency: A tax refund of $480 is waiting for you. Enter your debit card number to claim funds: http://gov-tax-refund-claim.xyz/form"
+    },
+    {
+      "id": "sms_scam_apple_findmy",
+      "label": 1,
+      "category": "smishing_link",
+      "difficulty": "realistic_threat",
+      "sender_id": "01917555013",
+      "message": "Apple Alert: Your lost iPhone was located. Sign in with Apple ID passcode immediately to view live GPS location: http://icloud-locate-device.tk/login"
+    },
+    {
+      "id": "sms_scam_binance_withdraw",
+      "label": 1,
+      "category": "smishing_link",
+      "difficulty": "realistic_threat",
+      "sender_id": "01702555015",
+      "message": "Binance Security: Withdrawal request of 1.4 ETH from new IP. If this was not you, cancel immediately at http://binance-cancel-auth.top/verify"
+    },
+    {
+      "id": "sms_scam_uk_ringtone_classic",
+      "label": 1,
+      "category": "prize_scam",
+      "difficulty": "realistic_threat",
+      "sender_id": "WINNER",
+      "message": "FREE entry in our weekly cash competition to win £1000! Text WIN to 87121 now. 150p/msg."
+    },
+    {
+      "id": "sms_scam_amazon_gift_survey",
+      "label": 1,
+      "category": "prize_scam",
+      "difficulty": "realistic_threat",
+      "sender_id": "01206555016",
+      "message": "Amazon Loyalty Reward: You qualified for a $500 voucher! Complete 2 questions and pay $1 shipping fee at http://amzn-reward-claim.ml/gift"
+    },
+    {
+      "id": "sms_scam_bank_otp_fraud_link",
+      "label": 1,
+      "category": "kyc_impersonation",
+      "difficulty": "realistic_threat",
+      "sender_id": "03341122998",
+      "message": "Dear customer your JazzCash biometric verification expired. Click http://jazzcash-biometric-update.xyz and enter MPIN + OTP to reactivate."
+    },
+    {
+      "id": "sms_scam_fake_missed_call_premium",
+      "label": 1,
+      "category": "prize_scam",
+      "difficulty": "realistic_threat",
+      "sender_id": "09061701461",
+      "message": "URGENT! You have 1 unclaimed cash reward waiting! Call our priority line 09061701461 within 2 hours to claim."
+    }
+  ],
+  "url": [
+    {
+      "id": "url_benign_salesforce_login",
+      "label": 0,
+      "category": "auth_subdomain",
+      "difficulty": "hard_benign",
+      "url": "https://login.salesforce.com/"
+    },
+    {
+      "id": "url_benign_bankalfalah_login",
+      "label": 0,
+      "category": "auth_subdomain",
+      "difficulty": "hard_benign",
+      "url": "https://online.bankalfalah.com/login"
+    },
+    {
+      "id": "url_benign_nust_lms",
+      "label": 0,
+      "category": "auth_subdomain",
+      "difficulty": "hard_benign",
+      "url": "https://lms.nust.edu.pk/login/index.php"
+    },
+    {
+      "id": "url_benign_shopify_lookup",
+      "label": 0,
+      "category": "auth_subdomain",
+      "difficulty": "hard_benign",
+      "url": "https://accounts.shopify.com/lookup"
+    },
+    {
+      "id": "url_benign_atlassian_login",
+      "label": 0,
+      "category": "auth_subdomain",
+      "difficulty": "hard_benign",
+      "url": "https://id.atlassian.com/login"
+    },
+    {
+      "id": "url_benign_notion_signin",
+      "label": 0,
+      "category": "auth_subdomain",
+      "difficulty": "hard_benign",
+      "url": "https://www.notion.so/login"
+    },
+    {
+      "id": "url_benign_figma_signin",
+      "label": 0,
+      "category": "auth_subdomain",
+      "difficulty": "hard_benign",
+      "url": "https://www.figma.com/login"
+    },
+    {
+      "id": "url_benign_digitalocean_auth",
+      "label": 0,
+      "category": "auth_subdomain",
+      "difficulty": "hard_benign",
+      "url": "https://cloud.digitalocean.com/login"
+    },
+    {
+      "id": "url_benign_mozilla_password_kb",
+      "label": 0,
+      "category": "support_docs_password",
+      "difficulty": "hard_benign",
+      "url": "https://support.mozilla.org/en-US/kb/reset-your-primary-password"
+    },
+    {
+      "id": "url_benign_stripe_invoicing_docs",
+      "label": 0,
+      "category": "support_docs_password",
+      "difficulty": "hard_benign",
+      "url": "https://docs.stripe.com/invoicing/overview"
+    },
+    {
+      "id": "url_benign_ubuntu_reset_password",
+      "label": 0,
+      "category": "support_docs_password",
+      "difficulty": "hard_benign",
+      "url": "https://help.ubuntu.com/community/LostPassword"
+    },
+    {
+      "id": "url_benign_gitlab_tokens_docs",
+      "label": 0,
+      "category": "support_docs_password",
+      "difficulty": "hard_benign",
+      "url": "https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html"
+    },
+    {
+      "id": "url_benign_owasp_auth_guide",
+      "label": 0,
+      "category": "support_docs_password",
+      "difficulty": "hard_benign",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
+    },
+    {
+      "id": "url_benign_proton_verify_support",
+      "label": 0,
+      "category": "support_docs_password",
+      "difficulty": "hard_benign",
+      "url": "https://proton.me/support/password-reset-recovery"
+    },
+    {
+      "id": "url_benign_cloudflare_blog_paypal",
+      "label": 0,
+      "category": "blog_brand_in_path",
+      "difficulty": "hard_benign",
+      "url": "https://blog.cloudflare.com/securing-paypal-and-apple-payments"
+    },
+    {
+      "id": "url_benign_techcrunch_amazon",
+      "label": 0,
+      "category": "blog_brand_in_path",
+      "difficulty": "hard_benign",
+      "url": "https://techcrunch.com/2025/01/15/amazon-aws-security-update/"
+    },
+    {
+      "id": "url_benign_ars_microsoft_google",
+      "label": 0,
+      "category": "blog_brand_in_path",
+      "difficulty": "hard_benign",
+      "url": "https://arstechnica.com/security/2025/02/how-google-and-microsoft-fight-phishing-accounts/"
+    },
+    {
+      "id": "url_benign_medium_netflix_arch",
+      "label": 0,
+      "category": "blog_brand_in_path",
+      "difficulty": "hard_benign",
+      "url": "https://medium.com/engineering/how-netflix-handles-free-tier-caching-and-auth"
+    },
+    {
+      "id": "url_benign_wikipedia_paypal",
+      "label": 0,
+      "category": "blog_brand_in_path",
+      "difficulty": "hard_benign",
+      "url": "https://en.wikipedia.org/wiki/PayPal_mafia"
+    },
+    {
+      "id": "url_benign_daraz_product_slug",
+      "label": 0,
+      "category": "long_ecommerce_query",
+      "difficulty": "hard_benign",
+      "url": "https://www.daraz.pk/products/wireless-bluetooth-headphones-with-charging-case-free-delivery-i123456789.html?spm=a2a0e.searchlist"
+    },
+    {
+      "id": "url_benign_coursera_utm",
+      "label": 0,
+      "category": "long_ecommerce_query",
+      "difficulty": "hard_benign",
+      "url": "https://www.coursera.org/learn/machine-learning?utm_source=email&utm_medium=newsletter&utm_campaign=spring-offer-2026"
+    },
+    {
+      "id": "url_benign_kaggle_dataset",
+      "label": 0,
+      "category": "long_ecommerce_query",
+      "difficulty": "hard_benign",
+      "url": "https://www.kaggle.com/datasets/siddharthkumar25/malicious-and-benign-urls"
+    },
+    {
+      "id": "url_benign_aliexpress_long",
+      "label": 0,
+      "category": "long_ecommerce_query",
+      "difficulty": "hard_benign",
+      "url": "https://www.aliexpress.com/item/1005006432198765.html?algo_pvid=8f3e-4c11-9a8d&spm=a2g0o.productlist.main.1"
+    },
+    {
+      "id": "url_benign_pypi_scikit",
+      "label": 0,
+      "category": "long_ecommerce_query",
+      "difficulty": "standard_benign",
+      "url": "https://pypi.org/project/scikit-learn/1.7.2/"
+    },
+    {
+      "id": "url_benign_huggingface_model",
+      "label": 0,
+      "category": "long_ecommerce_query",
+      "difficulty": "standard_benign",
+      "url": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2"
+    },
+    {
+      "id": "url_benign_stanford_http",
+      "label": 0,
+      "category": "bare_academic_http",
+      "difficulty": "hard_benign",
+      "url": "http://cs.stanford.edu/people/"
+    },
+    {
+      "id": "url_benign_bare_comsats",
+      "label": 0,
+      "category": "bare_academic_http",
+      "difficulty": "hard_benign",
+      "url": "attock.comsats.edu.pk/academics/computer-science"
+    },
+    {
+      "id": "url_benign_bare_mit",
+      "label": 0,
+      "category": "bare_academic_http",
+      "difficulty": "hard_benign",
+      "url": "mit.edu/research"
+    },
+    {
+      "id": "url_benign_bare_fastapi",
+      "label": 0,
+      "category": "bare_academic_http",
+      "difficulty": "hard_benign",
+      "url": "fastapi.tiangolo.com/tutorial/security/oauth2-jwt/"
+    },
+    {
+      "id": "url_benign_bare_vercel",
+      "label": 0,
+      "category": "bare_academic_http",
+      "difficulty": "hard_benign",
+      "url": "vercel.com/docs/deployments/overview"
+    },
+    {
+      "id": "url_benign_google_root",
+      "label": 0,
+      "category": "auth_subdomain",
+      "difficulty": "standard_benign",
+      "url": "https://www.google.com"
+    },
+    {
+      "id": "url_benign_github_repo",
+      "label": 0,
+      "category": "auth_subdomain",
+      "difficulty": "standard_benign",
+      "url": "https://github.com/scikit-learn/scikit-learn"
+    },
+    {
+      "id": "url_benign_python_docs",
+      "label": 0,
+      "category": "support_docs_password",
+      "difficulty": "standard_benign",
+      "url": "https://docs.python.org/3/library/urllib.parse.html"
+    },
+    {
+      "id": "url_benign_stackoverflow_q",
+      "label": 0,
+      "category": "support_docs_password",
+      "difficulty": "standard_benign",
+      "url": "https://stackoverflow.com/questions/419163/what-does-if-name-main-do"
+    },
+    {
+      "id": "url_benign_bbc_news",
+      "label": 0,
+      "category": "blog_brand_in_path",
+      "difficulty": "standard_benign",
+      "url": "https://www.bbc.com/news/technology"
+    },
+    {
+      "id": "url_benign_render_docs",
+      "label": 0,
+      "category": "support_docs_password",
+      "difficulty": "hard_benign",
+      "url": "https://docs.render.com/free#free-web-services"
+    },
+    {
+      "id": "url_benign_mongodb_atlas_login",
+      "label": 0,
+      "category": "auth_subdomain",
+      "difficulty": "hard_benign",
+      "url": "https://account.mongodb.com/account/login"
+    },
+    {
+      "id": "url_benign_wise_pricing",
+      "label": 0,
+      "category": "long_ecommerce_query",
+      "difficulty": "hard_benign",
+      "url": "https://wise.com/us/pricing/send-money?sourceAmount=1000&sourceCurrency=USD&targetCurrency=PKR"
+    },
+    {
+      "id": "url_benign_jazzcash_portal",
+      "label": 0,
+      "category": "auth_subdomain",
+      "difficulty": "hard_benign",
+      "url": "https://www.jazzcash.com.pk/digital-payments/"
+    },
+    {
+      "id": "url_benign_nayapay_help",
+      "label": 0,
+      "category": "support_docs_password",
+      "difficulty": "hard_benign",
+      "url": "https://www.nayapay.com/faq/security-account-verification"
+    },
+    {
+      "id": "url_scam_paypal_xyz",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "http://paypal-secure-verify.xyz/login/confirm"
+    },
+    {
+      "id": "url_scam_apple_https_top",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "https://secure-login-apple-id.com-verify.top/signin"
+    },
+    {
+      "id": "url_scam_microsoft_subdomain_tk",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "https://login.microsoftonline.com.verify-user.tk/auth/session"
+    },
+    {
+      "id": "url_scam_free_iphone_tk",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "http://free-iphone-winner.tk/claim-now"
+    },
+    {
+      "id": "url_scam_amazon_prize_ml",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "http://amazon-prize-winner.ml/verify-account"
+    },
+    {
+      "id": "url_scam_netflix_billing_click",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "https://netflix-billing-update.click/payment/confirm"
+    },
+    {
+      "id": "url_scam_chase_verification_ga",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "http://chase-online-banking-alert.ga/security/login"
+    },
+    {
+      "id": "url_scam_dhl_customs_win",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "http://dhl-parcel-clearance.win/pay-customs-fee"
+    },
+    {
+      "id": "url_scam_paypa1_typosquat",
+      "label": 1,
+      "category": "typosquat",
+      "difficulty": "realistic_threat",
+      "url": "https://www.paypa1.com/signin/verify"
+    },
+    {
+      "id": "url_scam_micros0ft_typosquat",
+      "label": 1,
+      "category": "typosquat",
+      "difficulty": "realistic_threat",
+      "url": "https://login.micros0ft-support.com/account/recover"
+    },
+    {
+      "id": "url_scam_arnazon_typosquat",
+      "label": 1,
+      "category": "typosquat",
+      "difficulty": "realistic_threat",
+      "url": "https://arnazon-security-check.com/orders/dispute"
+    },
+    {
+      "id": "url_scam_goog1e_typosquat",
+      "label": 1,
+      "category": "typosquat",
+      "difficulty": "realistic_threat",
+      "url": "https://accounts.goog1e-verify.net/signin"
+    },
+    {
+      "id": "url_scam_raw_ip_admin",
+      "label": 1,
+      "category": "raw_ip_at_obfuscation",
+      "difficulty": "realistic_threat",
+      "url": "http://192.168.1.1/admin/steal-data"
+    },
+    {
+      "id": "url_scam_public_ip_login",
+      "label": 1,
+      "category": "raw_ip_at_obfuscation",
+      "difficulty": "realistic_threat",
+      "url": "http://45.133.1.99/wp-includes/chase/login.php"
+    },
+    {
+      "id": "url_scam_at_symbol_spoof",
+      "label": 1,
+      "category": "raw_ip_at_obfuscation",
+      "difficulty": "realistic_threat",
+      "url": "https://www.paypal.com@evil-phish-portal.com/signin"
+    },
+    {
+      "id": "url_scam_at_google_trick",
+      "label": 1,
+      "category": "raw_ip_at_obfuscation",
+      "difficulty": "realistic_threat",
+      "url": "http://accounts.google.com@185.220.101.4/auth"
+    },
+    {
+      "id": "url_scam_dga_civpro",
+      "label": 1,
+      "category": "dga_shortener_phishing",
+      "difficulty": "realistic_threat",
+      "url": "http://signin.eby.de.zukruygxctzmmqi.civpro.co.za/"
+    },
+    {
+      "id": "url_scam_dga_wallet_cfd",
+      "label": 1,
+      "category": "dga_shortener_phishing",
+      "difficulty": "realistic_threat",
+      "url": "https://x8k9q2-verify-wallet.cfd/connect/seed"
+    },
+    {
+      "id": "url_scam_punycode_spoof",
+      "label": 1,
+      "category": "typosquat",
+      "difficulty": "evasion_threat",
+      "url": "https://xn--pypal-4ve.com/login"
+    },
+    {
+      "id": "url_scam_meta_appeals_click",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "https://meta-copyright-appeals.click/case/882910"
+    },
+    {
+      "id": "url_scam_binance_gq",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "https://binance-cancel-auth.top/verify-withdrawal"
+    },
+    {
+      "id": "url_scam_jazzcash_xyz",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "http://jazzcash-biometric-update.xyz/mpin-verify"
+    },
+    {
+      "id": "url_scam_icloud_cf",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "https://icloud-find-my-iphone.cf/device/unlock"
+    },
+    {
+      "id": "url_scam_bank_of_america_subdomain",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "evasion_threat",
+      "url": "https://bankofamerica.secure-session-check.info/verify"
+    },
+    {
+      "id": "url_scam_tax_refund_ml",
+      "label": 1,
+      "category": "brand_spoof_domain",
+      "difficulty": "realistic_threat",
+      "url": "http://gov-tax-refund-claim.ml/submit-card"
+    }
+  ]
+}
