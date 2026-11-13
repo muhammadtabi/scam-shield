@@ -2,6 +2,14 @@
 __pycache__/
 *.py[cod]
 
+# Environment & local secrets
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+
 # Local virtual environments
 .venv/
 venv/
@@ -9,6 +17,10 @@ backend/venv/
 
 # Build outputs
 frontend/dist/
+
+# Large duplicate raw datasets at repo root
+/malicious_urls.csv
+/phishing_email.csv
 
 # OS/editor noise
 .DS_Store
