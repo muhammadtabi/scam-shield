@@ -61,6 +61,34 @@ class URLDetectionTests(unittest.TestCase):
         res = predictor.detect_url("https://app.inmind.work/front-pages/order-tracking?trackingNumber=26532280260890")
         self.assertEqual(res["scam_level"], "suspicious", msg=res)
 
+    def test_api_route_allows_anonymous_url_detection(self):
+        from fastapi.testclient import TestClient
+        from main import app
+        with TestClient(app) as client:
+            resp = client.post("/api/detect/url", json={"url": "https://paypal-secure-verify.xyz/login/confirm"})
+            self.assertEqual(resp.status_code, 200)
+            data = resp.json()
+            self.assertIn("scam_level", data)
+            self.assertIn(data["scam_level"], ("suspicious", "scam"))
+            self.assertNotIn("id", data)
+
+    def test_api_route_persists_when_authenticated(self):
+        from fastapi.testclient import TestClient
+        from main import app
+        from app.core.security import create_access_token
+        token = create_access_token(data={"sub": "test-user-ext-123"})
+        with TestClient(app) as client:
+            resp = client.post(
+                "/api/detect/url",
+                json={"url": "https://paypal-secure-verify.xyz/login/confirm"},
+                headers={"Authorization": f"Bearer {token}"}
+            )
+            self.assertEqual(resp.status_code, 200)
+            data = resp.json()
+            self.assertIn("scam_level", data)
+            self.assertIn("id", data)
+            self.assertTrue(bool(data["id"]))
+
 
 if __name__ == "__main__":
     unittest.main()

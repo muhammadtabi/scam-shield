@@ -41,3 +41,15 @@ async def get_current_user_flexible(
             detail="Invalid or expired token"
         )
     return payload
+
+
+async def get_optional_current_user(
+    token: Optional[str] = Query(default=None),
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(
+        HTTPBearer(auto_error=False)
+    ),
+) -> Optional[dict]:
+    raw = credentials.credentials if credentials else token
+    if not raw:
+        return None
+    return decode_token(raw)

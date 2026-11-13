@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 from datetime import datetime
+from typing import Optional
 from app.schemas.detection import EmailDetectRequest, SMSDetectRequest, URLDetectRequest
-from app.core.dependencies import get_current_user
+from app.core.dependencies import get_current_user, get_optional_current_user
 from app.db.database import get_db
 from app.ml.predictor import detect_email, detect_sms, detect_url
 
@@ -37,10 +38,10 @@ async def detect_sms_route(
 @router.post("/url")
 async def detect_url_route(
     request: URLDetectRequest,
-    current_user: dict = Depends(get_current_user)
+    current_user: Optional[dict] = Depends(get_optional_current_user)
 ):
     result = detect_url(request.url)
-    if "error" not in result:
+    if "error" not in result and current_user:
         result["id"] = await save_detection(result, current_user["sub"])
     return result
 
