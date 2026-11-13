@@ -52,6 +52,15 @@ export const api = {
     request('GET', `/api/detect/history?limit=${limit}&skip=${skip}`),
   deleteDetection: (id) => request('DELETE', `/api/detect/history/${id}`),
   getStats: () => request('GET', '/api/dashboard/stats'),
+  getGmailStatus: () => request('GET', '/api/gmail/status'),
+  getGmailConnectUrl: () => request('GET', '/api/gmail/connect'),
+  connectGmail: (data) => request('POST', '/api/gmail/callback', data),
+  connectGmailImap: (data) => request('POST', '/api/gmail/connect-imap', data),
+  syncGmail: () => request('POST', '/api/gmail/sync'),
+  getGmailInbox: (limit = 30) => request('GET', `/api/gmail/inbox?limit=${limit}`),
+  fetchGmailEmail: (id) => request('GET', `/api/gmail/message/${id}`),
+  scanGmailEmail: (id) => request('POST', `/api/gmail/message/${id}/scan`),
+  disconnectGmail: () => request('DELETE', '/api/gmail/disconnect'),
   downloadCSV: async () => {
     const token = localStorage.getItem('token')
     const res = await fetch(`${BASE_URL}/api/reports/csv`, {

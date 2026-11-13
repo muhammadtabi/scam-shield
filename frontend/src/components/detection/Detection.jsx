@@ -1,26 +1,40 @@
 import { useState } from 'react'
 import { api } from '../../api/client'
+import {
+  Mail,
+  MessageSquare,
+  Link2,
+  ShieldAlert,
+  AlertTriangle,
+  ShieldCheck,
+  AlertCircle,
+  Search,
+  CheckCircle2,
+  Info,
+  ChevronRight
+} from 'lucide-react'
 
 const TABS = [
-  { id: 'email', label: '📧 Email',    desc: '' },
-  { id: 'sms',   label: '📱 SMS/Call', desc: 'Detect spam messages' },
-  { id: 'url',   label: '🔗 URL',      desc: 'Check malicious links' },
+  { id: 'email', label: 'Email', icon: Mail,          desc: 'Inspect email headers, sender domains, and message bodies' },
+  { id: 'sms',   label: 'SMS',   icon: MessageSquare, desc: 'Scan SMS messages for fraud, sender spoofing, and smishing' },
+  { id: 'url',   label: 'URL',   icon: Link2,          desc: 'Inspect URLs for phishing, spoofing, and suspicious redirects' },
 ]
 
 const ResultCard = ({ result }) => {
   if (result?.error) {
     return (
-      <div className="fade-in" style={{
-        background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)',
-        borderRadius: 12, padding: 24, marginTop: 24
+      <div className="fade-in glass" style={{
+        background: 'rgba(239, 68, 68, 0.08)',
+        borderColor: 'rgba(239, 68, 68, 0.25)',
+        padding: 22, marginTop: 20
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontSize: 32 }}>⚠️</span>
+          <AlertCircle size={28} color="var(--accent-red)" />
           <div>
-            <div style={{ fontFamily: 'Sora', fontWeight: 800, fontSize: 22, color: '#ef4444' }}>
+            <div style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: 18, color: 'var(--accent-red)' }}>
               Detection Error
             </div>
-            <div style={{ color: '#94a3b8', fontSize: 13 }}>
+            <div style={{ color: 'var(--text-secondary)', fontSize: 13, marginTop: 2 }}>
               {result.error}
             </div>
           </div>
@@ -34,68 +48,81 @@ const ResultCard = ({ result }) => {
   const reasons = Array.isArray(result?.reasons) ? result.reasons : []
 
   const colors = {
-    scam:       { bg: 'rgba(239,68,68,0.08)',  border: 'rgba(239,68,68,0.3)',  color: '#ef4444', icon: '🚨' },
-    suspicious: { bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.3)', color: '#f59e0b', icon: '⚠️' },
-    safe:       { bg: 'rgba(34,197,94,0.08)',  border: 'rgba(34,197,94,0.3)',  color: '#22c55e', icon: '✅' },
+    scam:       { bg: 'rgba(239, 68, 68, 0.08)',  border: 'rgba(239, 68, 68, 0.25)',  color: 'var(--accent-red)',    Icon: ShieldAlert },
+    suspicious: { bg: 'rgba(245, 158, 11, 0.08)', border: 'rgba(245, 158, 11, 0.25)', color: 'var(--accent-yellow)', Icon: AlertTriangle },
+    safe:       { bg: 'rgba(16, 185, 129, 0.08)', border: 'rgba(16, 185, 129, 0.25)', color: 'var(--accent-green)',  Icon: ShieldCheck },
   }
   const c = colors[scamLevel] || colors.safe
+  const VerdictIcon = c.Icon
 
   return (
-    <div className="fade-in" style={{
-      background: c.bg, border: `1px solid ${c.border}`,
-      borderRadius: 12, padding: 24, marginTop: 24
+    <div className="fade-in glass" style={{
+      background: c.bg, borderColor: c.border,
+      padding: 24, marginTop: 24
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-        <span style={{ fontSize: 32 }}>{c.icon}</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 18 }}>
+        <div style={{
+          width: 44, height: 44, borderRadius: 10,
+          background: 'var(--bg-card)',
+          border: `1px solid ${c.border}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: c.color, flexShrink: 0
+        }}>
+          <VerdictIcon size={24} strokeWidth={2.2} />
+        </div>
         <div>
-          <div style={{ fontFamily: 'Sora', fontWeight: 800, fontSize: 22, color: c.color }}>
+          <div style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 800, fontSize: 20, color: c.color, letterSpacing: '0.02em' }}>
             {scamLevel.toUpperCase()}
           </div>
-          <div style={{ color: '#94a3b8', fontSize: 13 }}>
-            {confidence}% confidence
+          <div style={{ color: 'var(--text-secondary)', fontSize: 13, fontFamily: 'JetBrains Mono' }}>
+            {confidence}% confidence score
           </div>
         </div>
         <div style={{ flex: 1, marginLeft: 16 }}>
-          <div style={{ height: 8, background: 'rgba(255,255,255,0.05)',
-                        borderRadius: 4, overflow: 'hidden' }}>
+          <div style={{ height: 6, background: 'var(--bg-secondary)',
+                        borderRadius: 3, overflow: 'hidden' }}>
             <div style={{
-              height: '100%', borderRadius: 4, background: c.color,
-              width: `${Math.min(Math.max(confidence, 0), 100)}%`, transition: 'width 1s ease'
+              height: '100%', borderRadius: 3, background: c.color,
+              width: `${Math.min(Math.max(confidence, 0), 100)}%`, transition: 'width 0.6s ease'
             }} />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between',
-                        fontSize: 11, color: '#475569', marginTop: 4,
+                        fontSize: 10, color: 'var(--text-muted)', marginTop: 4,
                         fontFamily: 'JetBrains Mono' }}>
             <span>0%</span><span>50%</span><span>100%</span>
           </div>
         </div>
       </div>
 
-      <div style={{ marginBottom: 16 }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: '#e2e8f0',
-                      marginBottom: 8 }}>🔍 Detection Reasons:</div>
+      <div style={{ marginBottom: 18 }}>
+        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)',
+                      marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <CheckCircle2 size={14} color={c.color} />
+          <span>Detection Factors:</span>
+        </div>
         {reasons.map((r, i) => (
           <div key={i} style={{
             display: 'flex', alignItems: 'flex-start', gap: 8,
-            padding: '6px 0', fontSize: 13, color: '#94a3b8',
-            borderBottom: '1px solid rgba(255,255,255,0.04)'
+            padding: '6px 0', fontSize: 13, color: 'var(--text-secondary)',
+            borderBottom: '1px solid var(--border-subtle)'
           }}>
-            <span style={{ color: c.color, marginTop: 1 }}>›</span>
-            {r}
+            <ChevronRight size={14} color={c.color} style={{ marginTop: 2, flexShrink: 0 }} />
+            <span>{r}</span>
           </div>
         ))}
       </div>
 
       {result.explanation && (
         <div style={{
-          background: 'rgba(0,212,255,0.05)', border: '1px solid rgba(0,212,255,0.15)',
-          borderRadius: 8, padding: 12
+          background: 'var(--bg-card)', border: '1px solid var(--border)',
+          borderRadius: 8, padding: 14
         }}>
-          <div style={{ fontSize: 12, color: '#00d4ff', fontWeight: 600,
-                        marginBottom: 4, fontFamily: 'JetBrains Mono' }}>
-            🤖 AI EXPLANATION
+          <div style={{ fontSize: 11, color: 'var(--accent-cyan)', fontWeight: 700,
+                        marginBottom: 4, fontFamily: 'JetBrains Mono', display: 'flex', alignItems: 'center', gap: 5 }}>
+            <Info size={12} />
+            <span>EXPLANATION</span>
           </div>
-          <div style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.6 }}>
+          <div style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
             {result.explanation}
           </div>
         </div>
@@ -111,7 +138,6 @@ const parseRawEmail = (raw) => {
   let sender  = ''
   let bodyStartIndex = -1
 
-  // 1. Try standard header parsing (e.g. From: / Subject: format)
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
     const lower = line.toLowerCase()
@@ -129,34 +155,28 @@ const parseRawEmail = (raw) => {
                !lower.startsWith('cc:') && !lower.startsWith('bcc:') &&
                !lower.startsWith('reply-to:') && !lower.startsWith('message-id:') &&
                (subject || sender)) {
-      // Hit regular text, stop parsing headers
       bodyStartIndex = i
       break
     }
   }
 
-  // 2. If standard parsing didn't find headers, try heuristic UI-paste parsing (like Gmail UI)
   if (!subject && !sender) {
     for (let i = 0; i < Math.min(40, lines.length); i++) {
       const line = lines[i].trim()
       const lower = line.toLowerCase()
 
-      // The subject is usually right before "Inbox" or "Important" in a UI copy-paste
       if ((lower === 'inbox' || lower === 'important') && i > 0 && !subject) {
-        // Walk backwards to find the nearest non-blank line
         let j = i - 1
         while (j >= 0 && !lines[j].trim()) j--;
         if (j >= 0) subject = lines[j].trim()
       }
 
-      // The sender line typically contains an email address (often with < >)
       if (!sender) {
         const emailMatch = line.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/)
         if (emailMatch && !lower.startsWith('to:')) {
           sender = emailMatch[1]
           bodyStartIndex = i + 1
           
-          // Skip the common Gmail UI clutter directly after the sender (dates, "to me")
           for (let k = 0; k < 4; k++) {
             if (bodyStartIndex < lines.length) {
               const nextLine = lines[bodyStartIndex].trim().toLowerCase()
@@ -170,7 +190,6 @@ const parseRawEmail = (raw) => {
         }
       }
       
-      // Stop heuristic search if we found both
       if (subject && sender) break
     }
   }
@@ -194,12 +213,12 @@ const isValidSmsSender = (sender) => {
   const compact = value.replace(/\s+/g, '')
   if (compact.length < 3 || compact.length > 20) return false
 
-  // Alphanumeric sender IDs are common in many countries (e.g. BANKALERT, VK-ICICIB).
   if (/[A-Za-z]/.test(compact)) {
     return /^[A-Za-z][A-Za-z0-9_-]{2,19}$/.test(compact)
   }
 
-  // Numeric sender values must be full 11-digit phone numbers.
+  if (/^\d{4,6}$/.test(compact)) return true
+
   if (!/^[+\d\s().-]+$/.test(value)) return false
   const digitsOnly = value.replace(/\D/g, '')
   return digitsOnly.length === 11
@@ -258,14 +277,14 @@ export default function Detection() {
         if (!smsForm.sender_id.trim()) {
           setError('Please enter sender number or sender ID.')
         } else if (!isValidSmsSender(smsForm.sender_id)) {
-          setError('Please enter a valid sender: exactly 11-digit number (e.g., 03315123456) or sender ID like BANKALERT.')
+          setError('Please enter an 11-digit number (e.g., 03315123456), 4-6 digit shortcode (e.g., 8558), or sender ID like BANKALERT.')
         } else {
           setError('Please enter SMS message content to analyze.')
         }
       } else if (tab === 'url') {
         setError('Please enter a valid URL only (e.g., example.com or https://example.com). Do not paste SMS/email text here.')
       } else {
-        setError('Please paste complete email content to analyze.')
+        setError('Please paste email content to analyze.')
       }
       return
     }
@@ -317,45 +336,52 @@ export default function Detection() {
       <div className="page-header stagger stagger-1">
         <h1 className="page-title">Scan Now</h1>
         <p className="page-subtitle">
-          Analyze emails, SMS messages, or URLs for scams
+          Analyze emails, SMS messages, or URLs for threats
         </p>
       </div>
 
       <div className="tab-switcher stagger stagger-2">
-        {TABS.map(t => (
-          <button key={t.id} onClick={() => handleTabSwitch(t.id)}
-            className={`tab-btn ${tab === t.id ? 'active' : ''}`}>
-            {t.label}
-          </button>
-        ))}
+        {TABS.map(t => {
+          const TabIcon = t.icon
+          const isActive = tab === t.id
+          return (
+            <button key={t.id} onClick={() => handleTabSwitch(t.id)}
+              className={`tab-btn ${isActive ? 'active' : ''}`}
+              type="button"
+            >
+              <TabIcon size={14} strokeWidth={isActive ? 2.2 : 1.8} />
+              <span>{t.label}</span>
+            </button>
+          )
+        })}
       </div>
 
-      <form className="glass stagger stagger-3" style={{ padding: 28 }} onSubmit={handleFormSubmit}>
-        <p style={{ color: '#94a3b8', fontSize: 13, marginBottom: 20 }}>
+      <form className="glass stagger stagger-3" style={{ padding: 26 }} onSubmit={handleFormSubmit}>
+        <p style={{ color: 'var(--text-secondary)', fontSize: 13, marginBottom: 18 }}>
           {TABS.find(t => t.id === tab)?.desc}
         </p>
 
         {error && (
-          <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)',
+          <div style={{ background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)',
                         borderRadius: 8, padding: '10px 14px', marginBottom: 16,
-                        color: '#ef4444', fontSize: 14 }}>
-            {error}
+                        color: 'var(--accent-red)', fontSize: 13, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <AlertCircle size={15} />
+            <span>{error}</span>
           </div>
         )}
 
         {/* ── EMAIL TAB ── */}
         {tab === 'email' && (
           <div>
-            {/* Single paste box */}
-            <label style={{ display: 'block', fontSize: 13, color: '#94a3b8',
+            <label style={{ display: 'block', fontSize: 13, color: 'var(--text-secondary)',
                             marginBottom: 6, fontWeight: 500 }}>
-              Paste Complete Email Here
+              Email Content
             </label>
             <textarea
-              className="cyber-input"
-              placeholder={`From: sender@example.com\nSubject: Your email subject here\n\nPaste the full email content here...\n\n(Or just paste any suspicious text and we'll analyze it!)`}
-              rows={10}
-              style={{ resize: 'vertical', fontFamily: 'Manrope', lineHeight: 1.6 }}
+              className="input-field"
+              placeholder={`From: sender@example.com\nSubject: Account verification\n\nPaste the email content or raw message headers here...`}
+              rows={9}
+              style={{ resize: 'vertical', lineHeight: 1.6 }}
               value={rawEmail}
               onChange={e => handleEmailChange(e.target.value)}
               onKeyDown={handleEnterSubmit}
@@ -365,23 +391,24 @@ export default function Detection() {
             {parsed && rawEmail.trim() && (
               <div style={{
                 marginTop: 12, padding: 14, borderRadius: 8,
-                background: 'rgba(34,197,94,0.05)',
-                border: '1px solid rgba(34,197,94,0.15)'
+                background: 'rgba(16, 185, 129, 0.06)',
+                border: '1px solid rgba(16, 185, 129, 0.2)'
               }}>
-                <div style={{ fontSize: 12, color: '#22c55e', fontWeight: 600,
-                              marginBottom: 8, fontFamily: 'JetBrains Mono' }}>
-                  ✅ EMAIL PARSED SUCCESSFULLY
+                <div style={{ fontSize: 11, color: 'var(--accent-green)', fontWeight: 700,
+                              marginBottom: 8, fontFamily: 'JetBrains Mono', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <CheckCircle2 size={13} />
+                  <span>PARSED EMAIL HEADERS</span>
                 </div>
-                <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 3 }}>
-                  <span style={{ color: '#e2e8f0', fontWeight: 600 }}>From: </span>
+                <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginBottom: 3 }}>
+                  <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>From: </span>
                   {parsed.sender || 'Not specified'}
                 </div>
-                <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 3 }}>
-                  <span style={{ color: '#e2e8f0', fontWeight: 600 }}>Subject: </span>
+                <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginBottom: 3 }}>
+                  <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Subject: </span>
                   {parsed.subject || 'Not specified'}
                 </div>
-                <div style={{ fontSize: 12, color: '#94a3b8' }}>
-                  <span style={{ color: '#e2e8f0', fontWeight: 600 }}>Body: </span>
+                <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
+                  <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Body: </span>
                   {parsed.body ? parsed.body.substring(0, 100) : 'Empty'}
                   {parsed.body && parsed.body.length > 100 ? '...' : ''}
                 </div>
@@ -394,25 +421,25 @@ export default function Detection() {
         {tab === 'sms' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div>
-              <label style={{ display: 'block', fontSize: 13, color: '#94a3b8',
+              <label style={{ display: 'block', fontSize: 13, color: 'var(--text-secondary)',
                               marginBottom: 6, fontWeight: 500 }}>Sender Number or ID</label>
-              <input className="cyber-input" placeholder="+1 415 555 0199 or BANKALERT"
+              <input className="input-field" placeholder="+1 415 555 0199, 8558, or BANKALERT"
                 type="tel"
                 value={smsForm.sender_id}
                 onChange={e => setSmsForm({ ...smsForm, sender_id: e.target.value })}
                 onKeyDown={handleEnterSubmit} />
               {smsForm.sender_id.trim() && !isValidSmsSender(smsForm.sender_id) && (
-                <p style={{ fontSize: 12, color: '#ef4444', marginTop: 6 }}>
-                  Enter a valid sender: exactly 11-digit number (e.g., 03315123456) or sender ID (example: BANKALERT)
+                <p style={{ fontSize: 12, color: 'var(--accent-red)', marginTop: 6 }}>
+                  Enter an 11-digit number (e.g., 03315123456), 4-6 digit shortcode (e.g., 8558), or sender ID (e.g., BANKALERT)
                 </p>
               )}
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 13, color: '#94a3b8',
+              <label style={{ display: 'block', fontSize: 13, color: 'var(--text-secondary)',
                               marginBottom: 6, fontWeight: 500 }}>Message Content</label>
-              <textarea className="cyber-input"
-                placeholder="Paste the SMS or call description here..."
-                rows={5} style={{ resize: 'vertical', fontFamily: 'Manrope' }}
+              <textarea className="input-field"
+                placeholder="Paste the SMS text here..."
+                rows={5} style={{ resize: 'vertical' }}
                 value={smsForm.message}
                 onChange={e => setSmsForm({ ...smsForm, message: e.target.value })}
                 onKeyDown={handleEnterSubmit} />
@@ -423,38 +450,47 @@ export default function Detection() {
         {/* ── URL TAB ── */}
         {tab === 'url' && (
           <div>
-            <label style={{ display: 'block', fontSize: 13, color: '#94a3b8',
+            <label style={{ display: 'block', fontSize: 13, color: 'var(--text-secondary)',
                             marginBottom: 6, fontWeight: 500 }}>URL to Analyze</label>
-            <input className="cyber-input"
+            <input className="input-field"
               placeholder="https://suspicious-website.xyz/login"
               value={urlForm.url}
               onChange={e => setUrlForm({ url: e.target.value })}
               onKeyDown={handleEnterSubmit} />
-            <p style={{ fontSize: 12, color: '#475569', marginTop: 8 }}>
-              Tip: Paste any URL — phishing links, suspicious websites, unknown domains
+            <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>
+              Inspect URLs for deceptive domains, abnormal redirects, and known phishing patterns.
             </p>
           </div>
         )}
 
-        <button className="btn-cyber"
-          type="submit"
-          disabled={loading || !canSubmit()}
-          style={{
-            marginTop: 24, display: 'flex', alignItems: 'center',
-            gap: 8, padding: '12px 28px',
-            opacity: canSubmit() ? 1 : 0.5,
-            cursor: canSubmit() ? 'pointer' : 'not-allowed'
-          }}>
-          {loading
-            ? <><span className="loader" style={{ borderTopColor: '#020817' }}></span> Analyzing...</>
-            : '⚡ Analyze Now'}
-        </button>
+        <div style={{ marginTop: 22, display: 'flex', alignItems: 'center', gap: 14 }}>
+          <button className="btn-primary"
+            type="submit"
+            disabled={loading || !canSubmit()}
+            style={{
+              padding: '10px 24px',
+              opacity: canSubmit() ? 1 : 0.5,
+              cursor: canSubmit() ? 'pointer' : 'not-allowed'
+            }}>
+            {loading ? (
+              <>
+                <span className="loader" style={{ borderTopColor: '#ffffff' }}></span>
+                <span>Analyzing...</span>
+              </>
+            ) : (
+              <>
+                <Search size={15} />
+                <span>Analyze</span>
+              </>
+            )}
+          </button>
 
-        {!canSubmit() && (
-          <p style={{ fontSize: 12, color: '#475569', marginTop: 8 }}>
-            ⚠️ Please paste content above to enable analysis
-          </p>
-        )}
+          {!canSubmit() && (
+            <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+              Enter content above to start the scan.
+            </span>
+          )}
+        </div>
       </form>
 
       {result && <ResultCard result={result} />}
