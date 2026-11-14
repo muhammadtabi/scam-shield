@@ -28,13 +28,17 @@ const ScamBadge = ({ level, confidence }) => {
   }
   const b = map[level] || map.safe
   const IconComp = b.Icon
+  const displayConf = confidence != null
+    ? (confidence <= 1 ? Math.round(confidence * 100) : Math.round(confidence))
+    : null
+
   return (
     <span className={`badge ${b.cls}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-      <IconComp size={12} strokeWidth={2.4} />
+      <IconComp size={11} strokeWidth={2.4} />
       <span>{b.label}</span>
-      {confidence != null && (
-        <span style={{ opacity: 0.85, fontSize: '0.85em' }}>
-          ({Math.round(confidence * 100)}%)
+      {displayConf != null && (
+        <span style={{ opacity: 0.85, fontSize: '0.85em', fontFamily: 'JetBrains Mono' }}>
+          ({displayConf}%)
         </span>
       )}
     </span>
@@ -349,7 +353,7 @@ export default function SmsInbox() {
               <h1 className="page-title" style={{ margin: 0 }}>SMS Inbox</h1>
             </div>
             <p className="page-subtitle" style={{ marginTop: 4 }}>
-              Real-time mobile message feed with AI-powered smishing, shortcode, and threat analysis
+              Real-time mobile message feed with automated smishing, shortcode, and threat analysis
             </p>
           </div>
 
@@ -861,7 +865,7 @@ export default function SmsInbox() {
                       <div className="gmail-email-explanation" style={{ marginBottom: 12 }}>
                         <strong style={{ display: 'inline-flex', alignItems: 'center', gap: 5, color: 'var(--text-primary)', marginBottom: 4 }}>
                           <Info size={13} color="var(--accent-primary)" />
-                          <span>AI Scam Analysis:</span>
+                          <span>Analysis:</span>
                         </strong>
                         <div style={{ fontSize: 12.5, lineHeight: 1.5 }}>{m.explanation}</div>
                       </div>
