@@ -1,3 +1,4 @@
+import re
 from types import SimpleNamespace
 
 from bson import ObjectId
@@ -88,29 +89,27 @@ class InMemoryCollection:
         return InMemoryCursor(self, query)
 
     async def update_one(self, query, update, upsert=False):
-        from types import SimpleNamespace as _NS
         for document in self._documents:
             if _matches_query(document, query):
                 _apply_update(document, update)
-                return _NS(matched_count=1, modified_count=1, upserted_id=None)
+                return SimpleNamespace(matched_count=1, modified_count=1, upserted_id=None)
 
         if upsert:
             new_doc = dict(query)
             new_doc['_id'] = ObjectId()
             _apply_update(new_doc, update, is_insert=True)
             self._documents.append(new_doc)
-            return _NS(matched_count=0, modified_count=0, upserted_id=new_doc['_id'])
+            return SimpleNamespace(matched_count=0, modified_count=0, upserted_id=new_doc['_id'])
 
-        return _NS(matched_count=0, modified_count=0, upserted_id=None)
+        return SimpleNamespace(matched_count=0, modified_count=0, upserted_id=None)
 
     async def update_many(self, query, update):
-        from types import SimpleNamespace as _NS
         modified = 0
         for document in self._documents:
             if _matches_query(document, query):
                 _apply_update(document, update)
                 modified += 1
-        return _NS(matched_count=modified, modified_count=modified, upserted_id=None)
+        return SimpleNamespace(matched_count=modified, modified_count=modified, upserted_id=None)
 
 
 class InMemoryDatabase:
@@ -155,6 +154,11 @@ def _matches_query(document, query):
         return True
 
     for key, expected in query.items():
+        if key == "$or" and isinstance(expected, list):
+            if not any(_matches_query(document, sub_q) for sub_q in expected):
+                return False
+            continue
+
         value = document.get(key)
         if isinstance(expected, dict):
             for operator, operator_value in expected.items():
@@ -168,6 +172,12 @@ def _matches_query(document, query):
                     return False
                 if operator == "$ne" and value == operator_value:
                     return False
+                if operator == "$regex":
+                    flags = 0
+                    if expected.get("$options") and "i" in expected.get("$options"):
+                        flags |= re.IGNORECASE
+                    if not re.search(operator_value, str(value or ""), flags):
+                        return False
         else:
             if value != expected:
                 return False

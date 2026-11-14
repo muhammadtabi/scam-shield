@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   Mail,
   MessageSquare,
+  Smartphone,
   Link2,
   ArrowRight,
   ShieldX,
@@ -15,24 +16,27 @@ import {
   Calendar
 } from 'lucide-react'
 
-const StatCard = ({ icon: Icon, label, value, color, bgLight }) => (
-  <div className="card stagger" style={{ padding: '18px 20px' }}>
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-      <span style={{ fontSize: 13, color: 'var(--text-secondary)', fontWeight: 500 }}>{label}</span>
-      <div style={{
-        width: 32, height: 32, borderRadius: 'var(--radius-md)',
-        background: bgLight || 'rgba(59, 130, 246, 0.1)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        color: color
-      }}>
-        <Icon size={16} strokeWidth={2.2} />
+const StatCard = ({ icon, label, value, color, bgLight }) => {
+  const Icon = icon
+  return (
+    <div className="card stagger" style={{ padding: '18px 20px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+        <span style={{ fontSize: 13, color: 'var(--text-secondary)', fontWeight: 500 }}>{label}</span>
+        <div style={{
+          width: 32, height: 32, borderRadius: 'var(--radius-md)',
+          background: bgLight || 'rgba(59, 130, 246, 0.1)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: color
+        }}>
+          {Icon ? <Icon size={16} strokeWidth={2.2} /> : null}
+        </div>
+      </div>
+      <div style={{ fontSize: 26, fontWeight: 700, fontFamily: 'Plus Jakarta Sans, sans-serif', color: 'var(--text-primary)', letterSpacing: '-0.025em' }}>
+        {value}
       </div>
     </div>
-    <div style={{ fontSize: 26, fontWeight: 700, fontFamily: 'Plus Jakarta Sans, sans-serif', color: 'var(--text-primary)', letterSpacing: '-0.025em' }}>
-      {value}
-    </div>
-  </div>
-)
+  )
+}
 
 const ScamBadge = ({ level }) => {
   const map = {
@@ -413,12 +417,21 @@ export default function Dashboard({ setPage }) {
           </div>
         </div>
 
-        <button className="btn-primary"
-          onClick={() => setPage('detect')}
-          type="button">
-          <ScanSearch size={15} />
-          <span>New Scan</span>
-        </button>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button className="btn-secondary"
+            onClick={() => setPage('sms')}
+            type="button"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <Smartphone size={15} />
+            <span>SMS Inbox</span>
+          </button>
+          <button className="btn-primary"
+            onClick={() => setPage('detect')}
+            type="button">
+            <ScanSearch size={15} />
+            <span>New Scan</span>
+          </button>
+        </div>
       </div>
 
       <GmailConnect

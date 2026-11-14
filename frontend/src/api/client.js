@@ -61,6 +61,21 @@ export const api = {
   fetchGmailEmail: (id) => request('GET', `/api/gmail/message/${id}`),
   scanGmailEmail: (id) => request('POST', `/api/gmail/message/${id}/scan`),
   disconnectGmail: () => request('DELETE', '/api/gmail/disconnect'),
+  getSmsStatus: () => request('GET', '/api/sms/status'),
+  connectSmsPhone: (phoneNumber) => request('POST', '/api/sms/connect', { phone_number: phoneNumber }),
+  disconnectSmsPhone: () => request('POST', '/api/sms/disconnect'),
+  getSmsInbox: (scamLevel = null, search = null, page = 1) => {
+    const params = new URLSearchParams()
+    if (scamLevel) params.append('scam_level', scamLevel)
+    if (search) params.append('search', search)
+    if (page) params.append('page', String(page))
+    const qs = params.toString()
+    return request('GET', `/api/sms/inbox${qs ? `?${qs}` : ''}`)
+  },
+  getSmsMessage: (id) => request('GET', `/api/sms/messages/${id}`),
+  deleteSmsMessage: (id) => request('DELETE', `/api/sms/messages/${id}`),
+  simulateSms: (data) => request('POST', '/api/sms/simulate', data),
+  importSmsBatch: (messages) => request('POST', '/api/sms/sync-batch', { messages }),
   downloadCSV: async () => {
     const token = localStorage.getItem('token')
     const res = await fetch(`${BASE_URL}/api/reports/csv`, {
