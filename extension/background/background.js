@@ -44,6 +44,25 @@ function updateBadge(tabId, scamLevel, confidence) {
   }
 }
 
+// Helper: Check if URL belongs to local development host
+function isLocalhostUrl(url) {
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+    return (
+      host === "localhost" ||
+      host === "127.0.0.1" ||
+      host === "0.0.0.0" ||
+      host === "[::1]" ||
+      host === "::1" ||
+      host.endsWith(".localhost") ||
+      host.endsWith(".local")
+    );
+  } catch (e) {
+    return false;
+  }
+}
+
 // Scan a URL using the Scam Shield FastAPI Backend
 async function inspectUrl(url) {
   if (!url || (!url.startsWith("http://") && !url.startsWith("https://"))) {
@@ -52,6 +71,17 @@ async function inspectUrl(url) {
       confidence: 100,
       reasons: ["Internal or non-HTTP browser page"],
       explanation: "Browser internal pages and extensions are excluded from scan.",
+      skipped: true,
+    };
+  }
+
+  // Exclude local development environments from threat classification
+  if (isLocalhostUrl(url)) {
+    return {
+      scam_level: "safe",
+      confidence: 0,
+      reasons: ["Local development host (localhost or 127.0.0.1)"],
+      explanation: "This is your local machine / development environment. It is completely safe from external phishing.",
       skipped: true,
     };
   }

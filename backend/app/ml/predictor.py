@@ -2,6 +2,7 @@ import joblib
 import numpy as np
 import re
 import os
+import ipaddress
 from typing import Any, Dict, List, Optional
 
 from app.ml.email_features import explain_linear_text_pipeline, extract_email_signals
@@ -469,6 +470,24 @@ def detect_url(url: str) -> dict:
     """Analyze a URL using scheme-invariant lexical + structural ML and verified spoofing signals."""
     info = parse_canonical_url(url)
     reasons: List[str] = []
+
+    # Recognize local development / loopback hosts as safe internal environments
+    is_loopback = False
+    try:
+        ip_obj = ipaddress.ip_address(info.host)
+        is_loopback = ip_obj.is_loopback
+    except ValueError:
+        is_loopback = info.host in ("localhost", "0.0.0.0", "::1") or info.host.endswith(".localhost")
+
+    if is_loopback:
+        return {
+            "detection_type": "url",
+            "url": url,
+            "scam_level": "safe",
+            "confidence": 0.0,
+            "reasons": ["Local development / loopback host (localhost or 127.0.0.1)"],
+            "explanation": "This address points to your local machine (localhost / 127.0.0.1). It is an internal development environment and is safe from external phishing.",
+        }
 
     is_trusted_domain = (
         info.registrable_domain in TRUSTED_DOMAINS
