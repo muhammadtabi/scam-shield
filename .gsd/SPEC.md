@@ -1,63 +1,50 @@
-# SPEC.md — Scam Shield Browser Extension Specification
+# SPEC.md — Scam Shield Project Specification
 
 > **Status**: `FINALIZED`
 >
-> **Project Profile**: Web Extension (Manifest V3) + FastAPI Integration
+> **Project Profile**: Full-Stack Threat Defense & Security Training Platform
 
 ---
 
 ## 1. Vision & Purpose
-Scam Shield Browser Extension provides instant, real-time threat protection directly inside the browser. It monitors active web pages, scans links for phishing/malware patterns against the Scam Shield API, displays visual threat level badges on the toolbar, and alerts users before they interact with malicious domains.
+Scam Shield is an end-to-end scam detection and cybersecurity awareness platform. It combines calibrated machine learning (Logistic Regression, TF-IDF, ExtraTrees, lexical heuristics) with actionable awareness tools: real-time email inspection, SMS smishing monitoring, active browser URL defense, and an interactive **Security Training & Phishing Awareness Simulation** that empowers users to recognize sophisticated social engineering attacks.
 
 ---
 
-## 2. Goals
-1. **Real-Time Active Tab Protection**: Inspect current page URLs automatically as the user browses and update the extension icon badge (Green = Safe, Amber = Suspicious, Red = Scam).
-2. **Interactive Popup Dashboard**: Sleek Manifest V3 popup adhering to the Scam Shield minimalist slate design system, showing confidence score, detection factors, and technical explanations.
-3. **Ad-Hoc URL Quick Scanner**: Allow users to paste and analyze any suspicious URL without navigating to it.
-4. **Seamless Backend Sync**: Works anonymously out-of-the-box, or connects to the user's Scam Shield account via JWT to log detections to the dashboard history.
-5. **Malicious Interstitial Warning**: Displays a non-intrusive warning banner when navigating to high-risk scam sites.
+## 2. Key Capabilities
+1. **Multi-Channel Threat Detection**: Unified analysis for Email headers/bodies, SMS messages with carrier shortcode recognition, and scheme-invariant URL inspection.
+2. **Browser Extension (Manifest V3)**: Real-time toolbar badges and in-page warnings for high-risk scam URLs.
+3. **SMS Smishing Inbox**: Real-time webhook ingestion, Android backup import, and smishing simulation presets.
+4. **Gmail Inbox Integration**: Read-only IMAP/OAuth monitor with automated threat explanations.
+5. **Security Training & Phishing Awareness**: Interactive training sandbox with curated real-world scenarios across Email, SMS, and URLs, comparing human judgment against calibrated ML verdicts with educational feedback and accuracy tracking.
 
 ---
 
-## 3. Non-Goals (Out of Scope)
-- Full DOM keylogging or password form inspection (preserves user privacy).
-- Network packet sniffing or VPN tunneling.
-- Modifying page content other than safety warning banners.
+## 3. Training Module Specification
+- **Curated Scenarios**: High-fidelity representations of modern attack vectors (e.g. Bank OTP vs fake shortcode, USPS delivery lures, display-name spoofing, cloud credential harvesting, advance-fee prize fraud) alongside legitimate benign baselines.
+- **Interactive Evaluation**: Users classify each scenario as `safe` or `scam` and highlight observed indicators.
+- **Feedback & Ground Truth**: Instant comparative breakdown highlighting human selection vs ML confidence score and factor explanations.
+- **User Progress**: Tracks completed scenarios, accuracy percentage, and security tier rank per user account.
 
 ---
 
 ## 4. Technical Architecture
 ```
-extension/
-├── manifest.json              # Chrome / Firefox Manifest V3
-├── icons/                     # 16px, 32px, 48px, 128px toolbar & badge icons
-├── background/
-│   └── background.js          # Service worker: tab updates, badge colors, API caching
-├── popup/
-│   ├── popup.html             # Minimalist slate popup interface
-│   ├── popup.css              # Styling matching Scam Shield design tokens
-│   └── popup.js               # Tab query, URL scan client, account sync
-├── content/
-│   ├── content.js             # High-risk interstitial warning banner
-│   └── content.css            # Clean warning banner styles
-└── README.md                  # Extension installation & developer guide
+backend/
+├── app/
+│   ├── api/routes/training.py      # Training scenarios, submissions, and stats endpoints
+│   ├── schemas/training.py         # Pydantic models for training scenarios and results
+│   └── services/training_service.py# Scenario repository and scoring logic
+frontend/
+└── src/
+    └── components/
+        └── training/
+            └── Training.jsx        # Interactive training & awareness simulator UI
 ```
 
 ---
 
-## 5. API Requirements
-- `POST /api/detect/url`: Support optional authentication via `get_optional_current_user`.
-  - Unauthenticated requests: evaluate URL, return verdict and reasons without database write.
-  - Authenticated requests: evaluate URL, persist result to `db.detections`, return verdict with ID.
-- `GET /health`: Endpoint for extension to check backend reachability.
-
----
-
-## 6. Success Criteria
-- [x] Manifest V3 compliant (compatible with Google Chrome, Chromium, Brave, Edge).
-- [x] Backend endpoint `POST /api/detect/url` accepts both authenticated and unauthenticated scans.
-- [x] Extension popup provides real-time scan, ad-hoc scan, and server status.
-- [x] Automated backend tests verify optional auth and URL scanning.
-- [x] Zero external dependencies required to load the extension in developer mode (`chrome://extensions`).
-
+## 5. Success Criteria
+- [x] All training endpoints tested with unit tests (`backend/tests/test_training.py`).
+- [x] Frontend compiles with zero warnings or errors.
+- [x] Full adherence to Scam Shield minimal zinc/slate design tokens and /unslop copy guidelines.

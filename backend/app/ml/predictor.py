@@ -216,12 +216,50 @@ def detect_email(
         reasons.append("Calibrated email classifier flagged elevated phishing/spam probability")
 
     confidence = round(p_fused * 100.0, 2)
-    linear_factors = explain_linear_text_pipeline(email_model, sig.cleaned_model_text, top_k=5)
-    summary_prefix = (
-        f"Calibrated email risk: {confidence:.1f}% "
-        f"(text model: {p_text*100:.1f}%, URL risk: {sig.max_url_risk*100:.1f}%)."
-    )
-    explanation = f"{summary_prefix} {linear_factors}" if linear_factors else summary_prefix
+    if scam_level == "scam":
+        if sig.flagged_urls or sig.has_anchor_href_mismatch:
+            explanation = (
+                "This email is dangerous. It contains deceptive or fake links trying to direct you to an untrusted website "
+                "to steal your passwords or payment info. What to do: Do not click any links or download attachments. Delete this email."
+            )
+        elif sig.has_credential_harvest:
+            explanation = (
+                "This email is attempting to steal your private credentials (like your password, PIN, or payment details). "
+                "Legitimate organizations will never ask you to send these via email. What to do: Do not reply or provide any personal information."
+            )
+        elif sig.sender_brand_domain_spoof or sig.display_name_spoof:
+            explanation = (
+                f"This email pretends to be from a trusted organization, but the sender address ({sig.sender_domain}) is fake or unverified. "
+                "What to do: Do not trust this message. Contact the organization directly through their official app or website."
+            )
+        elif sig.has_bec_giftcard or sig.has_advance_fee_lure:
+            explanation = (
+                "This message shows classic fraud tricks—such as claiming you won a prize, inheritance, or urgently asking for gift cards or fees. "
+                "What to do: Do not send any money, cards, or personal details. Delete this email immediately."
+            )
+        else:
+            explanation = (
+                "This email has been flagged as a dangerous scam due to strong phishing and deception patterns in the text. "
+                "What to do: Do not click links, open attachments, or reply."
+            )
+    elif scam_level == "suspicious":
+        explanation = (
+            "Be cautious with this email. It shows warning signs—such as unusual sender details or unverified links—that don't match typical safe messages. "
+            "What to do: Double-check the sender carefully and do not click links or enter passwords unless you are certain who sent it."
+        )
+    else:
+        if sig.has_legit_transactional:
+            explanation = (
+                "This email appears to be a legitimate notification, receipt, or service update. The sender identity and embedded links match normal safe communication."
+            )
+        elif sig.has_unsubscribe_marketing:
+            explanation = (
+                "This email looks like a standard newsletter or promotional message. It contains standard unsubscribe options and shows no signs of phishing or malware."
+            )
+        else:
+            explanation = (
+                "This email appears safe and normal. No fake links, urgent threats, or suspicious sender addresses were detected."
+            )
 
     return {
         "detection_type": "email",
@@ -344,10 +382,53 @@ def detect_sms(sender_id: str, message: str) -> dict:
         if sig.sender_is_shortcode
         else "mobile/numeric"
     )
-    explanation = (
-        f"SMS analyzed ({len(message)} chars, sender: {sender_kind}). "
-        f"Calibrated hybrid risk: {confidence:.1f}% (text model: {p_text*100:.1f}%, URL risk: {sig.max_url_risk*100:.1f}%)."
-    )
+
+    if scam_level == "scam":
+        if sig.flagged_urls or (sig.extracted_urls and sig.has_urgency_suspension):
+            explanation = (
+                "This text is a fake alert (smishing scam). The sender is using fake urgency (like a missed package delivery or account lock) "
+                "to trick you into opening a dangerous link that steals personal information or payment cards. "
+                "What to do: Do not tap the link. Delete this message."
+            )
+        elif sig.has_prize_claim:
+            explanation = (
+                "This is a lottery or prize scam. Scammers send fake notifications claiming you won money to trick you into sharing bank details "
+                "or paying fake release fees. What to do: Never send personal details or money. Block this number."
+            )
+        elif sig.has_job_loan_bait:
+            explanation = (
+                "This is an employment or fast-cash scam offering unrealistic daily pay to lure you into chatting on WhatsApp or paying upfront fees. "
+                "What to do: Do not reply or click any links."
+            )
+        elif sig.asks_for_secret:
+            explanation = (
+                "This message is attempting to steal your private security code (OTP) or password. Real companies will never ask you to text your code. "
+                "What to do: Never share verification codes with anyone."
+            )
+        else:
+            explanation = (
+                "This message shows strong smishing patterns designed to trick you. "
+                "What to do: Do not click any links or share private codes."
+            )
+    elif scam_level == "suspicious":
+        explanation = (
+            f"This text looks suspicious. It was sent from a {sender_kind} ({sender_id}) with high-pressure wording or an unverified link. "
+            "What to do: Do not click links or share information unless you independently verify with the company first."
+        )
+    else:
+        if sig.sender_is_shortcode:
+            explanation = (
+                f"This message was sent from an official carrier/brand shortcode ({sender_id}). It appears to be a routine security code or service update "
+                "with standard safety notices and no suspicious links."
+            )
+        elif sig.sender_is_alpha:
+            explanation = (
+                f"This message was sent from an official registered sender name ({sender_id}). It contains routine service information with no signs of phishing or fake links."
+            )
+        else:
+            explanation = (
+                "This message appears safe. It does not contain deceptive links, urgent threats, or requests for private information."
+            )
 
     return {
         "detection_type": "sms",
@@ -562,13 +643,46 @@ def detect_url(url: str) -> dict:
         reasons.append("URL structure appears legitimate with no spoofing indicators")
 
     confidence = round(float(fused) * 100.0, 2)
-    explanation = (
-        f"URL analyzed via scheme-invariant ML ensemble (risk: {confidence:.1f}%, "
-        f"host pattern: {p_host*100:.1f}%, path pattern: {p_path*100:.1f}%) "
-        f"for domain '{info.registrable_domain or info.host}'."
-        if ml_available
-        else f"URL analyzed via domain structural heuristics for '{info.registrable_domain or info.host}'."
-    )
+    domain_display = info.registrable_domain or info.host
+    brand_hits = info.brand_typosquat_hits or info.brand_subdomain_hits or info.brand_squat_hits or info.brand_path_hits
+    brand_name = brand_hits[0].title() if brand_hits else None
+
+    if scam_level == "scam":
+        if brand_name:
+            explanation = (
+                f"This website is dangerous. It pretends to be '{brand_name}', but the actual link leads to an untrusted domain ('{domain_display}'). "
+                "It is designed to steal your passwords or payment details. What to do: Do not visit this site or enter any personal information."
+            )
+        elif info.is_ip_host:
+            explanation = (
+                "This web address points directly to a raw numerical IP address instead of a recognized website name. "
+                "Scammers use this technique to hide deceptive phishing pages. What to do: Do not open this link."
+            )
+        else:
+            explanation = (
+                f"This website address ('{domain_display}') has been flagged as a dangerous scam or phishing site. "
+                "Opening it could expose you to identity theft or malicious downloads. What to do: Do not open this link."
+            )
+    elif scam_level == "suspicious":
+        if not info.scheme_is_https:
+            explanation = (
+                f"Proceed with caution. The website '{domain_display}' does not use secure encryption (HTTPS), meaning any passwords or information you enter could be intercepted. "
+                "What to do: Never enter passwords or card numbers on an unencrypted website."
+            )
+        else:
+            explanation = (
+                f"Proceed with caution. This website address ('{domain_display}') has unusual patterns or an unfamiliar domain ending. "
+                "What to do: Double-check that this is the exact website you intended to visit before logging in."
+            )
+    else:
+        if domain_display in TRUSTED_DOMAINS:
+            explanation = (
+                f"This web address is safe. It belongs to the official verified website of '{domain_display}' and uses secure encryption."
+            )
+        else:
+            explanation = (
+                f"This website address ('{domain_display}') appears legitimate and safe. It uses standard secure protocols with no signs of spoofing or phishing."
+            )
 
     return {
         "detection_type": "url",

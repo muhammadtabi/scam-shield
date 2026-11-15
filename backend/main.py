@@ -7,7 +7,7 @@ import asyncio
 from app.core.config import settings
 from app.db.database import connect_db, close_db
 from app.ml.predictor import load_models
-from app.api.routes import auth, detection, reports, dashboard, gmail, sms
+from app.api.routes import auth, detection, reports, dashboard, gmail, sms, training
 from app.services.gmail_monitor import gmail_monitor_loop
 
 @asynccontextmanager
@@ -80,6 +80,7 @@ app.include_router(reports.router,    prefix="/api/reports",   tags=["Reports"])
 app.include_router(dashboard.router,  prefix="/api/dashboard", tags=["Dashboard"])
 app.include_router(gmail.router,      prefix="/api/gmail",     tags=["Gmail"])
 app.include_router(sms.router,        prefix="/api/sms",       tags=["SMS"])
+app.include_router(training.router,   prefix="/api/training",  tags=["Training"])
 
 @app.get("/")
 async def root():
