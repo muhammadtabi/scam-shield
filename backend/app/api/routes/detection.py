@@ -1,3 +1,4 @@
+import asyncio
 from fastapi import APIRouter, Depends, HTTPException, status
 from datetime import datetime
 from typing import Optional
@@ -21,7 +22,7 @@ async def detect_email_route(
     request: EmailDetectRequest,
     current_user: dict = Depends(get_current_user)
 ):
-    result = detect_email(request.subject, request.sender, request.body)
+    result = await asyncio.to_thread(detect_email, request.subject, request.sender, request.body)
     if "error" not in result:
         result["id"] = await save_detection(result, current_user["sub"])
     return result
@@ -31,7 +32,7 @@ async def detect_sms_route(
     request: SMSDetectRequest,
     current_user: dict = Depends(get_current_user)
 ):
-    result = detect_sms(request.sender_id, request.message)
+    result = await asyncio.to_thread(detect_sms, request.sender_id, request.message)
     if "error" not in result:
         result["id"] = await save_detection(result, current_user["sub"])
     return result
@@ -41,7 +42,7 @@ async def detect_url_route(
     request: URLDetectRequest,
     current_user: Optional[dict] = Depends(get_optional_current_user)
 ):
-    result = detect_url(request.url)
+    result = await asyncio.to_thread(detect_url, request.url)
     if "error" not in result and current_user:
         result["id"] = await save_detection(result, current_user["sub"])
     return result

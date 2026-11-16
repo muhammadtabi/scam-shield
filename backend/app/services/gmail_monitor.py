@@ -406,7 +406,8 @@ async def sync_gmail_account(user_id: str, max_messages: int = 25) -> Dict[str, 
             thread_id = message.get("threadId")
             history_id = message.get("historyId")
 
-        result = detect_email(
+        result = await asyncio.to_thread(
+            detect_email,
             normalized["subject"],
             normalized["sender"],
             normalized["body"],
@@ -614,7 +615,8 @@ async def scan_gmail_message(user_id: str, message_id: str) -> Dict[str, Any]:
         msg = _fetch_message(access_token, message_id)
         norm = _normalize_message(msg)
         thread_id = msg.get("threadId")
-    result = detect_email(
+    result = await asyncio.to_thread(
+        detect_email,
         norm["subject"],
         norm["sender"],
         norm["body"],

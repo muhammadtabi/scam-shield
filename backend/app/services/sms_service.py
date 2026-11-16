@@ -1,3 +1,4 @@
+import asyncio
 import re
 import secrets
 from datetime import datetime
@@ -118,7 +119,7 @@ async def ingest_sms_message(
 ) -> SMSInboxItem:
     """Analyze an incoming SMS with Scam Shield ML and persist to inbox."""
     db = get_db()
-    detection = detect_sms(sender_id=sender_id, message=message)
+    detection = await asyncio.to_thread(detect_sms, sender_id=sender_id, message=message)
 
     scam_level = detection.get("scam_level", "safe")
     confidence = float(detection.get("confidence", 0.0))
