@@ -824,12 +824,26 @@ All 28 application routes were tested end-to-end using FastAPI TestClient with M
 
 ---
 
-## 11. Remaining Skipped Fixes (Pending Approval)
+## 11. Final Completion Status (All Top 10 Fixes Completed & Verified)
 
-The following 4 fixes were explicitly skipped per user directive and remain unchanged:
-- **Fix 3:** Encrypt Gmail OAuth tokens at rest with Fernet in `backend/app/services/gmail_monitor.py`.
-- **Fix 7:** Replace 28 sequential queries in `backend/app/api/routes/dashboard.py` with a single `$facet` aggregation pipeline.
-- **Fix 8:** Pre-hash passwords with SHA-256 in `backend/app/core/security.py` before bcrypt hashing.
-- **Fix 9:** Frontend graceful 401 handling in React state and `URL.revokeObjectURL()` blob cleanup in `frontend/src/api/client.js`.
+All 10 fixes from the prioritized plan have now been implemented, tested, and committed to git:
+
+1. **Fix 1 (Commits `4a29534`, `ffc5ded`):** Stripped sender and TLD tokens from email model vocabulary, retrained Email, SMS, URL and anomaly models, and added regional allowlists requiring matching domain or SPF/DKIM authentication.
+2. **Fix 2 (Commit `a0226bf`):** Decoupled URL risk cascading from email detection; embedded sender-domain links no longer force email scam verdicts.
+3. **Fix 3 (Commit `6e82bed`):** Encrypted Gmail OAuth access and refresh tokens at rest with Fernet in `backend/app/services/gmail_monitor.py` with backward-compatible decryption.
+4. **Fix 4 (Commit `0a046b9`):** Added `ObjectId.is_valid()` check returning HTTP 400 on malformed detection IDs, and enforced HTTP 404 for non-existent records.
+5. **Fix 5 (Commit `5811e8b`):** Offloaded synchronous CPU-heavy ML inference to background threads via `await asyncio.to_thread(...)` across detection routes and background sync loops.
+6. **Fix 6 (Commit `0ec9543`):** Created unique and compound database indexes on `users.email`, `detections.(user_id, timestamp)`, `gmail_connections.user_id`, and `sms_messages.(user_id, received_at)`.
+7. **Fix 7 (Commit `20a9099`):** Replaced 28 sequential queries in `backend/app/api/routes/dashboard.py` with a single high-performance MongoDB `$facet` aggregation pipeline.
+8. **Fix 8 (Commit `9a1181d`):** Pre-hashed passwords with SHA-256 before bcrypt in `backend/app/core/security.py`, preventing multi-byte UTF-8 crashes while maintaining 100% backward compatibility for legacy hashes.
+9. **Fix 9 (Commit `a7a4660`):** Added graceful 401 handling via window event in React `AuthProvider`, memory-safe `URL.revokeObjectURL()` cleanup, and error status validation on report downloads in `frontend/src/api/client.js`.
+10. **Fix 10 (Commit `a24f5ce`):** Migrated deprecated `datetime.utcnow()` to `datetime.now(timezone.utc)` across 9 backend files, removed dead code in `test_models.py`, and cleaned up stray directories.
+
+### Verification Summary
+- **90-Sample Labeled ML Benchmark:** 100% accuracy, 100% precision, 100% recall, 0.00% False Positive Rate across all 3 channels (Email, SMS, URL).
+- **Backend Test Suite:** 51 of 51 pytest unit and integration tests passed.
+- **API Endpoint Verification:** 28 of 28 FastAPI routes passed with live MongoDB Atlas connection.
+- **Frontend Code Quality:** `eslint .` passed with 0 errors and 0 warnings; `npm run build` produced production bundle with 0 errors.
+
 
 
