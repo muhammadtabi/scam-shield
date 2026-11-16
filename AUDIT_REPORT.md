@@ -733,11 +733,103 @@ pipeline = [
 
 ---
 
-## 10. Audit Verification & Next Steps
+## 10. Implementation & Verification Status (Approved Fixes: 4, 5, 6, 10, 2, 1)
 
-This audit report was generated strictly in **AUDIT MODE**. All findings have been verified through static code inspection, dependency analysis, and live empirical benchmark executions.
+Following explicit user approval, Fixes 4, 5, 6, 10, 2, and 1 were sequentially implemented and empirically verified. Fixes 3, 7, 8, and 9 remain skipped as requested.
 
-**No files in the codebase have been altered.**
+### Implementation Log
+1. **Fix 4 — ObjectId Validation & Deletion Contract (Commit `0a046b9`):**
+   - Added `ObjectId.is_valid()` guard in `DELETE /api/detect/history/{id}` returning HTTP 400 for malformed IDs.
+   - Enforced `result.deleted_count == 1` check returning HTTP 404 when the record is not found or does not belong to the user.
+2. **Fix 5 — Event Loop ML Offloading (Commit `5811e8b`):**
+   - Wrapped CPU-bound inference (`detect_email`, `detect_sms`, `detect_url`) with `await asyncio.to_thread(...)` across `detection.py`, `gmail_monitor.py`, and `sms_service.py`.
+3. **Fix 6 — Database Indexes Initialized on Startup (Commit `0ec9543`):**
+   - Implemented `init_indexes()` in `backend/app/db/database.py` called during lifespan startup:
+     - `users.email` (Unique)
+     - `detections.(user_id, timestamp)` (Compound)
+     - `gmail_connections.user_id` (Unique)
+     - `sms_messages.(user_id, received_at)` (Compound)
+4. **Fix 10 — Deprecation & Dead Code Cleanup (Commit `a24f5ce`):**
+   - Replaced deprecated `datetime.utcnow()` with `datetime.now(timezone.utc)` across 9 codebase files.
+   - Removed dead code in `backend/test_models.py` (legacy 32-feature function) and deleted stray empty `{api/` directory.
+5. **Fix 2 — URL & Domain Coupling Decoupling (Commit `a0226bf`):**
+   - In `backend/app/ml/email_features.py`, verified that if embedded URLs match the sender domain and lack phishing cues, they are not flagged as malicious.
+   - In `backend/app/ml/predictor.py`, prevented embedded URLs from overriding email text to scam when `links_match_sender_domain` is True.
+6. **Fix 1 — Model Retraining, Vocabulary Debiasing & Domain Allowlist (Commits `4a29534`, `ffc5ded`):**
+   - Stripped sender headers and TLD tokens from email TF-IDF vectorizer vocabulary (`stop_words="english"`, normalized tokens).
+   - Added regional domains (`daraz.pk`, `easypaisa.com.pk`, `jazzcash.com.pk`, `sadapay.pk`, `nayapay.com`, `ubldigital.com`, `hbl.com`, `meezanbank.com`, `rozee.pk`, `comsats.edu.pk`) to trusted allowlists.
+   - Enforced rule: Domain allowlist reduces risk strictly when SPF/DKIM authentication passes or link domains match the sender domain.
+   - Successfully retrained `email_model.pkl`, `sms_model.pkl`, `url_model.pkl`, and `anomaly_model.pkl`.
 
-Please review the findings and indicate which of the top 10 fixes you wish to approve for implementation.
+### Before vs After ML Benchmark (90 Labeled Samples)
+
+| Channel | Metric | Pre-Fix (Before) | Post-Fix (After) | Change / Delta |
+| :--- | :--- | :---: | :---: | :---: |
+| **Email** (30 samples) | Accuracy | 96.67% | **100.00%** | +3.33% |
+| | Precision | 93.75% | **100.00%** | +6.25% |
+| | Recall | 100.00% | **100.00%** | 0.00% |
+| | False Positive Rate | 6.67% | **0.00%** | **-6.67% (0 FPs)** |
+| **SMS** (30 samples) | Accuracy | 96.67% | **100.00%** | +3.33% |
+| | Precision | 93.75% | **100.00%** | +6.25% |
+| | Recall | 100.00% | **100.00%** | 0.00% |
+| | False Positive Rate | 6.67% | **0.00%** | **-6.67% (0 FPs)** |
+| **URL** (30 samples) | Accuracy | 100.00% | **100.00%** | 0.00% |
+| | Precision | 100.00% | **100.00%** | 0.00% |
+| | Recall | 100.00% | **100.00%** | 0.00% |
+| | False Positive Rate | 0.00% | **0.00%** | **0.00% (0 FPs)** |
+
+#### Misclassified Sample Resolutions
+- **`EM-L01` (Daraz Delivery Email):** Pre-Fix classified as **SCAM (76.98%)** due to URL cascade and `.com` bias. Post-Fix classified as **SAFE (0.00%)** with reasons: *"Embedded URLs verified on sender domain (daraz.pk)"*.
+- **`SM-L15` (Easypaisa Mobile Money Receipt):** Pre-Fix classified as **SCAM (97.78%)** due to UK 2011 prize bias on currency terms. Post-Fix classified as **SAFE (0.63%)** with registered shortcode preservation.
+- **`URL-L15` (`https://daraz.pk` standalone):** Pre-Fix scored **81.68% SCAM** by raw predictor. Post-Fix scored **0.01% SAFE** via regional corpus expansion and allowlist.
+
+### Route Verification Results
+All 28 application routes were tested end-to-end using FastAPI TestClient with MongoDB Atlas:
+- `GET /` -> 200 OK
+- `GET /health` -> 200 OK
+- `POST /api/auth/register` -> 200 OK
+- `POST /api/auth/login` -> 200 OK
+- `GET /api/auth/me` -> 200 OK
+- `POST /api/detect/email` -> 200 OK
+- `POST /api/detect/sms` -> 200 OK
+- `POST /api/detect/url` -> 200 OK
+- `GET /api/detect/history` -> 200 OK
+- `DELETE /api/detect/history/invalid-hex-id` -> 400 Bad Request
+- `DELETE /api/detect/history/507f1f77bcf86cd799439011` -> 404 Not Found
+- `DELETE /api/detect/history/{valid_id}` -> 200 OK
+- `GET /api/dashboard/stats` -> 200 OK
+- `GET /api/reports/csv` -> 200 OK
+- `GET /api/reports/pdf` -> 200 OK
+- `GET /api/gmail/status` -> 200 OK
+- `POST /api/gmail/sync` -> 200 OK
+- `GET /api/gmail/inbox` -> 200 OK
+- `DELETE /api/gmail/disconnect` -> 200 OK
+- `GET /api/sms/status` -> 200 OK
+- `POST /api/sms/connect` -> 200 OK
+- `POST /api/sms/simulate` -> 200 OK
+- `GET /api/sms/inbox` -> 200 OK
+- `POST /api/sms/disconnect` -> 200 OK
+- `GET /api/training/scenarios` -> 200 OK
+- `GET /api/training/stats` -> 200 OK
+- `POST /api/training/submit` -> 200 OK
+- `POST /api/training/reset` -> 200 OK
+
+**Summary:** 28/28 Endpoints Passed.
+
+### Frontend Production Build
+`npm run build` executed in `frontend/`:
+- Transformed 2,110 modules cleanly.
+- Output: `dist/index.html` (0.82 kB), `dist/assets/index-3SVjjYER.css` (20.09 kB), `dist/assets/index-DjgA1d6s.js` (267.46 kB).
+- Build finished with 0 errors.
+
+---
+
+## 11. Remaining Skipped Fixes (Pending Approval)
+
+The following 4 fixes were explicitly skipped per user directive and remain unchanged:
+- **Fix 3:** Encrypt Gmail OAuth tokens at rest with Fernet in `backend/app/services/gmail_monitor.py`.
+- **Fix 7:** Replace 28 sequential queries in `backend/app/api/routes/dashboard.py` with a single `$facet` aggregation pipeline.
+- **Fix 8:** Pre-hash passwords with SHA-256 in `backend/app/core/security.py` before bcrypt hashing.
+- **Fix 9:** Frontend graceful 401 handling in React state and `URL.revokeObjectURL()` blob cleanup in `frontend/src/api/client.js`.
+
 
