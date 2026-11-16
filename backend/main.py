@@ -88,7 +88,8 @@ async def root():
 
 @app.get("/health")
 async def health():
-    return {"status": "healthy", "timestamp": __import__("datetime").datetime.utcnow()}
+    from datetime import datetime, timezone
+    return {"status": "healthy", "timestamp": datetime.now(timezone.utc)}
 
 
 if __name__ == "__main__":

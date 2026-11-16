@@ -1,7 +1,7 @@
 import asyncio
 import re
 import secrets
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
 from bson import ObjectId
@@ -16,7 +16,7 @@ from app.schemas.sms import (
 
 
 def _utc_now() -> datetime:
-    return datetime.utcnow()
+    return datetime.now(timezone.utc)
 
 
 def _doc_to_inbox_item(doc: Dict[str, Any]) -> SMSInboxItem:

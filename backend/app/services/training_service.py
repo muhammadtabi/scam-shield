@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional, Dict
 from app.db.database import get_db
 from app.schemas.training import (
@@ -308,7 +308,7 @@ async def evaluate_user_submission(user_id: str, submission: TrainingSubmissionR
             "user_verdict": user_verdict,
             "is_correct": is_correct,
             "score": total_score,
-            "timestamp": datetime.utcnow()
+            "timestamp": datetime.now(timezone.utc)
         }},
         upsert=True
     )

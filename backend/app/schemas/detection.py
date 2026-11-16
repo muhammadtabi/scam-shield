@@ -2,7 +2,7 @@ import re
 from urllib.parse import urlparse
 from pydantic import BaseModel, field_validator, model_validator
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, timezone
 from pydantic import Field
 from enum import Enum
 
@@ -117,5 +117,5 @@ class DetectionResult(BaseModel):
     confidence: float
     reasons: List[str]
     explanation: Optional[str] = None
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     user_id: Optional[str] = None

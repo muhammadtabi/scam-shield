@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from app.core.dependencies import get_current_user
 from app.db.database import get_db
 
@@ -24,7 +24,7 @@ async def get_stats(current_user: dict = Depends(get_current_user)):
     # Last 7 days trend with threat breakdown
     trend = []
     for i in range(6, -1, -1):
-        day_start = datetime.utcnow().replace(hour=0, minute=0, second=0) - timedelta(days=i)
+        day_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=i)
         day_end   = day_start + timedelta(days=1)
         base_filter = {
             "user_id": uid,

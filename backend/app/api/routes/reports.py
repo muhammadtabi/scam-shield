@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
-from datetime import datetime
+from datetime import datetime, timezone
 import io
 import csv
 from reportlab.lib.pagesizes import letter
@@ -96,7 +96,7 @@ async def download_pdf(current_user: dict = Depends(get_current_user_flexible)):
                                   spaceAfter=6)
     story.append(Paragraph("🛡️ Scam Shield — Detection Report", title_style))
     story.append(Paragraph(
-        f"Generated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')} | "
+        f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')} | "
         f"User: {user_display}",
         styles["Normal"]
     ))

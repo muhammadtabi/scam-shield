@@ -1,6 +1,6 @@
 import asyncio
 from fastapi import APIRouter, Depends, HTTPException, status
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from bson import ObjectId
 from app.schemas.detection import EmailDetectRequest, SMSDetectRequest, URLDetectRequest
@@ -13,7 +13,7 @@ router = APIRouter()
 async def save_detection(result: dict, user_id: str):
     """Save detection result to MongoDB"""
     db = get_db()
-    doc = {**result, "user_id": user_id, "timestamp": datetime.utcnow()}
+    doc = {**result, "user_id": user_id, "timestamp": datetime.now(timezone.utc)}
     inserted = await db.detections.insert_one(doc)
     return str(inserted.inserted_id)
 
