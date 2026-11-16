@@ -5,7 +5,6 @@ import {
   ScanSearch,
   Mail,
   Smartphone,
-  GraduationCap,
   Bell,
   FileText,
   Sun,
@@ -18,7 +17,6 @@ const navItems = [
   { id: 'detect',    icon: ScanSearch,      label: 'Scan Now' },
   { id: 'gmail',     icon: Mail,            label: 'Gmail Inbox' },
   { id: 'sms',       icon: Smartphone,      label: 'SMS Inbox' },
-  { id: 'training',  icon: GraduationCap,   label: 'Training' },
   { id: 'alerts',    icon: Bell,            label: 'Alerts' },
   { id: 'reports',   icon: FileText,        label: 'Reports' },
 ]
