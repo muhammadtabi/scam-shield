@@ -413,69 +413,50 @@ export default function Dashboard({ setPage }) {
     </div>
   )
 
-  const score = stats?.security_score ?? 100
-
   return (
     <div className="fade-in">
-      <div className="page-header stagger stagger-1">
-        <h1 className="page-title">Dashboard</h1>
-        <p className="page-subtitle">
-          Real-time threat detection overview and status
-        </p>
-      </div>
-
-      <div className="card stagger stagger-2" style={{
-        padding: '20px 22px', marginBottom: 20,
-        display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap'
+      <div className="page-header stagger stagger-1" style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: 16,
+        marginBottom: 24
       }}>
-        <div style={{
-          width: 64, height: 64, borderRadius: '50%',
-          background: `conic-gradient(${score >= 80 ? 'var(--accent-green)' : score >= 50 ? 'var(--accent-yellow)' : 'var(--accent-red)'} ${score * 3.6}deg, var(--border) 0deg)`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          flexShrink: 0
-        }}>
-          <div style={{
-            width: 52, height: 52, borderRadius: '50%',
-            background: 'var(--bg-card)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: 'JetBrains Mono', fontWeight: 700, fontSize: 15,
-            color: score >= 80 ? 'var(--accent-green)' : score >= 50 ? 'var(--accent-yellow)' : 'var(--accent-red)'
-          }}>{score}%</div>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
+            <h1 className="page-title" style={{ margin: 0 }}>Dashboard</h1>
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '3px 10px',
+              borderRadius: 20,
+              fontSize: 11.5,
+              fontWeight: 600,
+              fontFamily: 'JetBrains Mono, monospace',
+              background: 'rgba(16, 185, 129, 0.1)',
+              color: 'var(--accent-green)',
+              border: '1px solid rgba(16, 185, 129, 0.25)'
+            }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent-green)' }} />
+              Shield Active
+            </span>
+          </div>
+          <p className="page-subtitle" style={{ margin: 0 }}>
+            Real-time threat detection overview and status
+          </p>
         </div>
 
-        <div style={{ flex: 1, minWidth: 220 }}>
-          <div style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: 16.5,
-                        color: 'var(--text-primary)', marginBottom: 3, letterSpacing: '-0.015em' }}>
-            Security Health Score
-          </div>
-          <div style={{ color: 'var(--text-secondary)', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
-            {score >= 80 ? (
-              <>
-                <ShieldCheck size={15} color="var(--accent-green)" />
-                <span>Low threat activity — recent scans clean</span>
-              </>
-            ) : score >= 50 ? (
-              <>
-                <AlertTriangle size={15} color="var(--accent-yellow)" />
-                <span>Threats detected — review alerts</span>
-              </>
-            ) : (
-              <>
-                <ShieldAlert size={15} color="var(--accent-red)" />
-                <span>Multiple threats detected — review recommended</span>
-              </>
-            )}
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', gap: 10 }}>
-          <button className="btn-primary"
-            onClick={() => setPage('detect')}
-            type="button">
-            <ScanSearch size={15} />
-            <span>New Scan</span>
-          </button>
-        </div>
+        <button
+          className="btn-primary"
+          onClick={() => setPage('detect')}
+          type="button"
+          style={{ padding: '9px 18px', fontSize: 13.5 }}
+        >
+          <ScanSearch size={15} />
+          <span>New Scan</span>
+        </button>
       </div>
 
       <GmailConnect
