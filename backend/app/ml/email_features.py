@@ -276,33 +276,6 @@ def extract_email_signals(
     auth_failed = bool(re.search(r"(?:spf|dkim|dmarc)=(?:fail|softfail|temperror)", auth_str))
     auth_passed = bool("dkim=pass" in auth_str or ("spf=pass" in auth_str and not auth_failed))
 
-    urls, anchor_mismatch = extract_email_links(subj, bdy, meta.get("html_links"))
-    max_url_risk = 0.0
-    flagged_urls: List[str] = []
-    link_domains: List[str] = []
-
-    for u in urls:
-        pu = parse_canonical_url(u)
-        if pu.registrable_domain:
-            link_domains.append(pu.registrable_domain)
-        if url_risk_fn is not None:
-            res = url_risk_fn(u)
-            risk = float(res.get("confidence", 0.0)) / 100.0
-            max_url_risk = max(max_url_risk, risk)
-            if res.get("scam_level") in {"suspicious", "scam"}:
-                flagged_urls.append(u)
-        else:
-            heur = 0.0
-            if pu.suspicious_tld:
-                heur = max(heur, 0.72)
-            if pu.brand_subdomain_hits or pu.brand_squat_hits or pu.brand_typosquat_hits:
-                heur = max(heur, 0.88)
-            if pu.is_ip_host or pu.has_userinfo_at:
-                heur = max(heur, 0.85)
-            max_url_risk = max(max_url_risk, heur)
-            if heur >= 0.45:
-                flagged_urls.append(u)
-
     def _domain_belongs_to_sender(link_domain: str, sender_domain: str) -> bool:
         if not link_domain or not sender_domain:
             return False
@@ -315,6 +288,60 @@ def extract_email_signals(
             if (link_label in aliases or link_label == brand) and (sender_label in aliases or sender_label == brand):
                 return True
         return False
+
+    urls, anchor_mismatch = extract_email_links(subj, bdy, meta.get("html_links"))
+    max_url_risk = 0.0
+    flagged_urls: List[str] = []
+    link_domains: List[str] = []
+
+    for u in urls:
+        pu = parse_canonical_url(u)
+        if pu.registrable_domain:
+            link_domains.append(pu.registrable_domain)
+
+        has_verifiable_url_cue = bool(
+            pu.is_ip_host
+            or pu.has_userinfo_at
+            or pu.brand_subdomain_hits
+            or pu.brand_squat_hits
+            or pu.brand_typosquat_hits
+            or pu.is_punycode
+            or pu.has_executable_ext
+            or pu.has_phishing_kit_path
+            or (pu.suspicious_tld and (pu.auth_domain_hits or pu.auth_path_hits))
+        )
+
+        matches_sender = bool(
+            reg_domain
+            and pu.registrable_domain
+            and _domain_belongs_to_sender(pu.registrable_domain, reg_domain)
+        )
+
+        if url_risk_fn is not None:
+            res = url_risk_fn(u)
+            risk = float(res.get("confidence", 0.0)) / 100.0
+            # If URL matches sender domain and has no verifiable phishing/spoofing cues,
+            # do not let an uncalibrated ML score on an unknown domain cascade into email threat.
+            if matches_sender and not has_verifiable_url_cue:
+                url_is_threat = False
+                risk = min(risk, 0.25)
+            else:
+                url_is_threat = res.get("scam_level") in {"suspicious", "scam"}
+
+            max_url_risk = max(max_url_risk, risk)
+            if url_is_threat:
+                flagged_urls.append(u)
+        else:
+            heur = 0.0
+            if pu.suspicious_tld:
+                heur = max(heur, 0.72)
+            if pu.brand_subdomain_hits or pu.brand_squat_hits or pu.brand_typosquat_hits:
+                heur = max(heur, 0.88)
+            if pu.is_ip_host or pu.has_userinfo_at:
+                heur = max(heur, 0.85)
+            max_url_risk = max(max_url_risk, heur)
+            if heur >= 0.45:
+                flagged_urls.append(u)
 
     links_match_sender_domain = bool(
         reg_domain

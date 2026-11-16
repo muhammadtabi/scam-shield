@@ -112,7 +112,10 @@ def detect_email(
 
     # Corroborate verifiable phishing, spoofing, BEC, and malicious-link cues.
     if sig.flagged_urls:
-        p_fused = max(p_fused, min(0.99, sig.max_url_risk * 0.96))
+        if sig.links_match_sender_domain and not (sig.has_credential_harvest or sig.has_urgency_threat or sig.auth_failed):
+            p_fused = max(p_fused, min(0.35, sig.max_url_risk * 0.5))
+        else:
+            p_fused = max(p_fused, min(0.99, sig.max_url_risk * 0.96))
     if sig.has_anchor_href_mismatch:
         p_fused = max(p_fused, 0.88)
     if sig.sender_brand_domain_spoof:
