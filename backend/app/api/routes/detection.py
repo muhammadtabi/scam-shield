@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from datetime import datetime
 from typing import Optional
+from bson import ObjectId
 from app.schemas.detection import EmailDetectRequest, SMSDetectRequest, URLDetectRequest
 from app.core.dependencies import get_current_user, get_optional_current_user
 from app.db.database import get_db
@@ -69,10 +70,19 @@ async def delete_detection(
     detection_id: str,
     current_user: dict = Depends(get_current_user)
 ):
-    from bson import ObjectId
+    if not ObjectId.is_valid(detection_id):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid detection ID format"
+        )
     db = get_db()
-    await db.detections.delete_one({
+    result = await db.detections.delete_one({
         "_id": ObjectId(detection_id),
         "user_id": current_user["sub"]
     })
+    if result.deleted_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Detection not found"
+        )
     return {"message": "Deleted successfully"}
