@@ -155,6 +155,8 @@ def clean_email_text_for_model(subject: str, body: str) -> str:
     raw = re.sub(r"\b\d{4,}\b", " __num__ ", raw)
     # Neutralize legacy corpus markers if present in older texts.
     raw = re.sub(r"josemonkeyorg|monkeyorg|enron\s+com", " ", raw, flags=re.IGNORECASE)
+    # Strip standalone common TLDs so '.com' / '.net' / '.pk' do not become spurious spam predictors.
+    raw = re.sub(r"\b(?:com|net|org|edu|gov|pk|co|uk|io)\b", " ", raw, flags=re.IGNORECASE)
     raw = re.sub(r"[^a-z0-9\s_%$£]", " ", raw.lower())
     return re.sub(r"\s+", " ", raw).strip()
 

@@ -219,7 +219,7 @@ def extract_sms_signals(
 
     has_legit_transactional = bool(
         re.search(
-            r"\b(?:debited from|credited to|avail(?:able)? bal|monthly statement|minimum payment|recharge successful|out for delivery|arriving today|ready for pickup|pickup pin|has arrived|boarding starts|dental appointment|reschedule|order #?\w+ is|payout of|scheduled fiber maintenance|(?:subscription|membership|plan|pass)\s+renews|fee\s+(?:voucher|challan|deadline)|contact\s+(?:accounts|registrar|clinic)\s+office)\b",
+            r"\b(?:received\s+(?:pkr|rs|inr|\$|£)\s*[\d,]+|sent\s+(?:pkr|rs|inr|\$|£)\s*[\d,]+|new\s+balance:?|account\s+balance:?|debited from|credited to|avail(?:able)? bal|monthly statement|minimum payment|recharge successful|trx\s+id:?|ref\s+id:?|transaction\s+id:?|out for delivery|arriving today|ready for pickup|pickup pin|has arrived|boarding starts|dental appointment|reschedule|order #?\w+ is|payout of|scheduled fiber maintenance|(?:subscription|membership|plan|pass)\s+renews|fee\s+(?:voucher|challan|deadline)|contact\s+(?:accounts|registrar|clinic)\s+office)\b",
             lower,
         )
     )

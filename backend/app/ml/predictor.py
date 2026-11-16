@@ -73,7 +73,9 @@ TRUSTED_EMAIL_DOMAINS = {
     "wikipedia.org", "stackoverflow.com", "bankofamerica.com", "chase.com",
     "wellsfargo.com", "citibank.com", "hsbc.com", "barclays.com", "lloyds.com",
     "nab.com.au", "anz.com.au", "americanexpress.com", "visa.com", "mastercard.com",
-    "nayapay.com", "emergent.sh", "skool.com",
+    "nayapay.com", "emergent.sh", "skool.com", "daraz.pk", "easypaisa.com.pk",
+    "jazzcash.com.pk", "sadapay.pk", "ubldigital.com", "hbl.com", "meezanbank.com",
+    "rozee.pk",
 }
 
 
@@ -169,7 +171,10 @@ def detect_email(
             p_fused = min(p_fused, 0.22)
         elif (sig.has_legit_transactional or sig.has_unsubscribe_marketing) and not sig.has_urgency_threat:
             p_fused = min(p_fused, 0.25)
-        elif sig.sender_registrable_domain in TRUSTED_EMAIL_DOMAINS:
+        elif (
+            sig.sender_registrable_domain in TRUSTED_EMAIL_DOMAINS
+            and (sig.auth_passed or sig.links_match_sender_domain)
+        ):
             p_fused = min(p_fused, 0.22)
         elif p_text < 0.78:
             p_fused = min(p_fused, 0.42)
@@ -316,7 +321,7 @@ def detect_sms(sender_id: str, message: str) -> dict:
         and not sig.has_payment_fee_ask
         and not sig.has_prize_claim
         and not sig.has_job_loan_bait
-        and p_text < 0.75
+        and (p_text < 0.75 or is_registered_sender)
     ):
         p_fused = min(p_fused, 0.22)
     elif (
@@ -469,6 +474,16 @@ TRUSTED_DOMAINS = {
     "lnkd.in",
     "x.com",
     "twitter.com",
+    "daraz.pk",
+    "easypaisa.com.pk",
+    "jazzcash.com.pk",
+    "sadapay.pk",
+    "nayapay.com",
+    "ubldigital.com",
+    "hbl.com",
+    "meezanbank.com",
+    "rozee.pk",
+    "comsats.edu.pk",
 }
 
 # ── URL Detection ──────────────────────────────────────────

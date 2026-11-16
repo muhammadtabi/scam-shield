@@ -125,6 +125,7 @@ def _build_text_pipeline() -> Pipeline:
                 max_df=0.95,
                 max_features=30000,
                 sublinear_tf=True,
+                stop_words="english",
                 dtype=np.float32,
             ),
         ),
