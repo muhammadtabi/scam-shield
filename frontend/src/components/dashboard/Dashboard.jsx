@@ -8,7 +8,6 @@ import {
   ShieldCheck,
   Mail,
   MessageSquare,
-  Smartphone,
   Link2,
   ArrowRight,
   ShieldX,
@@ -418,13 +417,6 @@ export default function Dashboard({ setPage }) {
         </div>
 
         <div style={{ display: 'flex', gap: 10 }}>
-          <button className="btn-secondary"
-            onClick={() => setPage('sms')}
-            type="button"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-            <Smartphone size={15} />
-            <span>SMS Inbox</span>
-          </button>
           <button className="btn-primary"
             onClick={() => setPage('detect')}
             type="button">

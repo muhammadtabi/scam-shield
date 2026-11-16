@@ -9,7 +9,6 @@ import Detection from './components/detection/Detection'
 import Alerts   from './components/alerts/Alerts'
 import Reports  from './components/reports/Reports'
 import GmailInbox from './components/gmail/GmailInbox'
-import SmsInbox from './components/sms/SmsInbox'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
 
@@ -64,7 +63,6 @@ function AppContent() {
     alerts:    <Alerts />,
     reports:   <Reports />,
     gmail:     <GmailInbox />,
-    sms:       <SmsInbox />,
   }
 
   return (
