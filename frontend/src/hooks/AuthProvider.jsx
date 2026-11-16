@@ -6,6 +6,11 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(() => Boolean(localStorage.getItem('token')))
 
+  const logout = () => {
+    localStorage.removeItem('token')
+    setUser(null)
+  }
+
   useEffect(() => {
     const token = localStorage.getItem('token')
     if (!token) return
@@ -14,6 +19,14 @@ export const AuthProvider = ({ children }) => {
       .then(setUser)
       .catch(() => localStorage.removeItem('token'))
       .finally(() => setLoading(false))
+  }, [])
+
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      logout()
+    }
+    window.addEventListener('auth:unauthorized', handleUnauthorized)
+    return () => window.removeEventListener('auth:unauthorized', handleUnauthorized)
   }, [])
 
   const login = async (email, password) => {
@@ -28,11 +41,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('token', data.access_token)
     setUser(data.user)
     return data
-  }
-
-  const logout = () => {
-    localStorage.removeItem('token')
-    setUser(null)
   }
 
   return (

@@ -29,16 +29,56 @@ const request = async (method, path, body = null) => {
     headers: getHeaders(),
     ...(body && { body: JSON.stringify(body) })
   })
-  const data = await res.json()
   
   if (res.status === 401) {
     localStorage.removeItem('token')
-    window.location.href = '/'
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('auth:unauthorized'))
+    }
     throw new Error('Session expired. Please log in again.')
   }
-  
+
+  const data = await res.json()
   if (!res.ok) throw new Error(extractErrorMessage(data))
   return data
+}
+
+const triggerBlobDownload = async (path, defaultFilename) => {
+  const token = localStorage.getItem('token')
+  const res = await fetch(`${BASE_URL}${path}`, {
+    headers: {
+      ...(token && { Authorization: `Bearer ${token}` })
+    }
+  })
+
+  if (res.status === 401) {
+    localStorage.removeItem('token')
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('auth:unauthorized'))
+    }
+    throw new Error('Session expired. Please log in again.')
+  }
+
+  if (!res.ok) {
+    let errorMsg = 'Failed to download report'
+    try {
+      const errData = await res.json()
+      errorMsg = extractErrorMessage(errData)
+    } catch {
+      // ignore JSON parse errors on binary/non-JSON responses
+    }
+    throw new Error(errorMsg)
+  }
+
+  const blob = await res.blob()
+  const objectUrl = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = objectUrl
+  a.download = defaultFilename
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  setTimeout(() => URL.revokeObjectURL(objectUrl), 1000)
 }
 
 export const api = {
@@ -76,24 +116,6 @@ export const api = {
   deleteSmsMessage: (id) => request('DELETE', `/api/sms/messages/${id}`),
   simulateSms: (data) => request('POST', '/api/sms/simulate', data),
   importSmsBatch: (messages) => request('POST', '/api/sms/sync-batch', { messages }),
-  downloadCSV: async () => {
-    const token = localStorage.getItem('token')
-    const res = await fetch(`${BASE_URL}/api/reports/csv`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    const blob = await res.blob()
-    const url  = URL.createObjectURL(blob)
-    const a    = document.createElement('a')
-    a.href = url; a.download = 'scam_report.csv'; a.click()
-  },
-  downloadPDF: async () => {
-    const token = localStorage.getItem('token')
-    const res = await fetch(`${BASE_URL}/api/reports/pdf`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    const blob = await res.blob()
-    const url  = URL.createObjectURL(blob)
-    const a    = document.createElement('a')
-    a.href = url; a.download = 'scam_report.pdf'; a.click()
-  }
+  downloadCSV: () => triggerBlobDownload('/api/reports/csv', 'scam_report.csv'),
+  downloadPDF: () => triggerBlobDownload('/api/reports/pdf', 'scam_report.pdf')
 }
