@@ -85,6 +85,9 @@ class InMemoryCollection:
     async def count_documents(self, query):
         return sum(1 for document in self._documents if _matches_query(document, query))
 
+    async def create_index(self, keys, **kwargs):
+        return "index_created"
+
     def find(self, query=None):
         return InMemoryCursor(self, query)
 
@@ -187,6 +190,20 @@ def _matches_query(document, query):
 client = None
 
 
+async def init_indexes(db):
+    try:
+        # Unique index on user email
+        await db.users.create_index("email", unique=True)
+        # Compound index on detections for user history and dashboard queries
+        await db.detections.create_index([("user_id", 1), ("timestamp", -1)])
+        # Unique index on gmail_connections by user
+        await db.gmail_connections.create_index("user_id", unique=True)
+        # Compound index on sms_messages by user and received timestamp
+        await db.sms_messages.create_index([("user_id", 1), ("received_at", -1)])
+    except Exception as exc:
+        print(f"Warning: Failed to initialize database indexes: {exc}")
+
+
 async def connect_db():
     global client
     mongo_kwargs = {"serverSelectionTimeoutMS": 8000}
@@ -198,12 +215,14 @@ async def connect_db():
         client = AsyncIOMotorClient(settings.MONGODB_URL, **mongo_kwargs)
         await client.admin.command("ping")
         print("Connected to MongoDB")
+        await init_indexes(client[settings.DATABASE_NAME])
         return
     except (ConfigurationError, Exception) as exc:
         print(f"MongoDB unavailable ({exc}). Falling back to in-memory development database.")
 
     client = InMemoryMongoClient()
     print("Using in-memory MongoDB fallback for local development.")
+    await init_indexes(client[settings.DATABASE_NAME])
 
 
 async def close_db():
