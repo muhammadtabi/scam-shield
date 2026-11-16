@@ -54,183 +54,235 @@ const ScamBadge = ({ level }) => {
 }
 
 const ActivityChart = ({ trend }) => {
-  const [hoverIndex, setHoverIndex] = useState(null)
+  const [selectedDayIndex, setSelectedDayIndex] = useState(null)
 
-  const data = Array.isArray(trend) && trend.length ? trend : [
-    { date: 'Day 1', count: 0 },
-    { date: 'Day 2', count: 0 },
-    { date: 'Day 3', count: 0 },
-    { date: 'Day 4', count: 0 },
-    { date: 'Day 5', count: 0 },
-    { date: 'Day 6', count: 0 },
-    { date: 'Day 7', count: 0 },
-  ]
+  const data = Array.isArray(trend) && trend.length ? trend : []
+  const total7Days = data.reduce((sum, d) => sum + (Number(d.count) || 0), 0)
+  const totalScams7Days = data.reduce((sum, d) => sum + (Number(d.scams) || 0), 0)
+  const totalSuspicious7Days = data.reduce((sum, d) => sum + (Number(d.suspicious) || 0), 0)
+  const totalSafe7Days = data.reduce((sum, d) => sum + (Number(d.safe) || 0), 0)
 
-  const counts = data.map(d => Number(d.count) || 0)
-  const maxVal = Math.max(...counts, 4)
-  const total7Days = counts.reduce((a, b) => a + b, 0)
-
-  const width = 640
-  const height = 145
-  const padX = 36
-  const padTop = 24
-  const padBottom = 26
-  const plotWidth = width - padX * 2
-  const plotHeight = height - padTop - padBottom
-  const baselineY = height - padBottom
-
-  const stepX = data.length > 1 ? plotWidth / (data.length - 1) : plotWidth
-  const points = data.map((d, i) => {
-    const x = padX + i * stepX
-    const y = baselineY - (counts[i] / maxVal) * plotHeight
-    return { x, y, date: d.date, count: counts[i] }
-  })
-
-  const lineD = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ')
-  const areaD = `${lineD} L ${points[points.length - 1].x.toFixed(1)} ${baselineY} L ${points[0].x.toFixed(1)} ${baselineY} Z`
+  // Default to today (last index) or hovered/clicked index
+  const activeIndex = selectedDayIndex !== null ? selectedDayIndex : (data.length > 0 ? data.length - 1 : 0)
+  const activeDay = data[activeIndex] || null
 
   return (
-    <div className="card stagger stagger-3" style={{ padding: '18px 22px', marginBottom: 20 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12, marginBottom: 14 }}>
+    <div className="card stagger stagger-3" style={{ padding: '20px 24px', marginBottom: 20 }}>
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12, marginBottom: 18 }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-            <Activity size={15} color="var(--accent-primary)" />
-            <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: 14.5, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
-              7-Day Scan Activity
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Activity size={16} color="var(--accent-blue)" />
+            <h3 style={{ fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: 15, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
+              7-Day Threat Activity Log
             </h3>
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: 12.5, marginTop: 2 }}>
-            Daily scan volume across all detection channels
+            Daily breakdown of verified scans and threat classifications by calendar date
           </p>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6,
-                      background: 'var(--bg-elevated)',
-                      border: '1px solid var(--border)',
-                      padding: '4px 10px', borderRadius: 20 }}>
-          <Calendar size={12} color="var(--text-secondary)" />
-          <span style={{ fontSize: 11.5, color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono', fontWeight: 600 }}>
-            {total7Days} scans this week
+
+        {/* Weekly Summary Badges */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          background: 'var(--bg-elevated)',
+          border: '1px solid var(--border)',
+          padding: '6px 14px',
+          borderRadius: 'var(--radius-md)',
+          fontSize: 12,
+          flexWrap: 'wrap'
+        }}>
+          <span style={{ color: 'var(--text-secondary)', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+            <Calendar size={13} />
+            <strong style={{ color: 'var(--text-primary)', fontFamily: 'JetBrains Mono' }}>{total7Days}</strong> scans
+          </span>
+          <span style={{ width: 1, height: 12, background: 'var(--border)' }} />
+          <span style={{ color: 'var(--accent-red)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent-red)' }} />
+            <strong>{totalScams7Days}</strong> scams
+          </span>
+          <span style={{ width: 1, height: 12, background: 'var(--border)' }} />
+          <span style={{ color: 'var(--accent-yellow)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent-yellow)' }} />
+            <strong>{totalSuspicious7Days}</strong> suspicious
+          </span>
+          <span style={{ width: 1, height: 12, background: 'var(--border)' }} />
+          <span style={{ color: 'var(--accent-green)', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent-green)' }} />
+            <strong>{totalSafe7Days}</strong> safe
           </span>
         </div>
       </div>
 
-      <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-        <svg
-          viewBox={`0 0 ${width} ${height}`}
-          style={{ width: '100%', minWidth: 400, height: 'auto', display: 'block' }}
-        >
-          <defs>
-            <linearGradient id="trendGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity="0.22" />
-              <stop offset="100%" stopColor="var(--accent-primary)" stopOpacity="0.0" />
-            </linearGradient>
-          </defs>
+      {/* 7-Day Date Columns Grid */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))',
+        gap: 10,
+        marginBottom: 16
+      }}>
+        {data.map((day, idx) => {
+          const count = Number(day.count) || 0
+          const scams = Number(day.scams) || 0
+          const suspicious = Number(day.suspicious) || 0
+          const safe = Number(day.safe) || 0
+          const isSelected = activeIndex === idx
 
-          {/* Reference Gridlines */}
-          <line
-            x1={padX}
-            y1={padTop}
-            x2={width - padX}
-            y2={padTop}
-            stroke="var(--border)"
-            strokeDasharray="2 3"
-          />
-          <line
-            x1={padX}
-            y1={padTop + plotHeight / 2}
-            x2={width - padX}
-            y2={padTop + plotHeight / 2}
-            stroke="var(--border)"
-            strokeDasharray="2 3"
-          />
-          <line
-            x1={padX}
-            y1={baselineY}
-            x2={width - padX}
-            y2={baselineY}
-            stroke="var(--border)"
-          />
+          const scamPct = count > 0 ? (scams / count) * 100 : 0
+          const suspPct = count > 0 ? (suspicious / count) * 100 : 0
+          const safePct = count > 0 ? (safe / count) * 100 : 0
 
-          {/* Area Fill */}
-          <path d={areaD} fill="url(#trendGrad)" />
-
-          {/* Trend Line */}
-          <path
-            d={lineD}
-            fill="none"
-            stroke="var(--accent-primary)"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-
-          {/* Data Points and Labels */}
-          {points.map((p, i) => {
-            const isHovered = hoverIndex === i
-            return (
-              <g
-                key={i}
-                onMouseEnter={() => setHoverIndex(i)}
-                onMouseLeave={() => setHoverIndex(null)}
-                style={{ cursor: 'pointer' }}
-              >
-                {/* Vertical hover guide */}
-                {isHovered && (
-                  <line
-                    x1={p.x}
-                    y1={padTop}
-                    x2={p.x}
-                    y2={baselineY}
-                    stroke="var(--accent-primary)"
-                    strokeOpacity="0.3"
-                    strokeWidth="1"
-                    strokeDasharray="2 2"
-                  />
+          return (
+            <button
+              key={idx}
+              type="button"
+              onMouseEnter={() => setSelectedDayIndex(idx)}
+              onClick={() => setSelectedDayIndex(idx)}
+              style={{
+                background: isSelected ? 'var(--bg-elevated)' : 'var(--bg-secondary)',
+                border: isSelected ? '1px solid var(--accent-blue)' : '1px solid var(--border)',
+                borderRadius: 'var(--radius-md)',
+                padding: '12px 12px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.15s ease',
+                position: 'relative',
+                boxShadow: isSelected ? 'var(--shadow-sm)' : 'none'
+              }}
+            >
+              {/* Day header */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  color: isSelected ? 'var(--accent-blue)' : 'var(--text-muted)',
+                  letterSpacing: '0.04em'
+                }}>
+                  {day.day_name || day.date?.split(' ')[0]}
+                </span>
+                {day.is_today && (
+                  <span style={{
+                    fontSize: 9.5,
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    padding: '1px 6px',
+                    borderRadius: 10,
+                    background: 'rgba(59, 130, 246, 0.15)',
+                    color: 'var(--accent-blue)'
+                  }}>
+                    Today
+                  </span>
                 )}
+              </div>
 
-                {/* Point circle */}
-                <circle
-                  cx={p.x}
-                  cy={p.y}
-                  r={isHovered ? 5 : 3}
-                  fill="var(--bg-card)"
-                  stroke="var(--accent-primary)"
-                  strokeWidth={isHovered ? 2.5 : 2}
-                  style={{ transition: 'all 0.12s ease' }}
-                />
+              {/* Date */}
+              <div style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)'
+              }}>
+                {day.date}
+              </div>
 
-                {/* Value tooltip above point */}
-                {(isHovered || p.count > 0) && (
-                  <text
-                    x={p.x}
-                    y={p.y - 7}
-                    textAnchor="middle"
-                    fill={isHovered ? 'var(--text-primary)' : 'var(--text-secondary)'}
-                    fontSize="10"
-                    fontFamily="JetBrains Mono, monospace"
-                    fontWeight="600"
-                  >
-                    {p.count}
-                  </text>
+              {/* Total volume number */}
+              <div style={{
+                fontSize: 18,
+                fontWeight: 700,
+                fontFamily: 'JetBrains Mono, monospace',
+                color: count > 0 ? 'var(--text-primary)' : 'var(--text-muted)'
+              }}>
+                {count} <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)' }}>scans</span>
+              </div>
+
+              {/* Proportional Segmented Bar */}
+              <div style={{
+                width: '100%',
+                height: 6,
+                borderRadius: 3,
+                background: count > 0 ? 'rgba(255, 255, 255, 0.08)' : 'var(--border-subtle)',
+                overflow: 'hidden',
+                display: 'flex'
+              }}>
+                {scamPct > 0 && (
+                  <div style={{ width: `${scamPct}%`, background: 'var(--accent-red)' }} />
                 )}
+                {suspPct > 0 && (
+                  <div style={{ width: `${suspPct}%`, background: 'var(--accent-yellow)' }} />
+                )}
+                {safePct > 0 && (
+                  <div style={{ width: `${safePct}%`, background: 'var(--accent-green)' }} />
+                )}
+              </div>
 
-                {/* Date label at bottom */}
-                <text
-                  x={p.x}
-                  y={height - 7}
-                  textAnchor="middle"
-                  fill={isHovered ? 'var(--text-primary)' : 'var(--text-muted)'}
-                  fontSize="10.5"
-                  fontFamily="Inter, sans-serif"
-                  fontWeight={isHovered ? '600' : '400'}
-                >
-                  {p.date}
-                </text>
-              </g>
-            )
-          })}
-        </svg>
+              {/* Micro indicators */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontFamily: 'JetBrains Mono' }}>
+                {scams > 0 && (
+                  <span style={{ color: 'var(--accent-red)', fontWeight: 600 }}>
+                    {scams} scam
+                  </span>
+                )}
+                {suspicious > 0 && (
+                  <span style={{ color: 'var(--accent-yellow)', fontWeight: 600 }}>
+                    {suspicious} susp
+                  </span>
+                )}
+                {safe > 0 && (
+                  <span style={{ color: 'var(--accent-green)', fontWeight: 600 }}>
+                    {safe} safe
+                  </span>
+                )}
+                {count === 0 && (
+                  <span style={{ color: 'var(--text-muted)' }}>No threats</span>
+                )}
+              </div>
+            </button>
+          )
+        })}
       </div>
+
+      {/* Selected Day Detailed Audit Card */}
+      {activeDay && (
+        <div style={{
+          padding: '12px 16px',
+          borderRadius: 'var(--radius-md)',
+          background: 'var(--bg-secondary)',
+          border: '1px solid var(--border)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: 12,
+          fontSize: 12.5
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+              {activeDay.full_date || activeDay.date}:
+            </span>
+            <span style={{ color: 'var(--text-secondary)' }}>
+              {activeDay.count > 0 ? (
+                <>
+                  <strong style={{ color: 'var(--text-primary)' }}>{activeDay.count}</strong> total scans evaluated (
+                  <span style={{ color: 'var(--accent-red)', fontWeight: 600 }}>{activeDay.scams || 0} scams blocked</span>,{' '}
+                  <span style={{ color: 'var(--accent-yellow)', fontWeight: 600 }}>{activeDay.suspicious || 0} suspicious</span>,{' '}
+                  <span style={{ color: 'var(--accent-green)', fontWeight: 600 }}>{activeDay.safe || 0} safe</span>)
+                </>
+              ) : (
+                'Zero threat activity recorded on this date. All communications remained clean.'
+              )}
+            </span>
+          </div>
+
+          <span style={{ fontSize: 11.5, color: 'var(--text-muted)' }}>
+            Hover or click any date card to inspect daily threat logs
+          </span>
+        </div>
+      )}
     </div>
   )
 }

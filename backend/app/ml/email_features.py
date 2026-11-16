@@ -303,12 +303,25 @@ def extract_email_signals(
             if heur >= 0.45:
                 flagged_urls.append(u)
 
+    def _domain_belongs_to_sender(link_domain: str, sender_domain: str) -> bool:
+        if not link_domain or not sender_domain:
+            return False
+        if link_domain == sender_domain:
+            return True
+        from app.ml.url_features import BRAND_DOMAIN_ALIASES
+        link_label = link_domain.split(".")[0].lower()
+        sender_label = sender_domain.split(".")[0].lower()
+        for brand, aliases in BRAND_DOMAIN_ALIASES.items():
+            if (link_label in aliases or link_label == brand) and (sender_label in aliases or sender_label == brand):
+                return True
+        return False
+
     links_match_sender_domain = bool(
         reg_domain
         and link_domains
         and not flagged_urls
         and max_url_risk < 0.35
-        and all(ld == reg_domain for ld in link_domains)
+        and all(_domain_belongs_to_sender(ld, reg_domain) for ld in link_domains)
     )
 
     combined_plain = re.sub(r"<[^>]+>", " ", f"{subj} {bdy}").lower()

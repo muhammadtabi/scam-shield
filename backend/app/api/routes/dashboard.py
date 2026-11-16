@@ -21,18 +21,30 @@ async def get_stats(current_user: dict = Depends(get_current_user)):
     sms_count   = await db.detections.count_documents({"user_id": uid, "detection_type": "sms"})
     url_count   = await db.detections.count_documents({"user_id": uid, "detection_type": "url"})
 
-    # Last 7 days trend
+    # Last 7 days trend with threat breakdown
     trend = []
     for i in range(6, -1, -1):
         day_start = datetime.utcnow().replace(hour=0, minute=0, second=0) - timedelta(days=i)
         day_end   = day_start + timedelta(days=1)
-        count = await db.detections.count_documents({
+        base_filter = {
             "user_id": uid,
             "timestamp": {"$gte": day_start, "$lt": day_end}
-        })
+        }
+        count = await db.detections.count_documents(base_filter)
+        scams = await db.detections.count_documents({**base_filter, "scam_level": "scam"})
+        suspicious = await db.detections.count_documents({**base_filter, "scam_level": "suspicious"})
+        safe = await db.detections.count_documents({**base_filter, "scam_level": "safe"})
+
         trend.append({
             "date": day_start.strftime("%b %d"),
-            "count": count
+            "day_name": day_start.strftime("%a"),
+            "day_num": day_start.strftime("%d"),
+            "full_date": day_start.strftime("%A, %b %d"),
+            "is_today": (i == 0),
+            "count": count,
+            "scams": scams,
+            "suspicious": suspicious,
+            "safe": safe,
         })
 
     # Recent 5 detections

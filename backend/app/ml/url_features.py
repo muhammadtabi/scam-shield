@@ -69,14 +69,22 @@ TARGETED_BRANDS: Set[str] = {
 
 # Protected brand aliases that map subdomains/sub-brands back to canonical brand.
 BRAND_DOMAIN_ALIASES: Dict[str, Set[str]] = {
-    "apple": {"apple", "icloud", "itunes"},
+    "apple": {"apple", "icloud", "itunes", "mzstatic"},
     "icloud": {"icloud", "apple"},
-    "google": {"google", "gmail", "youtube", "googleapis", "googleusercontent", "android"},
-    "microsoft": {"microsoft", "microsoftonline", "office", "live", "outlook", "azure", "msn"},
+    "google": {"google", "gmail", "youtube", "googleapis", "googleusercontent", "android", "goo", "g"},
+    "microsoft": {"microsoft", "microsoftonline", "office", "live", "outlook", "azure", "msn", "bing", "msft", "aka"},
     "microsoftonline": {"microsoftonline", "microsoft"},
     "facebook": {"facebook", "fb", "meta", "messenger", "instagram", "whatsapp"},
     "amazon": {"amazon", "aws", "amazonaws", "amzn"},
     "ebay": {"ebay"},
+    "linkedin": {"linkedin", "linkedinmobileapp", "licdn", "lnkd"},
+    "linkedinmobileapp": {"linkedin", "linkedinmobileapp", "licdn", "lnkd"},
+    "licdn": {"linkedin", "licdn", "linkedinmobileapp"},
+    "lnkd": {"linkedin", "lnkd"},
+    "github": {"github", "githubusercontent", "githubassets", "gh"},
+    "netflix": {"netflix", "nflxext", "nflximg", "nflxvideo"},
+    "spotify": {"spotify", "scdn", "spoti"},
+    "paypal": {"paypal", "paypal-community", "py"},
 }
 
 URL_FEATURE_NAMES: List[str] = [

@@ -128,6 +128,23 @@ class EmailDetectionTests(unittest.TestCase):
         )
         self.assertEqual(result["scam_level"], "safe", msg=result)
 
+    def test_legitimate_linkedin_notification_with_mobile_app_link_is_safe(self):
+        result = predictor.detect_email(
+            "You appeared in 1 search",
+            "LinkedIn <notifications-noreply@linkedin.com>",
+            (
+                "Muhammad, this is what you’ve missed on LinkedIn\n"
+                "You were found by people from these companies\n"
+                "See all searches: https://www.linkedin.com/comm/me/search-appearances/?lipi=urn%3Ali\n"
+                "Download for free: https://www.linkedinmobileapp.com/comm/feed/?appType=FLAGSHIP\n"
+                "Learn why we included this: https://www.linkedin.com/help/linkedin/answer/4788\n"
+                "Unsubscribe: https://www.linkedin.com/comm/mypreferences/u/emailunsub?action=update\n"
+                "© 2026 LinkedIn Corporation"
+            ),
+        )
+        self.assertEqual(result["scam_level"], "safe", msg=result)
+        self.assertLess(result["confidence"], 10.0, msg=result)
+
 
 if __name__ == "__main__":
     unittest.main()

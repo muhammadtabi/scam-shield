@@ -53,8 +53,19 @@ async def download_pdf(current_user: dict = Depends(get_current_user_flexible)):
     db = get_db()
 
     # Get user
-    from bson import ObjectId
-    user = await db.users.find_one({"_id": ObjectId(current_user["sub"])})
+    user = None
+    try:
+        from bson import ObjectId
+        user = await db.users.find_one({"_id": ObjectId(current_user["sub"])})
+    except Exception:
+        pass
+    if not user:
+        try:
+            user = await db.users.find_one({"_id": current_user["sub"]})
+        except Exception:
+            pass
+
+    user_display = (user.get("full_name") if user and isinstance(user, dict) else "") or current_user.get("sub", "User")
 
     # Get detections
     detections = []
@@ -86,7 +97,7 @@ async def download_pdf(current_user: dict = Depends(get_current_user_flexible)):
     story.append(Paragraph("🛡️ Scam Shield — Detection Report", title_style))
     story.append(Paragraph(
         f"Generated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')} | "
-        f"User: {user['full_name'] if user else 'Unknown'}",
+        f"User: {user_display}",
         styles["Normal"]
     ))
     story.append(Spacer(1, 0.3 * inch))

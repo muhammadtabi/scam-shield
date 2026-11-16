@@ -461,6 +461,9 @@ TRUSTED_DOMAINS = {
     "whatsapp.com",
     "youtube.com",
     "linkedin.com",
+    "linkedinmobileapp.com",
+    "licdn.com",
+    "lnkd.in",
     "x.com",
     "twitter.com",
 }
