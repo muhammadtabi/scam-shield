@@ -167,15 +167,15 @@ def detect_email(
     # Reduce false positives on genuine transactional alerts, OTPs, and opt-in marketing
     # only when zero verifiable phishing or spoofing cues exist.
     if not has_any_threat_signal:
-        if sig.links_match_sender_domain or sig.auth_passed or sig.has_otp_disclaimer:
-            p_fused = min(p_fused, 0.22)
-        elif (sig.has_legit_transactional or sig.has_unsubscribe_marketing) and not sig.has_urgency_threat:
-            p_fused = min(p_fused, 0.25)
-        elif (
+        if (
             sig.sender_registrable_domain in TRUSTED_EMAIL_DOMAINS
             and (sig.auth_passed or sig.links_match_sender_domain)
         ):
+            p_fused = min(p_fused, 0.05)
+        elif sig.links_match_sender_domain or sig.auth_passed or sig.has_otp_disclaimer:
             p_fused = min(p_fused, 0.22)
+        elif (sig.has_legit_transactional or sig.has_unsubscribe_marketing) and not sig.has_urgency_threat:
+            p_fused = min(p_fused, 0.25)
         elif p_text < 0.78:
             p_fused = min(p_fused, 0.42)
 

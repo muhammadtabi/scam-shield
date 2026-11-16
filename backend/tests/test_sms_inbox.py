@@ -59,7 +59,7 @@ class TestSMSInbox(unittest.IsolatedAsyncioTestCase):
             message="Your Chase banking security code is 782910. Never share this code with anyone.",
         )
         self.assertEqual(safe_item.scam_level, "safe")
-        self.assertLess(safe_item.confidence, 0.40)
+        self.assertLess(safe_item.confidence, 40.0)
         self.assertFalse(safe_item.is_read)
 
         # Ingest a smishing phishing attack
