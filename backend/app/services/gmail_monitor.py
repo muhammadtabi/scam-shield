@@ -198,11 +198,12 @@ async def save_gmail_connection(user_id: str, tokens: Dict[str, Any], profile: D
     db = get_db()
     expires_in = int(tokens.get("expires_in", 0) or 0)
     expires_at = _utc_now().timestamp() + expires_in if expires_in else None
+    raw_access = tokens.get("access_token")
     connection_fields = {
         "user_id": user_id,
         "auth_type": "oauth",
         "gmail_email": profile.get("emailAddress"),
-        "access_token": tokens.get("access_token"),
+        "access_token": encrypt_secret(raw_access) if raw_access else None,
         "scope": tokens.get("scope") or " ".join(GMAIL_SCOPES),
         "token_type": tokens.get("token_type"),
         "expires_in": tokens.get("expires_in"),
@@ -215,7 +216,7 @@ async def save_gmail_connection(user_id: str, tokens: Dict[str, Any], profile: D
         "updated_at": _utc_now(),
     }
     if tokens.get("refresh_token"):
-        connection_fields["refresh_token"] = tokens["refresh_token"]
+        connection_fields["refresh_token"] = encrypt_secret(tokens["refresh_token"])
 
     await db.gmail_connections.update_one(
         {"user_id": user_id},
@@ -301,27 +302,39 @@ async def fetch_gmail_profile(access_token: str) -> Dict[str, Any]:
     return _gmail_get("/users/me/profile", access_token)
 
 
+def _safe_decrypt(token: Optional[str]) -> Optional[str]:
+    if not token or not isinstance(token, str):
+        return None
+    try:
+        return decrypt_secret(token)
+    except Exception:
+        # Fallback if stored unencrypted (legacy records or in-memory mock tests)
+        return token
+
+
 async def _ensure_access_token(connection: Dict[str, Any]) -> str:
-    access_token = connection.get("access_token") or ""
+    access_token = _safe_decrypt(connection.get("access_token")) or ""
     expires_at = connection.get("expires_at")
-    refresh_token = connection.get("refresh_token")
+    refresh_token = _safe_decrypt(connection.get("refresh_token"))
 
     if refresh_token and (not expires_at or _utc_now().timestamp() >= float(expires_at) - 60):
         token_data = _refresh_access_token(refresh_token)
-        access_token = token_data.get("access_token", access_token)
-        if access_token:
+        new_access = token_data.get("access_token")
+        if new_access:
+            access_token = new_access
             db = get_db()
             expires_in = int(token_data.get("expires_in", 0) or 0)
+            update_set: Dict[str, Any] = {
+                "access_token": encrypt_secret(access_token),
+                "expires_in": token_data.get("expires_in"),
+                "expires_at": _utc_now().timestamp() + expires_in if expires_in else None,
+                "updated_at": _utc_now(),
+            }
+            if token_data.get("refresh_token"):
+                update_set["refresh_token"] = encrypt_secret(token_data["refresh_token"])
             await db.gmail_connections.update_one(
                 {"user_id": connection["user_id"]},
-                {
-                    "$set": {
-                        "access_token": access_token,
-                        "expires_in": token_data.get("expires_in"),
-                        "expires_at": _utc_now().timestamp() + expires_in if expires_in else None,
-                        "updated_at": _utc_now(),
-                    }
-                },
+                {"$set": update_set},
             )
 
     return access_token
