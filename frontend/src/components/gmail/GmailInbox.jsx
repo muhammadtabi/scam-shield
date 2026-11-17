@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../api/client'
+import { formatLocalDateTime } from '../../utils/date'
 import {
   ShieldCheck,
   AlertTriangle,
@@ -133,7 +134,7 @@ export default function GmailInbox() {
                 <div className="gmail-email-sender">{e.sender || 'Unknown Sender'}</div>
                 <div className="gmail-email-subject">{e.subject}</div>
                 <div className="gmail-email-meta">
-                  <span>{e.date ? new Date(Number(e.date)).toLocaleString() : 'Recently received'}</span>
+                  <span>{e.date ? formatLocalDateTime(e.date) : 'Recently received'}</span>
                   {e.scan?.confidence != null && <span>• {e.scan.confidence}% confidence</span>}
                 </div>
               </div>

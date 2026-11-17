@@ -206,22 +206,34 @@ async def init_indexes(db):
 
 async def connect_db():
     global client
-    mongo_kwargs = {"serverSelectionTimeoutMS": 8000}
+    mongo_kwargs = {
+        "serverSelectionTimeoutMS": 15000,
+        "connectTimeoutMS": 15000,
+        "socketTimeoutMS": 15000,
+    }
 
     if settings.MONGODB_URL.startswith("mongodb+srv://"):
         mongo_kwargs["tls"] = True
 
-    try:
-        client = AsyncIOMotorClient(settings.MONGODB_URL, **mongo_kwargs)
-        await client.admin.command("ping")
-        print("Connected to MongoDB")
-        await init_indexes(client[settings.DATABASE_NAME])
-        return
-    except (ConfigurationError, Exception) as exc:
-        print(f"MongoDB unavailable ({exc}). Falling back to in-memory development database.")
+    # Try connecting to Atlas with up to 3 retries
+    max_retries = 3
+    for attempt in range(1, max_retries + 1):
+        try:
+            print(f"Connecting to MongoDB Atlas (attempt {attempt}/{max_retries})...")
+            test_client = AsyncIOMotorClient(settings.MONGODB_URL, **mongo_kwargs)
+            await test_client.admin.command("ping")
+            client = test_client
+            print(f"Connected to MongoDB Atlas: {settings.DATABASE_NAME}")
+            await init_indexes(client[settings.DATABASE_NAME])
+            return
+        except Exception as exc:
+            print(f"MongoDB connection attempt {attempt} failed ({exc})")
+            if attempt < max_retries:
+                import asyncio
+                await asyncio.sleep(2)
 
+    print("Warning: MongoDB Atlas unreachable after retries. Falling back to in-memory development database.")
     client = InMemoryMongoClient()
-    print("Using in-memory MongoDB fallback for local development.")
     await init_indexes(client[settings.DATABASE_NAME])
 
 

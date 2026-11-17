@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Mail, RefreshCw, LogOut, KeyRound, ExternalLink } from 'lucide-react'
+import { formatLocalDateTime } from '../../utils/date'
 
 export default function GmailConnect({
   gmail,
@@ -20,8 +21,8 @@ export default function GmailConnect({
   const handleImapSubmit = async (e) => {
     e.preventDefault()
     setLocalError('')
-    const trimmedEmail = email.trim()
-    const compactPassword = appPassword.replace(/\s+/g, '')
+    const trimmedEmail = email.trim().toLowerCase()
+    const compactPassword = appPassword.replace(/[\s\u200b-\u200d\uFEFF]/g, '').toLowerCase()
 
     if (!trimmedEmail || !trimmedEmail.includes('@')) {
       setLocalError('Please enter a valid email address.')
@@ -61,7 +62,7 @@ export default function GmailConnect({
         </div>
         {gmail?.last_checked_at && (
           <div className="panel-meta">
-            Last checked: {new Date(gmail.last_checked_at).toLocaleString()}
+            Last checked: {formatLocalDateTime(gmail.last_checked_at)}
           </div>
         )}
         {displayedError && (
@@ -73,7 +74,7 @@ export default function GmailConnect({
         {!gmail?.connected && showImapForm && (
           <form className="imap-connect-form" onSubmit={handleImapSubmit}>
             <p className="imap-connect-help">
-              Read-only TLS connection (INBOX read-only). For Gmail, enable 2-Step Verification and generate a 16-character{' '}
+              Read-only TLS connection. For Gmail: 1) Ensure <a href="https://mail.google.com/mail/u/0/#settings/fwdandpop" target="_blank" rel="noreferrer noopener">IMAP is enabled in Gmail Settings</a>, 2) Turn on 2-Step Verification, and 3) Generate a 16-character{' '}
               <a
                 href="https://myaccount.google.com/apppasswords"
                 target="_blank"

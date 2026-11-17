@@ -72,7 +72,13 @@ def exchange_code_for_tokens(code: str) -> Dict[str, Any]:
         },
         timeout=30,
     )
-    response.raise_for_status()
+    if not response.ok:
+        try:
+            err_data = response.json()
+            err_msg = err_data.get("error_description") or err_data.get("error") or response.text
+        except Exception:
+            err_msg = response.text
+        raise ValueError(f"Google token exchange failed ({response.status_code}): {err_msg}")
     return response.json()
 
 
@@ -501,6 +507,14 @@ async def list_gmail_inbox(user_id: str, max_results: int = 30) -> List[Dict[str
         return []
 
     db = get_db()
+    if hasattr(db, "gmail_connections"):
+        try:
+            await db.gmail_connections.update_one(
+                {"user_id": user_id},
+                {"$set": {"last_checked_at": _utc_now(), "updated_at": _utc_now()}}
+            )
+        except Exception:
+            pass
     out: List[Dict[str, Any]] = []
 
     if _is_imap_connection(connection):

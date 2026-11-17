@@ -18,15 +18,24 @@ def hash_password(password: str) -> str:
     return pwd_context.hash(_pre_hash_password(password))
 
 def verify_password(plain: str, hashed: str) -> bool:
+    if not plain or not hashed:
+        return False
     try:
-        # Check modern SHA-256 pre-hashed format
+        # 1. Check modern SHA-256 pre-hashed format (Fix 8)
         if pwd_context.verify(_pre_hash_password(plain), hashed):
             return True
     except Exception:
         pass
 
     try:
-        # Backward compatibility fallback for legacy plaintext-bcrypt hashes
+        # 2. Check direct plaintext bcrypt (standard legacy accounts)
+        if pwd_context.verify(plain, hashed):
+            return True
+    except Exception:
+        pass
+
+    try:
+        # 3. Check legacy 72-byte truncated plain
         return pwd_context.verify(plain.encode("utf-8")[:72].decode("utf-8", errors="ignore"), hashed)
     except Exception:
         return False

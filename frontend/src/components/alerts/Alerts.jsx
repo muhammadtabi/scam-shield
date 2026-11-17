@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { api } from '../../api/client'
+import { formatLocalDateTime } from '../../utils/date'
 import {
   Mail,
   MessageSquare,
@@ -70,7 +71,7 @@ export default function Alerts() {
 
   const formatDate = (ts) => {
     if (!ts) return ''
-    return new Date(ts).toLocaleString('en-US', {
+    return formatLocalDateTime(ts, {
       month: 'short', day: 'numeric',
       hour: '2-digit', minute: '2-digit'
     })

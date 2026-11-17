@@ -23,6 +23,11 @@ class StaleDB:
 
 
 class GmailInboxPerformanceTests(unittest.IsolatedAsyncioTestCase):
+    @classmethod
+    def setUpClass(cls):
+        from app.ml import predictor
+        predictor.load_models()
+
     async def test_list_gmail_inbox_uses_lightweight_metadata_without_fetching_full_messages(self):
         fetch_message = MagicMock(side_effect=AssertionError("list endpoint should not fetch full message bodies"))
 
@@ -187,6 +192,23 @@ class GmailInboxPerformanceTests(unittest.IsolatedAsyncioTestCase):
             ok_resp = await gmail_routes.gmail_callback(code="auth-code-123", state=valid_state, error=None)
         self.assertEqual(ok_resp.status_code, 307)
         self.assertTrue(ok_resp.headers["location"].endswith("/?gmail=connected"))
+
+    def test_status_from_connection_handles_naive_and_aware_datetimes(self):
+        from datetime import datetime, timezone
+        from app.api.routes import gmail as gmail_routes
+
+        naive_dt = datetime(2026, 11, 17, 17, 14, 23)
+        status_naive = gmail_routes._status_from_connection({
+            "enabled": True,
+            "gmail_email": "test@example.com",
+            "last_checked_at": naive_dt,
+        })
+        self.assertIsNotNone(status_naive.last_checked_at)
+        self.assertEqual(status_naive.last_checked_at.tzinfo, timezone.utc)
+
+        status_none = gmail_routes._status_from_connection(None)
+        self.assertFalse(status_none.connected)
+        self.assertIsNone(status_none.last_checked_at)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from urllib.parse import urlencode
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -34,12 +34,15 @@ router = APIRouter()
 def _status_from_connection(connection: dict | None, *, force_connected: bool | None = None) -> GmailConnectionStatus:
     conn = connection or {}
     enabled = bool(conn.get("enabled", False)) if force_connected is None else bool(force_connected)
+    last_checked = conn.get("last_checked_at")
+    if isinstance(last_checked, datetime) and last_checked.tzinfo is None:
+        last_checked = last_checked.replace(tzinfo=timezone.utc)
     return GmailConnectionStatus(
         connected=enabled,
         email_address=conn.get("gmail_email"),
         enabled=enabled,
         auth_type=conn.get("auth_type") if enabled else None,
-        last_checked_at=conn.get("last_checked_at"),
+        last_checked_at=last_checked,
         last_synced_message_id=conn.get("last_synced_message_id"),
         error=conn.get("last_error"),
     )
@@ -97,8 +100,9 @@ async def gmail_callback(
 
     try:
         await _finish_gmail_connection(code, payload["sub"])
-    except Exception:
-        message = "Gmail connection failed. Check OAuth settings and try again."
+    except Exception as exc:
+        err_text = str(exc)
+        message = err_text if err_text else "Gmail connection failed. Check OAuth settings and try again."
         return RedirectResponse(url=_frontend_redirect_url({"gmail": "error", "message": message}))
 
     return RedirectResponse(url=_frontend_redirect_url({"gmail": "connected"}))

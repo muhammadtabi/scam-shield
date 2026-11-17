@@ -38,22 +38,30 @@ def resolve_imap_endpoint(provider: str = "gmail") -> Tuple[str, int]:
 
 def clean_app_password(raw_password: str) -> str:
     """Normalize App Passwords (Google displays them as 4-char space-separated groups)."""
-    return re.sub(r"\s+", "", str(raw_password or ""))
+    return re.sub(r"[\s\u200b-\u200d\uFEFF]+", "", str(raw_password or "")).strip().lower()
 
 
 def _open_readonly_inbox(email_address: str, app_password: str, host: str, port: int = 993) -> imaplib.IMAP4_SSL:
     context = ssl.create_default_context()
     client = imaplib.IMAP4_SSL(host, port, ssl_context=context, timeout=IMAP_TIMEOUT_SECONDS)
     try:
-        client.login(email_address, clean_app_password(app_password))
+        client.login(email_address.strip().lower(), clean_app_password(app_password))
     except imaplib.IMAP4.error as exc:
         try:
             client.logout()
         except Exception:
             pass
-        raise ValueError(
-            "Mailbox login failed. Enable 2-Step Verification and use a valid 16-character App Password."
-        ) from exc
+        raw_err = str(exc).lower()
+        if "application-specific password" in raw_err:
+            msg = "Google requires an App Password. Do not use your standard Google account password."
+        elif "authenticationfailed" in raw_err:
+            msg = (
+                "Mailbox login failed. Please ensure: 1) IMAP is enabled in Gmail Settings (under 'Forwarding and POP/IMAP' tab), "
+                "2) 2-Step Verification is enabled on your Google account, and 3) the 16-character App Password was generated for this exact email."
+            )
+        else:
+            msg = f"Mailbox login failed: {exc}"
+        raise ValueError(msg) from exc
 
     status, _ = client.select("INBOX", readonly=True)
     if status != "OK":

@@ -43,16 +43,34 @@ from app.ml.email_features import (
 BACKEND_DIR = Path(__file__).resolve().parent
 MODELS_DIR = BACKEND_DIR / "app" / "ml" / "saved_models"
 EMAIL_CSV = BACKEND_DIR / "phishing_email.csv"
+NEW_EMAIL_CSV = BACKEND_DIR / "Phishing_Email.csv"
 SUPP_CSV = BACKEND_DIR / "data" / "email_modern_supplement.csv"
 RANDOM_STATE = 42
 
 
 def load_debiased_email_corpus() -> pd.DataFrame:
-    """Load deduplicated, Enron-debiased legacy emails + weighted modern supplement."""
-    df = pd.read_csv(EMAIL_CSV).dropna()
-    df.columns = ["text", "label"]
-    df["text"] = df["text"].astype(str)
-    df["label"] = df["label"].astype(int)
+    """Load deduplicated, Enron-debiased legacy emails + new dataset + weighted modern supplement."""
+    sources = []
+    if EMAIL_CSV.exists():
+        df_old = pd.read_csv(EMAIL_CSV).dropna()
+        df_old.columns = ["text", "label"]
+        df_old["text"] = df_old["text"].astype(str)
+        df_old["label"] = df_old["label"].astype(int)
+        sources.append(df_old)
+
+    if NEW_EMAIL_CSV.exists() and NEW_EMAIL_CSV.resolve() != EMAIL_CSV.resolve():
+        df_new = pd.read_csv(NEW_EMAIL_CSV).dropna(subset=["Email Text", "Email Type"])
+        label_map = {"Safe Email": 0, "Phishing Email": 1}
+        df_new["label"] = df_new["Email Type"].map(label_map)
+        df_new["text"] = df_new["Email Text"].astype(str)
+        df_new = df_new[df_new["label"].notna()]
+        df_new["label"] = df_new["label"].astype(int)
+        sources.append(df_new[["text", "label"]])
+
+    if not sources:
+        raise FileNotFoundError("No email training CSV files found.")
+
+    df = pd.concat(sources, ignore_index=True)
 
     # Identify 2000s corpus-specific artifacts that caused massive domain shift.
     is_honeypot = df["text"].str.contains(r"josemonkeyorg|monkeyorg", case=False, regex=True)

@@ -15,8 +15,13 @@ const extractErrorMessage = (data) => {
   return 'Request failed'
 }
 
-const getHeaders = () => {
-  const token = localStorage.getItem('token')
+const isAuthRoute = (path) => {
+  return path === '/api/auth/login' || path === '/api/auth/register'
+}
+
+const getHeaders = (path = '') => {
+  const isAuth = isAuthRoute(path)
+  const token = isAuth ? null : localStorage.getItem('token')
   return {
     'Content-Type': 'application/json',
     ...(token && { Authorization: `Bearer ${token}` })
@@ -26,16 +31,20 @@ const getHeaders = () => {
 const request = async (method, path, body = null) => {
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
-    headers: getHeaders(),
+    headers: getHeaders(path),
     ...(body && { body: JSON.stringify(body) })
   })
   
   if (res.status === 401) {
-    localStorage.removeItem('token')
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('auth:unauthorized'))
+    if (!isAuthRoute(path)) {
+      localStorage.removeItem('token')
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('auth:unauthorized'))
+      }
+      throw new Error('Session expired. Please log in again.')
     }
-    throw new Error('Session expired. Please log in again.')
+    const data = await res.json().catch(() => null)
+    throw new Error(extractErrorMessage(data) || 'Invalid email or password')
   }
 
   const data = await res.json()
@@ -116,6 +125,12 @@ export const api = {
   deleteSmsMessage: (id) => request('DELETE', `/api/sms/messages/${id}`),
   simulateSms: (data) => request('POST', '/api/sms/simulate', data),
   importSmsBatch: (messages) => request('POST', '/api/sms/sync-batch', { messages }),
-  downloadCSV: () => triggerBlobDownload('/api/reports/csv', 'scam_report.csv'),
-  downloadPDF: () => triggerBlobDownload('/api/reports/pdf', 'scam_report.pdf')
+  downloadCSV: () => {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''
+    return triggerBlobDownload(`/api/reports/csv?tz=${encodeURIComponent(tz)}`, 'scam_report.csv')
+  },
+  downloadPDF: () => {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''
+    return triggerBlobDownload(`/api/reports/pdf?tz=${encodeURIComponent(tz)}`, 'scam_report.pdf')
+  }
 }

@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from fastapi.responses import StreamingResponse
 from datetime import datetime, timezone
+from typing import Optional
 import io
 import csv
+import zoneinfo
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
@@ -13,8 +15,33 @@ from app.db.database import get_db
 
 router = APIRouter()
 
+
+def _resolve_timezone(tz_name: Optional[str]):
+    if tz_name:
+        try:
+            return zoneinfo.ZoneInfo(tz_name.strip())
+        except Exception:
+            pass
+    local_tz = datetime.now().astimezone().tzinfo
+    return local_tz or timezone.utc
+
+
+def _format_local_timestamp(ts, target_tz) -> str:
+    if not ts:
+        return ""
+    if isinstance(ts, datetime):
+        if ts.tzinfo is None:
+            ts = ts.replace(tzinfo=timezone.utc)
+        return ts.astimezone(target_tz).strftime("%Y-%m-%d %I:%M:%S %p")
+    return str(ts)
+
+
 @router.get("/csv")
-async def download_csv(current_user: dict = Depends(get_current_user_flexible)):
+async def download_csv(
+    tz: Optional[str] = Query(None, description="Client timezone, e.g. Asia/Karachi"),
+    current_user: dict = Depends(get_current_user_flexible),
+):
+    target_tz = _resolve_timezone(tz)
     db = get_db()
     cursor = db.detections.find(
         {"user_id": current_user["sub"]}
@@ -38,7 +65,7 @@ async def download_csv(current_user: dict = Depends(get_current_user_flexible)):
             doc.get("confidence", ""),
             sender_number,
             " | ".join(doc.get("reasons", [])),
-            doc.get("timestamp", "").strftime("%Y-%m-%d %H:%M") if doc.get("timestamp") else ""
+            _format_local_timestamp(doc.get("timestamp"), target_tz),
         ])
 
     output.seek(0)
@@ -48,8 +75,13 @@ async def download_csv(current_user: dict = Depends(get_current_user_flexible)):
         headers={"Content-Disposition": "attachment; filename=scam_report.csv"}
     )
 
+
 @router.get("/pdf")
-async def download_pdf(current_user: dict = Depends(get_current_user_flexible)):
+async def download_pdf(
+    tz: Optional[str] = Query(None, description="Client timezone, e.g. Asia/Karachi"),
+    current_user: dict = Depends(get_current_user_flexible),
+):
+    target_tz = _resolve_timezone(tz)
     db = get_db()
 
     # Get user
@@ -95,8 +127,11 @@ async def download_pdf(current_user: dict = Depends(get_current_user_flexible)):
                                   textColor=colors.HexColor("#0ea5e9"),
                                   spaceAfter=6)
     story.append(Paragraph("🛡️ Scam Shield — Detection Report", title_style))
+
+    now_local = datetime.now(timezone.utc).astimezone(target_tz)
+    tz_label = now_local.strftime("%Z") or now_local.strftime("%z")
     story.append(Paragraph(
-        f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')} | "
+        f"Generated: {now_local.strftime('%Y-%m-%d %I:%M:%S %p')} ({tz_label}) | "
         f"User: {user_display}",
         styles["Normal"]
     ))
@@ -144,10 +179,10 @@ async def download_pdf(current_user: dict = Depends(get_current_user_flexible)):
             ))
         for reason in det.get("reasons", []):
             story.append(Paragraph(f"  • {reason}", styles["Normal"]))
-        ts = det.get("timestamp")
-        if ts:
+        time_str = _format_local_timestamp(det.get("timestamp"), target_tz)
+        if time_str:
             story.append(Paragraph(
-                f"  <i>{ts.strftime('%Y-%m-%d %H:%M')}</i>",
+                f"  <i>{time_str}</i>",
                 styles["Normal"]
             ))
         story.append(Spacer(1, 0.1 * inch))

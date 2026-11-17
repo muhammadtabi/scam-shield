@@ -330,14 +330,20 @@ export default function Dashboard({ setPage }) {
       window.history.replaceState({}, document.title, window.location.pathname)
     } else if (gmailState === 'connected') {
       setGmailError('')
+      refreshGmail()
       window.history.replaceState({}, document.title, window.location.pathname)
     }
   }, [])
 
-  const refreshGmail = async () => {
+  const refreshGmail = async (sync = false) => {
     setGmailBusy(true)
     setGmailError('')
     try {
+      if (sync && gmail?.connected) {
+        try {
+          await api.syncGmail()
+        } catch (_) {}
+      }
       const [statsData, gmailData] = await Promise.all([
         api.getStats(),
         api.getGmailStatus(),
@@ -466,7 +472,7 @@ export default function Dashboard({ setPage }) {
         onConnect={connectGmail}
         onConnectImap={connectGmailImap}
         onSync={syncGmail}
-        onRefresh={refreshGmail}
+        onRefresh={() => refreshGmail(true)}
         onDisconnect={disconnectGmail}
       />
 
