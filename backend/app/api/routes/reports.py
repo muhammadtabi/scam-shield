@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import StreamingResponse
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, Any
 import io
 import csv
+import html
 import zoneinfo
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -36,6 +37,14 @@ def _format_local_timestamp(ts, target_tz) -> str:
     return str(ts)
 
 
+def _sanitize_csv_cell(value: Any) -> str:
+    """Neutralize formula injection triggers (=, +, -, @, \\t, \\r) in spreadsheet viewers."""
+    s = str(value) if value is not None else ""
+    if s and s[0] in ("=", "+", "-", "@", "\t", "\r"):
+        return f"'{s}"
+    return s
+
+
 @router.get("/csv")
 async def download_csv(
     tz: Optional[str] = Query(None, description="Client timezone, e.g. Asia/Karachi"),
@@ -59,13 +68,13 @@ async def download_csv(
             sender_number = input_data.get("sender_id", "")
 
         writer.writerow([
-            str(doc["_id"]),
-            doc.get("detection_type", ""),
-            doc.get("scam_level", ""),
-            doc.get("confidence", ""),
-            sender_number,
-            " | ".join(doc.get("reasons", [])),
-            _format_local_timestamp(doc.get("timestamp"), target_tz),
+            _sanitize_csv_cell(str(doc["_id"])),
+            _sanitize_csv_cell(doc.get("detection_type", "")),
+            _sanitize_csv_cell(doc.get("scam_level", "")),
+            _sanitize_csv_cell(doc.get("confidence", "")),
+            _sanitize_csv_cell(sender_number),
+            _sanitize_csv_cell(" | ".join(doc.get("reasons", []))),
+            _sanitize_csv_cell(_format_local_timestamp(doc.get("timestamp"), target_tz)),
         ])
 
     output.seek(0)
@@ -130,9 +139,11 @@ async def download_pdf(
 
     now_local = datetime.now(timezone.utc).astimezone(target_tz)
     tz_label = now_local.strftime("%Z") or now_local.strftime("%z")
+    clean_user = html.escape(str(user_display))
+    clean_tz = html.escape(str(tz_label))
     story.append(Paragraph(
-        f"Generated: {now_local.strftime('%Y-%m-%d %I:%M:%S %p')} ({tz_label}) | "
-        f"User: {user_display}",
+        f"Generated: {now_local.strftime('%Y-%m-%d %I:%M:%S %p')} ({clean_tz}) | "
+        f"User: {clean_user}",
         styles["Normal"]
     ))
     story.append(Spacer(1, 0.3 * inch))
@@ -163,26 +174,35 @@ async def download_pdf(
     # Detection list
     story.append(Paragraph("Recent Detections", styles["Heading2"]))
     for det in detections[:20]:
-        level = det.get("scam_level", "").upper()
-        color = "#ef4444" if level == "SCAM" else "#f59e0b" if level == "SUSPICIOUS" else "#22c55e"
+        raw_level = str(det.get("scam_level", "")).upper()
+        clean_level = html.escape(raw_level)
+        clean_type = html.escape(str(det.get("detection_type", "")).upper())
+        try:
+            conf_val = float(det.get("confidence", 0))
+        except (ValueError, TypeError):
+            conf_val = 0.0
+        color = "#ef4444" if raw_level == "SCAM" else "#f59e0b" if raw_level == "SUSPICIOUS" else "#22c55e"
         input_data = det.get("input_data") or {}
         story.append(Paragraph(
-            f"<font color='{color}'>[{level}]</font> "
-            f"<b>{det.get('detection_type', '').upper()}</b> — "
-            f"{det.get('confidence', 0):.1f}% confidence",
+            f"<font color='{color}'>[{clean_level}]</font> "
+            f"<b>{clean_type}</b> — "
+            f"{conf_val:.1f}% confidence",
             styles["Normal"]
         ))
         if det.get("detection_type") == "sms" and input_data.get("sender_id"):
+            clean_sender = html.escape(str(input_data.get("sender_id", "")))
             story.append(Paragraph(
-                f"  <b>Sender Number/ID:</b> {input_data.get('sender_id')}",
+                f"  <b>Sender Number/ID:</b> {clean_sender}",
                 styles["Normal"]
             ))
         for reason in det.get("reasons", []):
-            story.append(Paragraph(f"  • {reason}", styles["Normal"]))
+            clean_reason = html.escape(str(reason))
+            story.append(Paragraph(f"  • {clean_reason}", styles["Normal"]))
         time_str = _format_local_timestamp(det.get("timestamp"), target_tz)
         if time_str:
+            clean_time = html.escape(str(time_str))
             story.append(Paragraph(
-                f"  <i>{time_str}</i>",
+                f"  <i>{clean_time}</i>",
                 styles["Normal"]
             ))
         story.append(Spacer(1, 0.1 * inch))
