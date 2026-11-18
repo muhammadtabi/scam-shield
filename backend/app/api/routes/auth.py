@@ -5,6 +5,7 @@ from bson import ObjectId
 from pymongo.errors import DuplicateKeyError
 from app.schemas.user import UserRegister, UserLogin, Token, UserOut
 from app.core.security import hash_password, verify_password, create_access_token
+from app.core.rate_limit import login_rate_limiter
 from app.core.dependencies import get_current_user
 from app.db.database import get_db
 
@@ -54,7 +55,7 @@ async def register(user: UserRegister):
         )
     )
 
-@router.post("/login", response_model=Token)
+@router.post("/login", response_model=Token, dependencies=[Depends(login_rate_limiter)])
 async def login(credentials: UserLogin):
     db = get_db()
     email_clean = credentials.email.strip().lower()
