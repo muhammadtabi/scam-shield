@@ -82,6 +82,11 @@ class InMemoryCollection:
                 return SimpleNamespace(deleted_count=1)
         return SimpleNamespace(deleted_count=0)
 
+    async def delete_many(self, query):
+        initial_len = len(self._documents)
+        self._documents = [d for d in self._documents if not _matches_query(d, query)]
+        return SimpleNamespace(deleted_count=initial_len - len(self._documents))
+
     async def count_documents(self, query):
         return sum(1 for document in self._documents if _matches_query(document, query))
 
