@@ -12,9 +12,9 @@ class ScamLevel(str, Enum):
     SCAM       = "scam"
 
 class EmailDetectRequest(BaseModel):
-    subject: str = ""
-    sender: str = ""
-    body: str = ""
+    subject: str = Field(default="", max_length=1000)
+    sender: str = Field(default="", max_length=500)
+    body: str = Field(default="", max_length=200000)
 
     @model_validator(mode="before")
     @classmethod
@@ -31,8 +31,8 @@ class EmailDetectRequest(BaseModel):
         return data
 
 class SMSDetectRequest(BaseModel):
-    sender_id: str
-    message: str
+    sender_id: str = Field(..., max_length=100)
+    message: str = Field(..., max_length=5000)
 
     @field_validator("sender_id")
     @classmethod
@@ -76,7 +76,7 @@ class SMSDetectRequest(BaseModel):
         return message
 
 class URLDetectRequest(BaseModel):
-    url: str
+    url: str = Field(..., max_length=2048)
 
     @field_validator("url")
     @classmethod

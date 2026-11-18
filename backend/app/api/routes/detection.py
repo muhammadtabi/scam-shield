@@ -1,5 +1,5 @@
 import asyncio
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from datetime import datetime, timezone
 from typing import Optional
 from bson import ObjectId
@@ -49,8 +49,8 @@ async def detect_url_route(
 
 @router.get("/history")
 async def get_history(
-    limit: int = 20,
-    skip: int = 0,
+    limit: int = Query(default=20, ge=1, le=100),
+    skip: int = Query(default=0, ge=0),
     current_user: dict = Depends(get_current_user)
 ):
     db = get_db()
