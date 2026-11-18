@@ -62,7 +62,7 @@ function AppContent() {
     detect:    <Detection />,
     alerts:    <Alerts />,
     reports:   <Reports />,
-    gmail:     <GmailInbox />,
+    gmail:     <GmailInbox setPage={setPage} />,
   }
 
   return (

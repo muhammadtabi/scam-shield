@@ -342,7 +342,9 @@ export default function Dashboard({ setPage }) {
       if (sync && gmail?.connected) {
         try {
           await api.syncGmail()
-        } catch (_) {}
+        } catch (syncErr) {
+          console.warn('Gmail background sync failed:', syncErr)
+        }
       }
       const [statsData, gmailData] = await Promise.all([
         api.getStats(),

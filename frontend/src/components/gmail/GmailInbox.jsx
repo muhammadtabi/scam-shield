@@ -55,7 +55,7 @@ const GmailInboxSkeleton = () => (
   </div>
 )
 
-export default function GmailInbox() {
+export default function GmailInbox({ setPage }) {
   const [emails, setEmails] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -114,8 +114,44 @@ export default function GmailInbox() {
 
   if (loading) return <GmailInboxSkeleton />
   if (error) return (
-    <div className="card" style={{ padding: 20, color: 'var(--accent-red)', maxWidth: 640 }}>
-      {error}
+    <div className="gmail-inbox-page fade-in">
+      <div className="page-header stagger stagger-1" style={{ marginBottom: 18 }}>
+        <h1 className="page-title">Gmail Inbox</h1>
+        <p className="page-subtitle">Inspect, verify, and review scanned messages in your inbox</p>
+      </div>
+      <div className="card" style={{ padding: 24, maxWidth: 640 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 16 }}>
+          <AlertTriangle size={20} color="var(--accent-amber)" style={{ flexShrink: 0, marginTop: 2 }} />
+          <div>
+            <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 6 }}>Account Not Connected</h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: 13.5, lineHeight: 1.5, margin: 0 }}>
+              {error}
+            </p>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
+          {setPage && (
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={() => setPage('dashboard')}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, padding: '8px 16px' }}
+            >
+              <Mail size={14} />
+              <span>Connect Account</span>
+            </button>
+          )}
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={load}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, padding: '8px 14px' }}
+          >
+            <RefreshCw size={13} />
+            <span>Retry</span>
+          </button>
+        </div>
+      </div>
     </div>
   )
 

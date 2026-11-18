@@ -61,8 +61,12 @@ export default function Alerts() {
   useEffect(() => { load() }, [])
 
   const handleDelete = async (id) => {
-    await api.deleteDetection(id)
-    setDetections(prev => prev.filter(d => d.id !== id))
+    try {
+      await api.deleteDetection(id)
+      setDetections(prev => prev.filter(d => d.id !== id))
+    } catch (err) {
+      console.error('Failed to delete detection:', err)
+    }
   }
 
   const filtered = filter === 'all'
